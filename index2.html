@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeff Stevenson — UX Design Leader</title>
+    <meta name="description" content="UX Design Leader crafting thoughtful, human-centered experiences.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ============================================
+           HOMEPAGE-SPECIFIC STYLES
+           ============================================ */
+
+        /* Hero */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding-top: calc(var(--nav-height) + var(--space-lg));
+            padding-bottom: var(--space-xl);
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(3rem, 6vw, 6rem);
+            align-items: center;
+        }
+
+        .hero-text {}
+
+        .hero-greeting {
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: var(--color-accent);
+            margin-bottom: 1.25rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.75rem, 5.5vw, 4.5rem);
+            font-weight: 400;
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+            color: var(--color-text);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.4s forwards;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--color-accent);
+        }
+
+        .hero-description {
+            font-size: 1.0625rem;
+            font-weight: 300;
+            line-height: 1.75;
+            color: var(--color-text-secondary);
+            max-width: 480px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.6s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.8s forwards;
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.5s forwards;
+        }
+
+        .hero-shape {
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 420px;
+            border-radius: 50%;
+            background: 
+                radial-gradient(ellipse at 30% 40%, rgba(43, 95, 63, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(43, 95, 63, 0.06) 0%, transparent 50%),
+                var(--color-bg-alt);
+            position: relative;
+        }
+
+        .hero-shape::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 50%;
+            border: 1px solid var(--color-accent-dim);
+        }
+
+        .hero-shape-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--color-accent);
+        }
+
+        .hero-shape-text .number {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-shape-text .label {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Featured Work */
+        .featured-work {
+            padding: var(--space-2xl) 0;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: var(--space-lg);
+        }
+
+        .work-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-rule);
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 0;
+            background: var(--color-accent);
+            transition: height 0.4s ease;
+        }
+
+        .work-card:hover {
+            border-color: var(--color-accent-medium);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .work-card:hover::after {
+            height: 100%;
+        }
+
+        .work-card-number {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1.25rem;
+        }
+
+        .work-card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 400;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.75rem;
+        }
+
+        .work-card-description {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .work-card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .work-tag {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.75rem;
+            background: var(--color-accent-dim);
+            color: var(--color-accent);
+            border-radius: 2px;
+        }
+
+        .work-card-link {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--color-accent);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            transition: gap 0.3s ease;
+        }
+
+        .work-card-link:hover {
+            gap: 0.625rem;
+        }
+
+        .work-card-link svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Featured card — full width */
+        .work-card.featured {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .work-card.featured .work-card-visual {
+            background: var(--color-bg-alt);
+            aspect-ratio: 16 / 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--color-rule);
+        }
+
+        .work-card-visual-placeholder {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+        }
+
+        /* Writing Section */
+        .writing-section {
+            padding: var(--space-2xl) 0;
+            background: var(--color-bg-alt);
+            border-top: 1px solid var(--color-rule);
+            border-bottom: 1px solid var(--color-rule);
+        }
+
+        .writing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: var(--space-lg);
+        }
+
+        .writing-card {
+            padding: 2rem 0;
+            border-top: 2px solid var(--color-accent);
+        }
+
+        .writing-card-date {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.75rem;
+        }
+
+        .writing-card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 400;
+            line-height: 1.35;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s ease;
+        }
+
+        .writing-card:hover .writing-card-title {
+            color: var(--color-accent);
+        }
+
+        .writing-card-excerpt {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: var(--space-2xl) 0;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+            margin-top: var(--space-lg);
+        }
+
+        .testimonial {
+            padding: 2.5rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-rule);
+            position: relative;
+        }
+
+        .testimonial::before {
+            content: '\201C';
+            font-family: var(--font-display);
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--color-accent);
+            opacity: 0.2;
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+        }
+
+        .testimonial-text {
+            font-family: var(--font-display);
+            font-size: 1.0625rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-author {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .testimonial-role {
+            font-size: 0.8125rem;
+            color: var(--color-text-muted);
+            margin-top: 0.2rem;
+        }
+
+        /* CTA */
+        .cta-strip {
+            padding: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .cta-strip .section-heading {
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.0625rem;
+            color: var(--color-text-secondary);
+            max-width: 480px;
+            margin: 0 auto var(--space-md);
+        }
+
+        .cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 968px) {
+            .hero-content { grid-template-columns: 1fr; }
+            .hero-visual { display: none; }
+            .work-card.featured { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .work-grid { grid-template-columns: 1fr; }
+            .writing-grid { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-greeting">UX Design Leader</p>
+                <h1 class="hero-title">Designing products that <em>people</em> actually love</h1>
+                <p class="hero-description">
+                    I lead design teams in creating thoughtful, human-centered experiences 
+                    that drive real business outcomes. Currently exploring new opportunities 
+                    to shape products at scale.
+                </p>
+                <div class="hero-actions">
+                    <a href="work.html" class="btn btn--primary">
+                        <span>View My Work</span>
+                        <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="btn">
+                        <span>Download Resume</span>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-shape">
+                    <div class="hero-shape-text">
+                        <div class="number">15+</div>
+                        <div class="label">Years of Experience</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work -->
+    <section class="featured-work">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">Selected Work</p>
+                <h2 class="section-heading">Projects & case studies</h2>
+            </div>
+
+            <div class="work-grid">
+                <a href="work.html" class="work-card featured fade-in delay-1">
+                    <div>
+                        <span class="work-card-number">01</span>
+                        <h3 class="work-card-title">Placeholder Project Title</h3>
+                        <p class="work-card-description">
+                            A brief description of this project and the challenge it addressed. 
+                            This is your most impressive, publicly-shareable case study that 
+                            demonstrates your design leadership.
+                        </p>
+                        <div class="work-card-tags">
+                            <span class="work-tag">UX Strategy</span>
+                            <span class="work-tag">Design Systems</span>
+                            <span class="work-tag">Team Leadership</span>
+                        </div>
+                        <span class="work-card-link">
+                            Read case study
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="work-card-visual">
+                        <span class="work-card-visual-placeholder">Project image</span>
+                    </div>
+                </a>
+
+                <a href="work.html" class="work-card fade-in delay-2">
+                    <span class="work-card-number">02</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">
+                        Short description of the project scope and your role 
+                        in driving the design process forward.
+                    </p>
+                    <div class="work-card-tags">
+                        <span class="work-tag">Product Design</span>
+                        <span class="work-tag">Research</span>
+                    </div>
+                    <span class="work-card-link">
+                        Read case study
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                        </svg>
+                    </span>
+                </a>
+
+                <a href="work.html" class="work-card fade-in delay-3">
+                    <span class="work-card-number">03</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">
+                        Short description of the project scope and your role 
+                        in driving the design process forward.
+                    </p>
+                    <div class="work-card-tags">
+                        <span class="work-tag">Design Ops</span>
+                        <span class="work-tag">Process</span>
+                    </div>
+                    <span class="work-card-link">
+                        Read case study
+                        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+
+            <div style="text-align: center; margin-top: var(--space-lg);" class="fade-in">
+                <a href="work.html" class="btn">
+                    <span>View All Projects</span>
+                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Writing -->
+    <section class="writing-section">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">Writing & Thinking</p>
+                <h2 class="section-heading">Recent essays</h2>
+            </div>
+
+            <div class="writing-grid">
+                <a href="#" class="writing-card fade-in delay-1">
+                    <p class="writing-card-date">January 2026</p>
+                    <h3 class="writing-card-title">Placeholder Essay Title About Design Leadership</h3>
+                    <p class="writing-card-excerpt">
+                        A short excerpt or description of what this essay explores and why it matters.
+                    </p>
+                </a>
+
+                <a href="#" class="writing-card fade-in delay-2">
+                    <p class="writing-card-date">December 2025</p>
+                    <h3 class="writing-card-title">Placeholder Essay Title About UX Process</h3>
+                    <p class="writing-card-excerpt">
+                        A short excerpt or description of what this essay explores and why it matters.
+                    </p>
+                </a>
+
+                <a href="#" class="writing-card fade-in delay-3">
+                    <p class="writing-card-date">November 2025</p>
+                    <h3 class="writing-card-title">Placeholder Essay About Building Design Teams</h3>
+                    <p class="writing-card-excerpt">
+                        A short excerpt or description of what this essay explores and why it matters.
+                    </p>
+                </a>
+            </div>
+
+            <div style="text-align: center; margin-top: var(--space-lg);" class="fade-in">
+                <a href="#" class="btn">
+                    <span>Read on Substack</span>
+                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">Kind Words</p>
+                <h2 class="section-heading">What colleagues say</h2>
+            </div>
+
+            <div class="testimonial-grid">
+                <div class="testimonial fade-in delay-1">
+                    <p class="testimonial-text">
+                        Placeholder testimonial from a colleague, direct report, or stakeholder 
+                        about your design leadership, collaboration, or impact on the product.
+                    </p>
+                    <p class="testimonial-author">Colleague Name</p>
+                    <p class="testimonial-role">Title, Company</p>
+                </div>
+
+                <div class="testimonial fade-in delay-2">
+                    <p class="testimonial-text">
+                        Placeholder testimonial from a colleague, direct report, or stakeholder 
+                        about your design leadership, collaboration, or impact on the product.
+                    </p>
+                    <p class="testimonial-author">Colleague Name</p>
+                    <p class="testimonial-role">Title, Company</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-strip">
+        <div class="container fade-in">
+            <h2 class="section-heading">Let's work together</h2>
+            <p class="cta-description">
+                Interested in collaborating or learning more about my work? 
+                I'd love to connect.
+            </p>
+            <div class="cta-actions">
+                <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+                    <span>Get in Touch</span>
+                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                    </svg>
+                </a>
+                <a href="#" class="btn">
+                    <span>Download Resume</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <p class="footer-name">Jeff Stevenson</p>
+                <p class="footer-tagline">UX Design Leader</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="work.html">Work</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="#">Substack</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Jeff Stevenson. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

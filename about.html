@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Jeff Stevenson</title>
+    <meta name="description" content="About Jeff Stevenson — UX Design Leader.">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ============================================
+           ABOUT PAGE STYLES
+           ============================================ */
+        .page-header {
+            padding-top: calc(var(--nav-height) + var(--space-xl));
+            padding-bottom: var(--space-lg);
+        }
+
+        .page-header .section-heading {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.2s forwards;
+        }
+
+        /* About intro — two column */
+        .about-intro {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: clamp(3rem, 6vw, 5rem);
+            padding-bottom: var(--space-2xl);
+            align-items: start;
+        }
+
+        .about-photo {
+            aspect-ratio: 3 / 4;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-rule);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.3s forwards;
+        }
+
+        .about-photo::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border: 1px solid var(--color-accent-dim);
+        }
+
+        .about-photo-placeholder {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+        }
+
+        .about-body {
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.4s forwards;
+        }
+
+        .about-body p {
+            font-size: 1.0625rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-body p:first-of-type {
+            font-family: var(--font-display);
+            font-size: 1.375rem;
+            font-weight: 400;
+            line-height: 1.55;
+            color: var(--color-text);
+        }
+
+        .about-body p strong {
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        /* Skills / what I bring */
+        .about-skills {
+            padding: var(--space-xl) 0 var(--space-2xl);
+            border-top: 1px solid var(--color-rule);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            margin-top: var(--space-lg);
+        }
+
+        .skill-card {
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--color-accent);
+        }
+
+        .skill-card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-card-description {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+        }
+
+        /* Speaking / engagements */
+        .speaking-section {
+            padding: var(--space-xl) 0 var(--space-2xl);
+            border-top: 1px solid var(--color-rule);
+        }
+
+        .speaking-list {
+            margin-top: var(--space-lg);
+            list-style: none;
+        }
+
+        .speaking-item {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            gap: 2rem;
+            align-items: baseline;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--color-rule);
+        }
+
+        .speaking-year {
+            font-family: var(--font-display);
+            font-size: 0.9375rem;
+            color: var(--color-text-muted);
+        }
+
+        .speaking-title {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 400;
+        }
+
+        .speaking-venue {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Personal note */
+        .personal-section {
+            padding: var(--space-xl) 0 var(--space-lg);
+            border-top: 1px solid var(--color-rule);
+        }
+
+        .personal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 5vw, 4rem);
+            margin-top: var(--space-lg);
+            align-items: start;
+        }
+
+        .personal-text {
+            font-size: 1.0625rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+
+        .personal-photo {
+            aspect-ratio: 4 / 3;
+            background: var(--color-bg-alt);
+            border: 1px solid var(--color-rule);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* CTA */
+        .about-cta {
+            padding: var(--space-xl) 0;
+            text-align: center;
+            border-top: 1px solid var(--color-rule);
+        }
+
+        .about-cta .section-heading {
+            margin-bottom: 1rem;
+        }
+
+        .about-cta-description {
+            font-size: 1.0625rem;
+            color: var(--color-text-secondary);
+            max-width: 480px;
+            margin: 0 auto var(--space-md);
+        }
+
+        .about-cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .about-intro { grid-template-columns: 1fr; }
+            .about-photo { max-width: 320px; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .speaking-item { grid-template-columns: 1fr; gap: 0.25rem; }
+            .personal-content { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
+        <button class="nav-toggle" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="work.html">Work</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <p class="section-label">About</p>
+            <h1 class="section-heading">A bit about me</h1>
+        </div>
+    </header>
+
+    <!-- About Intro -->
+    <section>
+        <div class="container">
+            <div class="about-intro">
+                <div class="about-photo">
+                    <span class="about-photo-placeholder">Your photo</span>
+                </div>
+                <div class="about-body">
+                    <p>
+                        Placeholder introduction — a compelling opening paragraph that captures 
+                        who you are as a designer and leader. This should feel personal and 
+                        authentic, not like a resume summary.
+                    </p>
+                    <p>
+                        A second paragraph expanding on your background, what drives you, and 
+                        the unique perspective you bring to design leadership. What makes you 
+                        different from other design leaders? What do you care about most deeply 
+                        in your work?
+                    </p>
+                    <p>
+                        A third paragraph about where you are now — what you're looking for, 
+                        what excites you about the next chapter, and the kind of problems 
+                        you want to solve.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What I Bring -->
+    <section class="about-skills">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">What I Bring</p>
+                <h2 class="section-heading">Skills & perspective</h2>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-card fade-in delay-1">
+                    <h3 class="skill-card-title">Design Leadership</h3>
+                    <p class="skill-card-description">
+                        Placeholder description of your leadership approach — how you build teams, 
+                        set vision, and create environments where great design work happens.
+                    </p>
+                </div>
+
+                <div class="skill-card fade-in delay-2">
+                    <h3 class="skill-card-title">Strategic Thinking</h3>
+                    <p class="skill-card-description">
+                        Placeholder description of how you connect design to business outcomes, 
+                        influence product strategy, and think systemically about complex problems.
+                    </p>
+                </div>
+
+                <div class="skill-card fade-in delay-3">
+                    <h3 class="skill-card-title">Craft & Execution</h3>
+                    <p class="skill-card-description">
+                        Placeholder description of your hands-on design skills, your eye for detail, 
+                        and how you maintain craft standards across a team's output.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Speaking & Engagements -->
+    <section class="speaking-section">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">Speaking & Engagements</p>
+                <h2 class="section-heading">Talks & appearances</h2>
+            </div>
+
+            <ul class="speaking-list">
+                <li class="speaking-item fade-in delay-1">
+                    <span class="speaking-year">2025</span>
+                    <span class="speaking-title">Placeholder Talk Title</span>
+                    <span class="speaking-venue">Conference / Event Name</span>
+                </li>
+                <li class="speaking-item fade-in delay-2">
+                    <span class="speaking-year">2024</span>
+                    <span class="speaking-title">Placeholder Talk Title</span>
+                    <span class="speaking-venue">Conference / Event Name</span>
+                </li>
+                <li class="speaking-item fade-in delay-3">
+                    <span class="speaking-year">2024</span>
+                    <span class="speaking-title">Placeholder Talk Title</span>
+                    <span class="speaking-venue">Conference / Event Name</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Personal -->
+    <section class="personal-section">
+        <div class="container">
+            <div class="fade-in">
+                <p class="section-label">Outside of Work</p>
+                <h2 class="section-heading">Beyond the screen</h2>
+            </div>
+
+            <div class="personal-content fade-in delay-1">
+                <p class="personal-text">
+                    Placeholder for a personal note — your outdoor interests, what recharges you, 
+                    and what shapes your perspective beyond design. This is where your personality 
+                    comes through and makes you memorable as a human, not just a professional.
+                </p>
+                <div class="personal-photo">
+                    <span class="about-photo-placeholder">Outdoor / personal photo</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="about-cta">
+        <div class="container fade-in">
+            <h2 class="section-heading">Let's connect</h2>
+            <p class="about-cta-description">
+                Whether you're looking for a design leader or just want to talk shop, 
+                I'd love to hear from you.
+            </p>
+            <div class="about-cta-actions">
+                <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
+                    <span>Get in Touch</span>
+                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
+                    </svg>
+                </a>
+                <a href="#" class="btn">
+                    <span>Download Resume</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-left">
+                <p class="footer-name">Jeff Stevenson</p>
+                <p class="footer-tagline">UX Design Leader</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="work.html">Work</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="#">Substack</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Jeff Stevenson. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
