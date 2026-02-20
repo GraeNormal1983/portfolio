@@ -33,6 +33,110 @@ function useWindowWidth() {
   return width;
 }
 
+// ─── FAMILY AVATAR ──────────────────────────────────────────────────────────
+const ELDER_COLORS = {
+  Thompson:   { bg: "#1d2252", accent: "#2a3a7d" },
+  Richardson: { bg: "#0d5f6b", accent: "#0a7a8b" },
+  Nakamura:   { bg: "#4a2d6b", accent: "#6b3fa0" },
+  Fitzgerald: { bg: "#2d4a2d", accent: "#3d6b3d" },
+  Okafor:     { bg: "#6b3a2d", accent: "#8b4f3d" },
+  Lindgren:   { bg: "#2d3d6b", accent: "#3d5a9b" },
+  Patel:      { bg: "#5a2d4a", accent: "#7b3d6b" },
+  Dominguez:  { bg: "#3d5a4a", accent: "#4a7b5a" },
+  Whitfield:  { bg: "#4a4a2d", accent: "#6b6b3d" },
+  Cho:        { bg: "#2d5a5a", accent: "#3d7b7b" },
+  Bergmann:   { bg: "#5a3d3d", accent: "#7b5454" },
+  Sawyer:     { bg: "#3d4a5a", accent: "#4a6070" },
+};
+
+function getInitials(familyName) {
+  // "Smith, John & Jane" → "JS", "Baker, Rod" → "RB"
+  const parts = familyName.split(",");
+  const last = parts[0].trim();
+  const firstPart = (parts[1] || "").trim().split(" & ")[0].split(" ")[0];
+  return ((firstPart[0] || "") + (last[0] || "")).toUpperCase();
+}
+
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
+function FamilyAvatar({ name, elder, size = 72, borderRadius = 10, onClick, style = {} }) {
+  const initials = getInitials(name);
+  const hash = hashCode(name);
+  const colors = ELDER_COLORS[elder] || { bg: "#1d2252", accent: "#2a3a7d" };
+
+  // Deterministic pattern based on name hash
+  const patternType = hash % 4; // 0: diagonal lines, 1: dots, 2: wave, 3: crosshatch
+  const rotation = (hash % 360);
+  const gradId = `grad-${hash % 9999}`;
+  const patId = `pat-${hash % 9999}`;
+
+  const fontSize = size * 0.32;
+
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        width: size,
+        height: size,
+        borderRadius,
+        overflow: "hidden",
+        flexShrink: 0,
+        cursor: onClick ? "pointer" : "default",
+        transition: "opacity 0.15s",
+        ...style,
+      }}
+    >
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={colors.bg} />
+            <stop offset="100%" stopColor={colors.accent} />
+          </linearGradient>
+          <pattern id={patId} width={size * 0.15} height={size * 0.15} patternUnits="userSpaceOnUse" patternTransform={`rotate(${rotation % 60 + 15})`}>
+            {patternType === 0 && (
+              <line x1="0" y1="0" x2="0" y2={size * 0.15} stroke="rgba(255,255,255,0.07)" strokeWidth="2" />
+            )}
+            {patternType === 1 && (
+              <circle cx={size * 0.075} cy={size * 0.075} r={size * 0.02} fill="rgba(255,255,255,0.08)" />
+            )}
+            {patternType === 2 && (
+              <line x1="0" y1={size * 0.075} x2={size * 0.15} y2={size * 0.075} stroke="rgba(255,255,255,0.06)" strokeWidth="1.5" />
+            )}
+            {patternType === 3 && (
+              <>
+                <line x1="0" y1="0" x2={size * 0.15} y2={size * 0.15} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                <line x1={size * 0.15} y1="0" x2="0" y2={size * 0.15} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+              </>
+            )}
+          </pattern>
+        </defs>
+        <rect width={size} height={size} fill={`url(#${gradId})`} />
+        <rect width={size} height={size} fill={`url(#${patId})`} />
+        <text
+          x={size / 2}
+          y={size / 2}
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontFamily="Montserrat, sans-serif"
+          fontWeight="600"
+          fontSize={fontSize}
+          fill="rgba(255,255,255,0.9)"
+          letterSpacing="1"
+        >
+          {initials}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
 const FBC_LOGO_DARK = "data:image/webp;base64,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";
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
@@ -2082,30 +2186,14 @@ function App() {
               }}>
                 <div style={{display: "flex", justifyContent: "space-between", alignItems: "flex-start"}}>
                   <div style={{display: "flex", gap: 16, alignItems: "flex-start"}}>
-                    {/* Family photo placeholder */}
-                    <div
+                    {/* Family avatar */}
+                    <FamilyAvatar
+                      name={selData.family}
+                      elder={selData.elder}
+                      size={isMobile ? 52 : 72}
+                      borderRadius={10}
                       onClick={() => setPhotoOverlay(true)}
-                      style={{
-                        width: isMobile ? 52 : 72,
-                        height: isMobile ? 52 : 72,
-                        borderRadius: 10,
-                        background: "linear-gradient(135deg, #cdd3e3, #cdd3e3)",
-                        border: "1px solid #b8c1d6",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                        cursor: "pointer",
-                        transition: "opacity 0.15s",
-                      }}
-                    >
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555d80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                        <circle cx="12" cy="7" r="4"/>
-                      </svg>
-                      <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 11, color: "#555d80", marginTop: 2}}>Photo</span>
-                    </div>
+                    />
                     <div>
                       <h2 style={{margin: 0, fontSize: 22, fontWeight: 500, color: "#1d2252"}}>{selData.family}</h2>
                       <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#4a5580", marginTop: 4}}>
@@ -2666,29 +2754,14 @@ function App() {
                     alignItems: "flex-start",
                   }}>
                     <div style={{display: "flex", gap: 12, alignItems: "flex-start"}}>
-                      {/* Photo placeholder */}
-                      <div
+                      {/* Family avatar */}
+                      <FamilyAvatar
+                        name={family.family}
+                        elder={family.elder}
+                        size={48}
+                        borderRadius={8}
                         onClick={() => setPrayerPhotoOverlay(family.family)}
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: 8,
-                          background: "linear-gradient(135deg, #cdd3e3, #cdd3e3)",
-                          border: "1px solid #b8c1d6",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                          cursor: "pointer",
-                          transition: "opacity 0.15s",
-                        }}
-                      >
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555d80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                          <circle cx="12" cy="7" r="4"/>
-                        </svg>
-                      </div>
+                      />
                       <div>
                         <div style={{fontSize: 18, fontWeight: 500, color: "#1d2252"}}>{family.family}</div>
                         <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 11, color: "#555d80", marginTop: 2}}>
@@ -2834,24 +2907,13 @@ function App() {
               boxShadow: "0 20px 60px rgba(30,20,12,0.3)",
             }}
           >
-            {/* Large placeholder photo */}
-            <div style={{
-              width: isMobile ? 180 : 240,
-              height: isMobile ? 180 : 240,
-              borderRadius: 14,
-              background: "linear-gradient(135deg, #dde2ed, #cdd3e3)",
-              border: "1px solid #b8c1d6",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#555d80" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-              <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#555d80", marginTop: 8}}>No photo yet</span>
-            </div>
+            {/* Large avatar */}
+            <FamilyAvatar
+              name={selData.family}
+              elder={selData.elder}
+              size={isMobile ? 180 : 240}
+              borderRadius={14}
+            />
             <div style={{textAlign: "center"}}>
               <div style={{fontSize: 20, fontWeight: 500, color: "#1d2252"}}>{selData.family}</div>
               <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#555d80", marginTop: 4}}>
@@ -2913,23 +2975,12 @@ function App() {
                 boxShadow: "0 20px 60px rgba(30,20,12,0.3)",
               }}
             >
-              <div style={{
-                width: isMobile ? 180 : 240,
-                height: isMobile ? 180 : 240,
-                borderRadius: 14,
-                background: "linear-gradient(135deg, #dde2ed, #cdd3e3)",
-                border: "1px solid #b8c1d6",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#555d80" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
-                </svg>
-                <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#555d80", marginTop: 8}}>No photo yet</span>
-              </div>
+              <FamilyAvatar
+                name={overlayFamily.family}
+                elder={overlayFamily.elder}
+                size={isMobile ? 180 : 240}
+                borderRadius={14}
+              />
               <div style={{textAlign: "center"}}>
                 <div style={{fontSize: 20, fontWeight: 500, color: "#1d2252"}}>{overlayFamily.family}</div>
                 <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#555d80", marginTop: 4}}>
