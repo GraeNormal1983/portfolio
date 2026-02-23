@@ -27,115 +27,67 @@
             animation: fadeUp 0.7s ease 0.4s forwards;
         }
 
-        /* Question Filters */
-        .questions-section {
-            padding: var(--space-lg) 0 var(--space-xl);
-            border-top: 1px solid var(--color-rule);
+        /* Filter Section */
+        .filter-section {
+            padding: var(--space-md) 0 var(--space-lg);
             opacity: 0;
             animation: fadeUp 0.7s ease 0.5s forwards;
         }
-        .questions-heading {
+        .filter-prompt {
             font-family: var(--font-display);
-            font-size: 1.375rem;
+            font-size: 1.125rem;
             font-weight: 400;
-            color: var(--color-text);
-            margin-bottom: 0.5rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 1rem;
         }
-        .questions-subheading {
-            font-size: 0.9375rem;
-            color: var(--color-text-muted);
-            margin-bottom: var(--space-md);
-        }
-        .questions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 0.75rem;
-        }
-        .question-card {
+        .filter-pills {
             display: flex;
-            align-items: flex-start;
-            gap: 0.875rem;
-            padding: 1.125rem 1.25rem;
-            border: 1px solid var(--color-rule);
-            background: var(--color-surface);
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-pill {
+            font-family: var(--font-body);
+            font-size: 0.8125rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            padding: 0.5rem 1.125rem;
+            border: 1px solid var(--color-rule-dark);
+            background: transparent;
+            color: var(--color-text-secondary);
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 100px;
+            transition: all 0.25s ease;
             user-select: none;
         }
-        .question-card:hover { border-color: var(--color-accent-medium); }
-        .question-card.active {
+        .filter-pill:hover {
             border-color: var(--color-accent);
-            background: var(--color-accent-dim);
+            color: var(--color-accent);
         }
-        .question-card.active .question-icon {
+        .filter-pill.active {
             background: var(--color-accent);
             border-color: var(--color-accent);
+            color: #fff;
         }
-        .question-card.active .question-icon svg { opacity: 1; }
-        .question-icon {
-            flex-shrink: 0;
-            width: 22px;
-            height: 22px;
-            border: 1.5px solid var(--color-rule-dark);
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            margin-top: 1px;
-        }
-        .question-icon svg {
-            width: 12px;
-            height: 12px;
-            stroke: #fff;
-            stroke-width: 2.5;
-            fill: none;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-        .question-text {
-            font-family: var(--font-display);
-            font-size: 0.9375rem;
-            font-weight: 400;
-            line-height: 1.45;
-            color: var(--color-text);
-        }
-
-        /* Active filter bar */
-        .active-filters {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: 1.25rem;
-            min-height: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .active-filters.visible { opacity: 1; }
-        .active-filters-label {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-        }
-        .clear-filters {
+        .filter-clear {
             font-family: var(--font-body);
             font-size: 0.75rem;
             font-weight: 500;
-            color: var(--color-accent);
+            color: var(--color-text-muted);
             background: none;
             border: none;
             cursor: pointer;
-            padding: 0.25rem 0;
-            transition: opacity 0.2s ease;
+            padding: 0.5rem 0.25rem;
+            opacity: 0;
+            transition: opacity 0.25s ease, color 0.25s ease;
+            pointer-events: none;
         }
-        .clear-filters:hover { opacity: 0.7; }
-        .results-count {
-            font-size: 0.8125rem;
-            color: var(--color-text-muted);
-            margin-left: auto;
+        .filter-clear.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .filter-clear:hover {
+            color: var(--color-accent);
         }
 
         /* Case Studies */
@@ -151,7 +103,6 @@
         }
         .case-study-item:last-child { border-bottom: 1px solid var(--color-rule); }
         .case-study-item.dimmed { opacity: 0.12; pointer-events: none; }
-        .case-study-item.highlighted { opacity: 1; }
         .case-study-item:hover .case-study-title { color: var(--color-accent); }
 
         .case-study-number {
@@ -192,7 +143,6 @@
             max-width: 480px;
         }
 
-        /* Relevance tags */
         .case-study-relevance {
             display: flex;
             gap: 0.375rem;
@@ -252,23 +202,13 @@
         .case-study-item:nth-child(even) { direction: rtl; }
         .case-study-item:nth-child(even) > * { direction: ltr; }
 
-        .no-results {
-            text-align: center;
-            padding: var(--space-xl) 0;
-            display: none;
-        }
-        .no-results.visible { display: block; }
-        .no-results p { font-size: 1.0625rem; color: var(--color-text-muted); }
-
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @media (max-width: 768px) {
-            .questions-grid { grid-template-columns: 1fr; }
             .case-study-item { grid-template-columns: 1fr; }
             .case-study-item:nth-child(even) { direction: ltr; }
-            .results-count { margin-left: 0; width: 100%; }
         }
     </style>
 </head>
@@ -299,129 +239,99 @@
         </div>
     </header>
 
-    <section class="questions-section">
+    <section class="filter-section">
         <div class="container">
-            <h2 class="questions-heading">What matters to you?</h2>
-            <p class="questions-subheading">Select any questions to surface the most relevant work.</p>
-
-            <div class="questions-grid">
-                <div class="question-card" data-filter="strategy">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Can he plan strategy across multiple products?</span>
-                </div>
-                <div class="question-card" data-filter="ai">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Is he adept with using AI in the design process?</span>
-                </div>
-                <div class="question-card" data-filter="fullprocess">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Can he lead all stages — research, design, testing, and maintenance?</span>
-                </div>
-                <div class="question-card" data-filter="mentorship">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Is he able to mentor and develop a design staff?</span>
-                </div>
-                <div class="question-card" data-filter="systems">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Has he built or scaled design systems?</span>
-                </div>
-                <div class="question-card" data-filter="stakeholders">
-                    <div class="question-icon"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></div>
-                    <span class="question-text">Can he influence and align cross-functional stakeholders?</span>
-                </div>
-            </div>
-
-            <div class="active-filters" id="activeFilters">
-                <span class="active-filters-label">Filtering by:</span>
-                <button class="clear-filters" id="clearFilters">Clear all</button>
-                <span class="results-count" id="resultsCount"></span>
+            <p class="filter-prompt">Show case studies that demonstrate&hellip;</p>
+            <div class="filter-pills">
+                <button class="filter-pill" data-filter="strategy">Cross-Product Strategy</button>
+                <button class="filter-pill" data-filter="ai">AI in Design</button>
+                <button class="filter-pill" data-filter="fullprocess">End-to-End Process</button>
+                <button class="filter-pill" data-filter="mentorship">Mentorship & Team Growth</button>
+                <button class="filter-pill" data-filter="systems">Design Systems</button>
+                <button class="filter-pill" data-filter="stakeholders">Stakeholder Alignment</button>
+                <button class="filter-clear" id="clearFilters">Clear all</button>
             </div>
         </div>
     </section>
 
     <section class="case-studies">
         <div class="container">
-            <div class="case-studies-list" id="caseStudiesList">
 
-                <a href="#" class="case-study-item" data-tags="strategy,fullprocess,stakeholders">
-                    <div>
-                        <div class="case-study-number">01 <span class="case-study-badge badge-public">Public</span></div>
-                        <h2 class="case-study-title">Placeholder Project Title</h2>
-                        <p class="case-study-description">A description of the project challenge, your role, and the key outcomes. This is a publicly viewable case study showcasing your design leadership.</p>
-                        <div class="case-study-relevance">
-                            <span class="relevance-tag" data-tag="strategy">Strategy</span>
-                            <span class="relevance-tag" data-tag="fullprocess">Full Process</span>
-                            <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
-                        </div>
-                        <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+            <a href="#" class="case-study-item" data-tags="strategy,fullprocess,stakeholders">
+                <div>
+                    <div class="case-study-number">01 <span class="case-study-badge badge-public">Public</span></div>
+                    <h2 class="case-study-title">Placeholder Project Title</h2>
+                    <p class="case-study-description">A description of the project challenge, your role, and the key outcomes. This is a publicly viewable case study showcasing your design leadership.</p>
+                    <div class="case-study-relevance">
+                        <span class="relevance-tag" data-tag="strategy">Strategy</span>
+                        <span class="relevance-tag" data-tag="fullprocess">End-to-End</span>
+                        <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
                     </div>
-                    <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
-                </a>
+                    <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+                </div>
+                <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
+            </a>
 
-                <a href="#" class="case-study-item" data-tags="ai,fullprocess,systems">
-                    <div>
-                        <div class="case-study-number">02 <span class="case-study-badge badge-public">Public</span></div>
-                        <h2 class="case-study-title">Placeholder Project Title</h2>
-                        <p class="case-study-description">A description of the project challenge, your role, and the key outcomes. Another publicly viewable case study demonstrating a different facet of your work.</p>
-                        <div class="case-study-relevance">
-                            <span class="relevance-tag" data-tag="ai">AI in Design</span>
-                            <span class="relevance-tag" data-tag="fullprocess">Full Process</span>
-                            <span class="relevance-tag" data-tag="systems">Design Systems</span>
-                        </div>
-                        <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+            <a href="#" class="case-study-item" data-tags="ai,fullprocess,systems">
+                <div>
+                    <div class="case-study-number">02 <span class="case-study-badge badge-public">Public</span></div>
+                    <h2 class="case-study-title">Placeholder Project Title</h2>
+                    <p class="case-study-description">A description of the project challenge, your role, and the key outcomes. Another publicly viewable case study demonstrating a different facet of your work.</p>
+                    <div class="case-study-relevance">
+                        <span class="relevance-tag" data-tag="ai">AI in Design</span>
+                        <span class="relevance-tag" data-tag="fullprocess">End-to-End</span>
+                        <span class="relevance-tag" data-tag="systems">Design Systems</span>
                     </div>
-                    <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
-                </a>
+                    <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+                </div>
+                <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
+            </a>
 
-                <a href="#" class="case-study-item" data-tags="strategy,stakeholders,systems">
-                    <div>
-                        <div class="case-study-number">03 <span class="case-study-badge badge-protected">Password Protected</span></div>
-                        <h2 class="case-study-title">Placeholder Project Title</h2>
-                        <p class="case-study-description">A description of the project challenge and your role. The full case study is protected — reach out on LinkedIn for access.</p>
-                        <div class="case-study-relevance">
-                            <span class="relevance-tag" data-tag="strategy">Strategy</span>
-                            <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
-                            <span class="relevance-tag" data-tag="systems">Design Systems</span>
-                        </div>
-                        <span class="case-study-link">Request access <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="8" height="6" rx="1"/><path d="M6 7V5a2 2 0 1 1 4 0v2"/></svg></span>
+            <a href="#" class="case-study-item" data-tags="strategy,stakeholders,systems">
+                <div>
+                    <div class="case-study-number">03 <span class="case-study-badge badge-protected">Password Protected</span></div>
+                    <h2 class="case-study-title">Placeholder Project Title</h2>
+                    <p class="case-study-description">A description of the project challenge and your role. The full case study is protected — reach out on LinkedIn for access.</p>
+                    <div class="case-study-relevance">
+                        <span class="relevance-tag" data-tag="strategy">Strategy</span>
+                        <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
+                        <span class="relevance-tag" data-tag="systems">Design Systems</span>
                     </div>
-                    <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
-                </a>
+                    <span class="case-study-link">Request access <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="8" height="6" rx="1"/><path d="M6 7V5a2 2 0 1 1 4 0v2"/></svg></span>
+                </div>
+                <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
+            </a>
 
-                <a href="#" class="case-study-item" data-tags="mentorship,fullprocess,stakeholders">
-                    <div>
-                        <div class="case-study-number">04 <span class="case-study-badge badge-public">Public</span></div>
-                        <h2 class="case-study-title">Placeholder: Building a Design Team</h2>
-                        <p class="case-study-description">A case study about your approach to hiring, mentoring, and growing a design team — your philosophy on what makes a great design org.</p>
-                        <div class="case-study-relevance">
-                            <span class="relevance-tag" data-tag="mentorship">Mentorship</span>
-                            <span class="relevance-tag" data-tag="fullprocess">Full Process</span>
-                            <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
-                        </div>
-                        <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+            <a href="#" class="case-study-item" data-tags="mentorship,fullprocess,stakeholders">
+                <div>
+                    <div class="case-study-number">04 <span class="case-study-badge badge-public">Public</span></div>
+                    <h2 class="case-study-title">Placeholder: Building a Design Team</h2>
+                    <p class="case-study-description">A case study about your approach to hiring, mentoring, and growing a design team — your philosophy on what makes a great design org.</p>
+                    <div class="case-study-relevance">
+                        <span class="relevance-tag" data-tag="mentorship">Mentorship</span>
+                        <span class="relevance-tag" data-tag="fullprocess">End-to-End</span>
+                        <span class="relevance-tag" data-tag="stakeholders">Stakeholders</span>
                     </div>
-                    <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
-                </a>
+                    <span class="case-study-link">Read case study <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
+                </div>
+                <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
+            </a>
 
-                <a href="#" class="case-study-item" data-tags="mentorship,systems,strategy">
-                    <div>
-                        <div class="case-study-number">05 <span class="case-study-badge badge-protected">Password Protected</span></div>
-                        <h2 class="case-study-title">Placeholder: Design at Scale</h2>
-                        <p class="case-study-description">A case study about establishing design processes, systems, and culture across a large organization.</p>
-                        <div class="case-study-relevance">
-                            <span class="relevance-tag" data-tag="mentorship">Mentorship</span>
-                            <span class="relevance-tag" data-tag="systems">Design Systems</span>
-                            <span class="relevance-tag" data-tag="strategy">Strategy</span>
-                        </div>
-                        <span class="case-study-link">Request access <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="8" height="6" rx="1"/><path d="M6 7V5a2 2 0 1 1 4 0v2"/></svg></span>
+            <a href="#" class="case-study-item" data-tags="mentorship,systems,strategy">
+                <div>
+                    <div class="case-study-number">05 <span class="case-study-badge badge-protected">Password Protected</span></div>
+                    <h2 class="case-study-title">Placeholder: Design at Scale</h2>
+                    <p class="case-study-description">A case study about establishing design processes, systems, and culture across a large organization.</p>
+                    <div class="case-study-relevance">
+                        <span class="relevance-tag" data-tag="mentorship">Mentorship</span>
+                        <span class="relevance-tag" data-tag="systems">Design Systems</span>
+                        <span class="relevance-tag" data-tag="strategy">Strategy</span>
                     </div>
-                    <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
-                </a>
+                    <span class="case-study-link">Request access <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="8" height="6" rx="1"/><path d="M6 7V5a2 2 0 1 1 4 0v2"/></svg></span>
+                </div>
+                <div class="case-study-visual"><span class="case-study-visual-placeholder">Project image</span></div>
+            </a>
 
-            </div>
-            <div class="no-results" id="noResults">
-                <p>No case studies match all selected criteria — try selecting fewer questions.</p>
-            </div>
         </div>
     </section>
 
@@ -446,53 +356,52 @@
     <script src="scripts.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const questionCards = document.querySelectorAll('.question-card');
+            const pills = document.querySelectorAll('.filter-pill');
             const caseStudies = document.querySelectorAll('.case-study-item');
-            const activeFiltersBar = document.getElementById('activeFilters');
             const clearBtn = document.getElementById('clearFilters');
-            const resultsCount = document.getElementById('resultsCount');
-            const noResults = document.getElementById('noResults');
             let activeFilters = new Set();
+
+            const list = caseStudies[0]?.parentElement;
 
             function updateDisplay() {
                 const hasFilters = activeFilters.size > 0;
-                activeFiltersBar.classList.toggle('visible', hasFilters);
-                let matchCount = 0;
+                clearBtn.classList.toggle('visible', hasFilters);
+
+                const matched = [];
+                const unmatched = [];
 
                 caseStudies.forEach(study => {
                     const studyTags = study.dataset.tags.split(',');
                     if (!hasFilters) {
-                        study.classList.remove('dimmed', 'highlighted');
+                        study.classList.remove('dimmed');
+                        matched.push(study);
                     } else {
-                        const matches = [...activeFilters].some(f => studyTags.includes(f));
-                        if (matches) {
-                            study.classList.add('highlighted');
-                            study.classList.remove('dimmed');
-                            matchCount++;
-                        } else {
-                            study.classList.add('dimmed');
-                            study.classList.remove('highlighted');
-                        }
+                        const isMatch = [...activeFilters].some(f => studyTags.includes(f));
+                        study.classList.toggle('dimmed', !isMatch);
+                        if (isMatch) { matched.push(study); } else { unmatched.push(study); }
                     }
                 });
+
+                // Reorder DOM: matched first, then unmatched
+                if (hasFilters && list) {
+                    matched.forEach(el => list.appendChild(el));
+                    unmatched.forEach(el => list.appendChild(el));
+                }
 
                 document.querySelectorAll('.relevance-tag').forEach(tag => {
                     tag.classList.toggle('matched', hasFilters && activeFilters.has(tag.dataset.tag));
                 });
-
-                resultsCount.textContent = hasFilters ? matchCount + ' of ' + caseStudies.length + ' projects' : '';
-                noResults.classList.toggle('visible', hasFilters && matchCount === 0);
             }
 
-            questionCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const filter = card.dataset.filter;
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    const filter = pill.dataset.filter;
                     if (activeFilters.has(filter)) {
                         activeFilters.delete(filter);
-                        card.classList.remove('active');
+                        pill.classList.remove('active');
                     } else {
                         activeFilters.add(filter);
-                        card.classList.add('active');
+                        pill.classList.add('active');
                     }
                     updateDisplay();
                 });
@@ -500,7 +409,7 @@
 
             clearBtn.addEventListener('click', () => {
                 activeFilters.clear();
-                questionCards.forEach(card => card.classList.remove('active'));
+                pills.forEach(p => p.classList.remove('active'));
                 updateDisplay();
             });
         });
