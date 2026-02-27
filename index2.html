@@ -110,7 +110,7 @@
             animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
         }
 
-        /* Hero visual — organic stat display */
+        /* Hero visual — floating interactive cards */
         .hero-visual {
             position: relative;
             display: flex;
@@ -120,41 +120,56 @@
             animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
         }
 
-        .hero-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+        .hero-float-area {
+            position: relative;
             width: 100%;
-            max-width: 380px;
+            max-width: 440px;
+            aspect-ratio: 1;
         }
 
         .hero-stat {
-            padding: 1.75rem;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
+            position: absolute;
+            width: 170px;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--color-rule);
             border-radius: 16px;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            will-change: transform;
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
 
-        .hero-stat:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(43, 95, 63, 0.08);
+        .hero-stat:hover,
+        .hero-stat.hovered {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: var(--color-accent);
+            box-shadow: 0 16px 48px rgba(43, 95, 63, 0.12);
         }
 
-        .hero-stat:nth-child(2) { transform: translateY(1.5rem); }
-        .hero-stat:nth-child(2):hover { transform: translateY(calc(1.5rem - 4px)); }
-        .hero-stat:nth-child(3) { transform: translateY(-1rem); }
-        .hero-stat:nth-child(3):hover { transform: translateY(calc(-1rem - 4px)); }
+        .hero-stat:hover .hero-stat-number,
+        .hero-stat.hovered .hero-stat-number {
+            color: var(--color-accent-light);
+        }
+
+        .hero-stat:hover .hero-stat-cta,
+        .hero-stat.hovered .hero-stat-cta {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         .hero-stat-number {
             font-family: var(--font-display);
-            font-size: 2.5rem;
+            font-size: 2.25rem;
             font-weight: 300;
             line-height: 1;
             letter-spacing: -0.03em;
             color: var(--color-accent);
-            margin-bottom: 0.375rem;
+            margin-bottom: 0.3rem;
+            transition: color 0.4s ease;
         }
 
         .hero-stat-label {
@@ -164,6 +179,26 @@
             letter-spacing: 0.02em;
             color: var(--color-text-muted);
             line-height: 1.4;
+        }
+
+        .hero-stat-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--color-accent);
+            margin-top: 0.75rem;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero-stat-cta svg {
+            width: 12px;
+            height: 12px;
         }
 
         /* --- Topographic divider --- */
@@ -645,23 +680,39 @@
                 </div>
             </div>
             <div class="hero-visual">
-                <div class="hero-stats">
-                    <div class="hero-stat">
+                <div class="hero-float-area" id="heroFloatArea">
+                    <a href="#" class="hero-stat" data-home-x="10" data-home-y="8">
                         <div class="hero-stat-number">15+</div>
                         <div class="hero-stat-label">Years leading design</div>
-                    </div>
-                    <div class="hero-stat">
+                        <div class="hero-stat-cta">
+                            View resume
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+                        </div>
+                    </a>
+                    <a href="work.html" class="hero-stat" data-home-x="55" data-home-y="5">
                         <div class="hero-stat-number">40+</div>
                         <div class="hero-stat-label">Products shipped</div>
-                    </div>
-                    <div class="hero-stat">
+                        <div class="hero-stat-cta">
+                            See my work
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+                        </div>
+                    </a>
+                    <a href="about.html" class="hero-stat" data-home-x="5" data-home-y="55">
                         <div class="hero-stat-number">8</div>
                         <div class="hero-stat-label">Teams built & grown</div>
-                    </div>
-                    <div class="hero-stat">
+                        <div class="hero-stat-cta">
+                            About me
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+                        </div>
+                    </a>
+                    <a href="work.html" class="hero-stat" data-home-x="52" data-home-y="58">
                         <div class="hero-stat-number">3</div>
                         <div class="hero-stat-label">Industries shaped</div>
-                    </div>
+                        <div class="hero-stat-cta">
+                            Explore work
+                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -903,9 +954,91 @@
 
     <script src="scripts.js"></script>
     <script>
-        // Drag-to-scroll for testimonials
-        const track = document.querySelector('.testimonial-track');
-        if (track) {
+        // --- Floating hero cards ---
+        (function() {
+            const area = document.getElementById('heroFloatArea');
+            if (!area) return;
+
+            const cards = area.querySelectorAll('.hero-stat');
+            const state = [];
+            let animId;
+
+            cards.forEach((card, i) => {
+                const homeX = parseFloat(card.dataset.homeX);
+                const homeY = parseFloat(card.dataset.homeY);
+
+                // Each card gets unique sine wave parameters for organic movement
+                state.push({
+                    el: card,
+                    homeX: homeX,
+                    homeY: homeY,
+                    // Different frequencies & phases so paths don't sync
+                    freqX: 0.15 + i * 0.07,
+                    freqY: 0.12 + i * 0.09,
+                    ampX: 12 + (i % 2) * 6,   // pixels of drift
+                    ampY: 10 + ((i + 1) % 2) * 8,
+                    phaseX: i * 1.8,
+                    phaseY: i * 2.3 + 1.0,
+                    hovered: false
+                });
+
+                // Position initially
+                card.style.left = homeX + '%';
+                card.style.top = homeY + '%';
+
+                card.addEventListener('mouseenter', () => {
+                    state[i].hovered = true;
+                    card.classList.add('hovered');
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    state[i].hovered = false;
+                    card.classList.remove('hovered');
+                });
+            });
+
+            let startTime = null;
+
+            function animate(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = (timestamp - startTime) / 1000; // seconds
+
+                state.forEach(s => {
+                    if (s.hovered) return; // Freeze when hovered
+
+                    const dx = Math.sin(elapsed * s.freqX + s.phaseX) * s.ampX;
+                    const dy = Math.cos(elapsed * s.freqY + s.phaseY) * s.ampY;
+
+                    s.el.style.transform = `translate(${dx}px, ${dy}px)`;
+                });
+
+                animId = requestAnimationFrame(animate);
+            }
+
+            // Start animation after the hero fade-in completes
+            setTimeout(() => {
+                animId = requestAnimationFrame(animate);
+            }, 1600);
+
+            // Pause when not visible for performance
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        startTime = null;
+                        animId = requestAnimationFrame(animate);
+                    } else {
+                        cancelAnimationFrame(animId);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            observer.observe(area);
+        })();
+
+        // --- Drag-to-scroll for testimonials ---
+        (function() {
+            const track = document.querySelector('.testimonial-track');
+            if (!track) return;
             let isDown = false, startX, scrollLeft;
             track.addEventListener('mousedown', e => {
                 isDown = true;
@@ -920,7 +1053,7 @@
                 const x = e.pageX - track.offsetLeft;
                 track.scrollLeft = scrollLeft - (x - startX) * 1.5;
             });
-        }
+        })();
     </script>
 </body>
 </html>
