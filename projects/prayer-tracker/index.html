@@ -174,8 +174,8 @@ const CATEGORIES = {
   other: { label: "Other", color: "#546173", bg: "#f8fafc" },
 };
 
-const WEEKS = ["11-02","11-09","11-16","11-23","11-30","12-07","12-14","12-21","12-28","01-04","01-11","01-18"];
-const WEEK_LABELS = {"11-02":"Nov 2","11-09":"Nov 9","11-16":"Nov 16","11-23":"Nov 23","11-30":"Nov 30","12-07":"Dec 7","12-14":"Dec 14","12-21":"Dec 21","12-28":"Dec 28","01-04":"Jan 4","01-11":"Jan 11","01-18":"Jan 18"};
+const WEEKS = ["11-02", "11-09", "11-16", "11-23", "11-30", "12-07", "12-14", "12-21", "12-28", "01-04", "01-11", "01-18", "02-22"];
+const WEEK_LABELS = {"11-02": "Nov 2", "11-09": "Nov 9", "11-16": "Nov 16", "11-23": "Nov 23", "11-30": "Nov 30", "12-07": "Dec 7", "12-14": "Dec 14", "12-21": "Dec 21", "12-28": "Dec 28", "01-04": "Jan 4", "01-11": "Jan 11", "01-18": "Jan 18", "02-22": "Feb 22"};
 
 const RAW_DATA = [
   {family:"O'Brien, Jason & Lisa", elder:"Fitzgerald", deacon:"Mitchell", requests:[
@@ -184,6 +184,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Update on Lisa — complications have stabilized. Still being monitored closely. Thank you for continued prayers", categories:["medical", "family"]},
     {week:"01-11", text:"Pray for a close friend who was just diagnosed with cancer", categories:["medical"]},
     {week:"01-18", text:"Praise — baby is doing well and Lisa has been taken off bed rest! Grateful for answered prayers", categories:["family", "praise"]},
+    {week:"02-22", text:"Praise — great report from the doctor this week! Baby and mom are both healthy", categories:["family", "praise"]},
   ]},
   {family:"Xavier, Edward & Jessica", elder:"Thompson", deacon:"Hoffman", requests:[
     {week:"11-23", text:"Edward's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -192,6 +193,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Edward's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-11", text:"Edward's mother is settling in well at her new home. Edward is grateful for the support and prayers during this transition", categories:["family"]},
     {week:"01-18", text:"Pray for the family as they navigate caring for elderly parents long-distance", categories:["family"]},
+    {week:"02-22", text:"Grateful for a good week as a family. Pray for continued growth in faith together", categories:["family"]},
   ]},
   {family:"Sargent, Gerald", elder:"Sawyer", deacon:"", requests:[
     {week:"11-02", text:"Gerald's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -199,6 +201,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Gerald is working through grief. Some days are harder than others. Pray for comfort and for the hope of resurrection to sustain", categories:["grief"]},
     {week:"12-14", text:"Pray for the family as they navigate caring for elderly parents long-distance", categories:["family"]},
     {week:"12-14", text:"Gerald is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"This week was particularly difficult — anniversary of a special memory. Pray for comfort and the hope of eternity", categories:["grief"]},
   ]},
   {family:"Gibson, Raymond & Heather", elder:"Thompson", deacon:"", requests:[
     {week:"11-23", text:"Pray for Raymond's brother who is not a believer. Raymond has been having spiritual conversations with him recently", categories:["salvation"]},
@@ -211,6 +214,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Heather has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-14", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-04", text:"New medication is helping reduce migraine frequency. Heather is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"Had a setback this week with a severe episode. Trying not to get discouraged. Pray for perseverance", categories:["medical"]},
   ]},
   {family:"Nelson, Thomas & Samantha", elder:"Lindgren", deacon:"", requests:[
     {week:"11-02", text:"Thomas has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -223,6 +227,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Nicole's brother visited church last Sunday. Pray that seeds planted would take root", categories:["salvation"]},
     {week:"01-11", text:"Nicole has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
     {week:"01-18", text:"Praise — Nicole's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
+    {week:"02-22", text:"Spiritual growth is evident. Asking good questions and attending a small group. Pray for deep roots", categories:["salvation"]},
   ]},
   {family:"Zimmerman, Keith", elder:"Thompson", deacon:"", requests:[
     {week:"11-02", text:"Keith has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -231,6 +236,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Keith is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-07", text:"Keith is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"12-28", text:"Praise — Keith has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Health is stable. Keith is grateful and wants to find ways to encourage others going through similar struggles", categories:["medical", "praise"]},
   ]},
   {family:"Norton, Craig", elder:"Richardson", deacon:"Garza", requests:[
     {week:"11-02", text:"Pray for Craig's brother who is not a believer. Craig has been having spiritual conversations with him recently", categories:["salvation"]},
@@ -247,6 +253,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Roger's brother visited church last Sunday. Pray that seeds planted would take root", categories:["salvation"]},
     {week:"12-21", text:"Praise — Roger's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
     {week:"01-11", text:"Praise — Roger's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
+    {week:"02-22", text:"Spiritual growth is evident. Asking good questions and attending a small group. Pray for deep roots", categories:["salvation"]},
   ]},
   {family:"Johnson, Christopher", elder:"Sawyer", deacon:"Garza", requests:[
     {week:"11-30", text:"Christopher's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -254,6 +261,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Difficult decisions ahead regarding long-term care for Christopher's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"01-04", text:"Christopher's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-18", text:"Christopher's mother is settling in well at her new home. Christopher is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Barton, Caleb & Natalie", elder:"Sawyer", deacon:"", requests:[
     {week:"11-09", text:"Caleb's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -261,6 +269,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Difficult decisions ahead regarding long-term care for Caleb's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"12-14", text:"Caleb's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"12-28", text:"Caleb's mother is settling in well at her new home. Caleb is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Stanton, Amanda", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-02", text:"Amanda's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -268,6 +277,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Difficult decisions ahead regarding long-term care for Amanda's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"12-07", text:"Amanda's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"12-21", text:"Amanda's mother is settling in well at her new home. Amanda is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Feeling more settled. The kids are making friends and the family is getting plugged in. Grateful for the church community", categories:["family", "transition"]},
   ]},
   {family:"Ramsey, William & Kimberly", elder:"Cho", deacon:"", requests:[
     {week:"11-09", text:"William has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -282,6 +292,7 @@ const RAW_DATA = [
     {week:"12-21", text:"William is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-04", text:"Praise — William has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
     {week:"01-11", text:"Praise — William has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. William is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"Palmer, Kenneth", elder:"Dominguez", deacon:"Reeves", requests:[
     {week:"11-02", text:"Kenneth has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
@@ -291,6 +302,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Still dealing with financial pressure. Kenneth is looking into additional work. Pray for provision and open doors", categories:["employment"]},
     {week:"12-28", text:"Kenneth wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
     {week:"01-04", text:"Situation is improving. Received unexpected help and Kenneth found some additional freelance work. God is providing", categories:["employment"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Kenneth feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Gallagher, Angela", elder:"Sawyer", deacon:"", requests:[
     {week:"11-09", text:"Angela was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -298,6 +310,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Angela had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-07", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-21", text:"Praise — Angela received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Adjusting to the new role. Learning curve is steep but Angela is grateful for the opportunity. Pray for confidence", categories:["employment"]},
   ]},
   {family:"Ellis, Matthew & Margaret", elder:"Dominguez", deacon:"Carter", requests:[
     {week:"11-23", text:"Matthew was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -306,14 +319,17 @@ const RAW_DATA = [
     {week:"12-21", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-04", text:"Praise — Matthew received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"01-18", text:"Matthew has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
+    {week:"02-22", text:"Update on the career front: things are progressing slowly but in the right direction. Continued prayers appreciated", categories:["employment"]},
   ]},
   {family:"Taylor, Aaron", elder:"Patel", deacon:"", requests:[
     {week:"11-30", text:"Aaron has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-14", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-04", text:"New medication is helping reduce migraine frequency. Aaron is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"New medication continues to help. Aaron had fewer episodes this month. Pray for continued improvement", categories:["medical"]},
   ]},
   {family:"Caldwell, Samuel & Deborah", elder:"Okafor", deacon:"", requests:[
     {week:"11-23", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
+    {week:"02-22", text:"Samuel is continuing physical therapy and making steady progress. Pray for patience with the recovery timeline", categories:["medical"]},
   ]},
   {family:"Baker, Leah", elder:"Whitfield", deacon:"", requests:[
     {week:"11-02", text:"Pray for wisdom regarding a potential career change", categories:["employment"]},
@@ -323,9 +339,11 @@ const RAW_DATA = [
     {week:"12-07", text:"Leah is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-21", text:"Leah is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-11", text:"Praise — Leah has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Praise — Leah continues to do well after treatment. Follow-up appointment went great", categories:["medical", "praise"]},
   ]},
   {family:"Vance, Edward & Michelle", elder:"Dominguez", deacon:"Nguyen", requests:[
     {week:"12-14", text:"Financial stress from unexpected home repairs. Pray for provision", categories:["employment"]},
+    {week:"02-22", text:"Financial situation is stabilizing. Edward picked up some additional work this month. God is faithful", categories:["employment"]},
   ]},
   {family:"Walker, Thomas & Natalie", elder:"Okafor", deacon:"", requests:[
     {week:"11-23", text:"Thomas was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -334,6 +352,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Halfway through chemotherapy. Thomas is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"01-04", text:"Thomas completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-11", text:"Praise — Thomas's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Morrison, Sean & Michelle", elder:"Whitfield", deacon:"", requests:[
     {week:"11-09", text:"Sean has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
@@ -341,6 +360,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Counseling is helping but it's a slow process. Sean asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-14", text:"Sean is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-04", text:"Sean wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Vincent, Maria", elder:"Dominguez", deacon:"Blake", requests:[
     {week:"11-30", text:"Maria's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -357,6 +377,7 @@ const RAW_DATA = [
   {family:"Ingram, Douglas", elder:"Nakamura", deacon:"", requests:[
     {week:"12-14", text:"Pray for the family as they navigate caring for elderly parents long-distance", categories:["family"]},
     {week:"12-21", text:"Please pray for their teenage daughter who is struggling socially at school", categories:["family"]},
+    {week:"02-22", text:"Family is doing okay. Pray for unity and for intentional time together amid busy schedules", categories:["family"]},
   ]},
   {family:"Vasquez, Derek & Hope", elder:"Patel", deacon:"", requests:[
     {week:"11-30", text:"Derek was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -365,12 +386,14 @@ const RAW_DATA = [
     {week:"12-28", text:"Halfway through chemotherapy. Derek is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"01-11", text:"Derek completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-18", text:"Praise — Derek's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Some improvement this week. Derek is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"Jacobs, Nicole", elder:"Fitzgerald", deacon:"Blake", requests:[
     {week:"11-23", text:"Pray for Nicole's brother who is not a believer. Nicole has been having spiritual conversations with him recently", categories:["salvation"]},
     {week:"11-23", text:"Pray for unity and healing in extended family relationships", categories:["family"]},
     {week:"12-14", text:"Nicole's brother visited church last Sunday. Pray that seeds planted would take root", categories:["salvation"]},
     {week:"01-04", text:"Praise — Nicole's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
+    {week:"02-22", text:"Spiritual growth is evident. Asking good questions and attending a small group. Pray for deep roots", categories:["salvation"]},
   ]},
   {family:"Campbell, Steven", elder:"Fitzgerald", deacon:"Carter", requests:[
     {week:"12-14", text:"Thanksgiving for a good report from recent medical tests", categories:["medical", "praise"]},
@@ -398,11 +421,13 @@ const RAW_DATA = [
     {week:"11-23", text:"Peter had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"11-30", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-14", text:"Praise — Peter received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Peter feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"York, Samuel & Lydia", elder:"Thompson", deacon:"", requests:[
     {week:"12-14", text:"Samuel has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-28", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-18", text:"New medication is helping reduce migraine frequency. Samuel is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"New medication continues to help. Samuel had fewer episodes this month. Pray for continued improvement", categories:["medical"]},
   ]},
   {family:"Martin, Russell & Christina", elder:"Richardson", deacon:"Hoffman", requests:[
     {week:"11-30", text:"Russell was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -417,6 +442,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Edward is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"12-28", text:"Edward wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
     {week:"01-11", text:"Pray for a close friend who was just diagnosed with cancer", categories:["medical"]},
+    {week:"02-22", text:"Scan results came back mixed — some improvement but continued treatment needed. Pray for strength and clear direction from doctors", categories:["medical"]},
   ]},
   {family:"Garcia, Douglas", elder:"Richardson", deacon:"", requests:[
     {week:"11-16", text:"Douglas was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -425,6 +451,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-28", text:"Praise — Douglas received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"01-18", text:"Financial stress from unexpected home repairs. Pray for provision", categories:["employment"]},
+    {week:"02-22", text:"Praise — received unexpected financial help this week. Grateful for God's provision through His people", categories:["employment", "praise"]},
   ]},
   {family:"Brennan, Gregory & Ruth", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-02", text:"The family is preparing for a short-term mission trip to Guatemala in February. Pray for fundraising and preparation", categories:["missions"]},
@@ -443,12 +470,14 @@ const RAW_DATA = [
     {week:"12-14", text:"Praise — Eugene's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
     {week:"12-21", text:"Mission trip is next month. Team training underway. Pray for unity and that God would prepare hearts on both sides", categories:["missions"]},
     {week:"01-11", text:"Just returned from Guatemala. Incredible experience. Pray for lasting impact in the community they served", categories:["missions"]},
+    {week:"02-22", text:"Exploring possibilities for a return trip. Pray for God's clear direction on next steps in missions involvement", categories:["missions"]},
   ]},
   {family:"Pierce, Jeffrey & Kimberly", elder:"Thompson", deacon:"", requests:[
     {week:"11-30", text:"Jeffrey's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
     {week:"12-07", text:"Memorial service is this Saturday. Pray for Jeffrey and the extended family as they grieve and celebrate a life well lived", categories:["grief"]},
     {week:"12-21", text:"Jeffrey is working through grief. Some days are harder than others. Pray for comfort and for the hope of resurrection to sustain", categories:["grief"]},
     {week:"01-11", text:"Jeffrey is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"Finding moments of peace amid the grief. Jeffrey is leaning into community and Scripture. Pray for continued healing", categories:["grief"]},
   ]},
   {family:"Owens, Craig & Deborah", elder:"Nakamura", deacon:"Simmons", requests:[
     {week:"12-28", text:"Financial stress from unexpected home repairs. Pray for provision", categories:["employment"]},
@@ -471,6 +500,7 @@ const RAW_DATA = [
     {week:"11-16", text:"The family is relocating from out of state for Larry's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
     {week:"11-30", text:"Still settling in. Kids are adjusting to new schools. Pray they find good friendships and feel at home", categories:["transition", "family"]},
     {week:"12-21", text:"Getting plugged into small group and the kids are making friends. Grateful to feel welcomed at FBC", categories:["transition"]},
+    {week:"02-22", text:"Some days are harder than others with the change. Pray for grace and trust in God's plan", categories:["transition"]},
   ]},
   {family:"Upton, Mark & Kimberly", elder:"Bergmann", deacon:"", requests:[
     {week:"11-09", text:"Mark's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -491,12 +521,14 @@ const RAW_DATA = [
     {week:"12-14", text:"Pray for Ashley's upcoming knee surgery next month", categories:["medical"]},
     {week:"12-28", text:"Praise — Ashley has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
     {week:"01-04", text:"Praise — Ashley's knee surgery went well. Starting physical therapy", categories:["medical", "praise"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Olsen, Adam", elder:"Whitfield", deacon:"Simmons", requests:[
     {week:"11-09", text:"Adam has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-23", text:"Counseling is helping but it's a slow process. Adam asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-14", text:"Adam is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-04", text:"Adam wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Continued prayers for Adam's health situation. Waiting on test results this week", categories:["medical"]},
   ]},
   {family:"Roberts, Grant & Stephanie", elder:"Sawyer", deacon:"", requests:[
     {week:"11-02", text:"Grant has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
@@ -515,27 +547,32 @@ const RAW_DATA = [
     {week:"12-28", text:"Kevin had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"01-04", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-18", text:"Praise — Kevin received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Adjusting to the new role. Learning curve is steep but Kevin is grateful for the opportunity. Pray for confidence", categories:["employment"]},
   ]},
   {family:"Hawkins, Amanda", elder:"Richardson", deacon:"", requests:[
     {week:"12-14", text:"Pray for wisdom regarding a potential career change", categories:["employment"]},
+    {week:"02-22", text:"Work situation is ongoing. Pray for Amanda to have wisdom and patience in professional decisions", categories:["employment"]},
   ]},
   {family:"Anderson, Matthew & Natalie", elder:"Okafor", deacon:"Garza", requests:[
     {week:"11-30", text:"Thanksgiving for a good report from recent medical tests", categories:["medical", "praise"]},
   ]},
   {family:"Hayes, Daniel", elder:"Sawyer", deacon:"", requests:[
     {week:"12-07", text:"Daniel has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
+    {week:"02-22", text:"Work situation is ongoing. Pray for Daniel to have wisdom and patience in professional decisions", categories:["employment"]},
   ]},
   {family:"Edwards, Martha", elder:"Nakamura", deacon:"", requests:[
     {week:"12-07", text:"Martha's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
     {week:"12-14", text:"Memorial service is this Saturday. Pray for Martha and the extended family as they grieve and celebrate a life well lived", categories:["grief"]},
     {week:"12-28", text:"Martha is working through grief. Some days are harder than others. Pray for comfort and for the hope of resurrection to sustain", categories:["grief"]},
     {week:"01-18", text:"Martha is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"This week was particularly difficult — anniversary of a special memory. Pray for comfort and the hope of eternity", categories:["grief"]},
   ]},
   {family:"Dixon, Stephanie", elder:"Lindgren", deacon:"", requests:[
     {week:"11-02", text:"The family is relocating from out of state for Stephanie's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
     {week:"11-16", text:"Still settling in. Kids are adjusting to new schools. Pray they find good friendships and feel at home", categories:["transition", "family"]},
     {week:"12-07", text:"Getting plugged into small group and the kids are making friends. Grateful to feel welcomed at FBC", categories:["transition"]},
     {week:"01-11", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
+    {week:"02-22", text:"Stephanie had a follow-up appointment — doctor is pleased with progress. Still some discomfort but trending in the right direction", categories:["medical"]},
   ]},
   {family:"Farrell, Howard", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-02", text:"Howard was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -543,11 +580,13 @@ const RAW_DATA = [
     {week:"11-23", text:"Howard had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"11-30", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-14", text:"Praise — Howard received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Adjusting to the new role. Learning curve is steep but Howard is grateful for the opportunity. Pray for confidence", categories:["employment"]},
   ]},
   {family:"Davis, Caleb & Christina", elder:"Patel", deacon:"", requests:[
     {week:"11-09", text:"Pray for Caleb's brother who is not a believer. Caleb has been having spiritual conversations with him recently", categories:["salvation"]},
     {week:"11-30", text:"Caleb's brother visited church last Sunday. Pray that seeds planted would take root", categories:["salvation"]},
     {week:"12-21", text:"Praise — Caleb's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
+    {week:"02-22", text:"Praise — baptism is scheduled for next month! Pray for continued spiritual growth and good discipleship connections", categories:["salvation", "praise"]},
   ]},
   {family:"Sutton, Wesley & Janet", elder:"Lindgren", deacon:"Hoffman", requests:[
     {week:"11-02", text:"Wesley was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -560,6 +599,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Wesley completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"12-21", text:"Praise — Wesley's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
     {week:"12-28", text:"Wesley is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"Finding moments of peace amid the grief. Wesley is leaning into community and Scripture. Pray for continued healing", categories:["grief"]},
   ]},
   {family:"Zhang, Jason & Ashley", elder:"Okafor", deacon:"Simmons", requests:[
     {week:"11-16", text:"Dealing with a difficult situation at work. Pray for wisdom and integrity", categories:["employment"]},
@@ -568,11 +608,13 @@ const RAW_DATA = [
     {week:"11-30", text:"Unexpected major car repair and medical bills have created financial strain. Pray for wisdom in managing finances", categories:["employment"]},
     {week:"12-14", text:"Still dealing with financial pressure. Angela is looking into additional work. Pray for provision and open doors", categories:["employment"]},
     {week:"01-04", text:"Situation is improving. Received unexpected help and Angela found some additional freelance work. God is providing", categories:["employment"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Angela to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Irving, Aaron & Maria", elder:"Patel", deacon:"", requests:[
     {week:"11-02", text:"The family is preparing for a short-term mission trip to Guatemala in February. Pray for fundraising and preparation", categories:["missions"]},
     {week:"11-23", text:"Mission trip is next month. Team training underway. Pray for unity and that God would prepare hearts on both sides", categories:["missions"]},
     {week:"12-14", text:"Just returned from Guatemala. Incredible experience. Pray for lasting impact in the community they served", categories:["missions"]},
+    {week:"02-22", text:"Still processing the mission trip experience. Pray for ways to stay connected with the community they served", categories:["missions"]},
   ]},
   {family:"Thornton, Trevor & Grace", elder:"Fitzgerald", deacon:"Pearson", requests:[
     {week:"11-23", text:"Trevor has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -581,6 +623,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Trevor is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-28", text:"Trevor is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-18", text:"Praise — Trevor has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. Trevor is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"MacLeod, Aaron & Faith", elder:"Cho", deacon:"", requests:[
     {week:"11-16", text:"Aaron was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -588,6 +631,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Aaron had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-14", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-28", text:"Praise — Aaron received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Aaron feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Mercer, Philip & Kimberly", elder:"Whitfield", deacon:"", requests:[
     {week:"01-11", text:"Philip is training for leadership role at church. Pray for spiritual growth and preparation", categories:["spiritual"]},
@@ -599,12 +643,14 @@ const RAW_DATA = [
     {week:"12-21", text:"Halfway through chemotherapy. Lisa is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"01-04", text:"Lisa completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-11", text:"Praise — Lisa's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Some improvement this week. Lisa is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"Smith, Timothy & Ruth", elder:"Cho", deacon:"", requests:[
     {week:"11-09", text:"Timothy has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-23", text:"Counseling is helping but it's a slow process. Timothy asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-14", text:"Timothy is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-04", text:"Timothy wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Continued prayers for Timothy's health situation. Waiting on test results this week", categories:["medical"]},
   ]},
   {family:"Reed, Andrew & Vanessa", elder:"Sawyer", deacon:"Mitchell", requests:[
     {week:"11-02", text:"Andrew has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -619,6 +665,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Halfway through chemotherapy. Ruth is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"12-21", text:"Ruth completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"12-28", text:"Praise — Ruth's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Donovan, Roger", elder:"Richardson", deacon:"", requests:[
     {week:"11-09", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
@@ -627,12 +674,14 @@ const RAW_DATA = [
     {week:"12-07", text:"The family is relocating from out of state for Benjamin's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
     {week:"12-21", text:"Still settling in. Kids are adjusting to new schools. Pray they find good friendships and feel at home", categories:["transition", "family"]},
     {week:"01-11", text:"Getting plugged into small group and the kids are making friends. Grateful to feel welcomed at FBC", categories:["transition"]},
+    {week:"02-22", text:"Adjusting well to the new chapter. Pray for continued peace and for new friendships to deepen", categories:["transition"]},
   ]},
   {family:"Whitaker, William & Vanessa", elder:"Thompson", deacon:"", requests:[
     {week:"11-09", text:"William has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-23", text:"Counseling is helping but it's a slow process. William asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-14", text:"William is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-04", text:"William wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Gallagher, Michael & Julia", elder:"Nakamura", deacon:"Garza", requests:[
     {week:"11-30", text:"Michael was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -641,6 +690,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Halfway through chemotherapy. Michael is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"01-11", text:"Michael completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-18", text:"Praise — Michael's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Continued prayers for Michael's health situation. Waiting on test results this week", categories:["medical"]},
   ]},
   {family:"O'Brien, Kevin", elder:"Sawyer", deacon:"Blake", requests:[
     {week:"11-16", text:"The family is preparing for a short-term mission trip to Guatemala in February. Pray for fundraising and preparation", categories:["missions"]},
@@ -666,6 +716,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Difficult decisions ahead regarding long-term care for Thomas's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"01-04", text:"Thomas's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-18", text:"Thomas's mother is settling in well at her new home. Thomas is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Feeling more settled. The kids are making friends and the family is getting plugged in. Grateful for the church community", categories:["family", "transition"]},
   ]},
   {family:"Barton, Keith & Laura", elder:"Richardson", deacon:"", requests:[
     {week:"11-09", text:"Keith was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -673,16 +724,19 @@ const RAW_DATA = [
     {week:"11-30", text:"Keith had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-07", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-21", text:"Praise — Keith received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Keith to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Gallagher, Terry & Katherine", elder:"Bergmann", deacon:"", requests:[
     {week:"01-04", text:"Pray for Terry's coworker going through a divorce. Looking for opportunities to share Christ", categories:["salvation"]},
     {week:"01-04", text:"Pray for wisdom regarding a potential career change", categories:["employment"]},
+    {week:"02-22", text:"Update on the career front: things are progressing slowly but in the right direction. Continued prayers appreciated", categories:["employment"]},
   ]},
   {family:"Parker, Jessica", elder:"Lindgren", deacon:"", requests:[
     {week:"11-16", text:"Jessica has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-30", text:"Counseling is helping but it's a slow process. Jessica asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-21", text:"Jessica is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-11", text:"Jessica wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Ashby, Bruce & Christina", elder:"Thompson", deacon:"", requests:[
     {week:"11-23", text:"Bruce was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -690,6 +744,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Bruce had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-21", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-04", text:"Praise — Bruce received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Bruce to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Pierce, Stephen & Natalie", elder:"Dominguez", deacon:"", requests:[
     {week:"12-14", text:"The family is relocating from out of state for Stephen's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
@@ -702,11 +757,13 @@ const RAW_DATA = [
     {week:"12-07", text:"Frank had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-14", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-28", text:"Praise — Frank received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Frank to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Warren, Sharon", elder:"Sawyer", deacon:"", requests:[
     {week:"11-23", text:"The family is relocating from out of state for Sharon's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
     {week:"12-07", text:"Still settling in. Kids are adjusting to new schools. Pray they find good friendships and feel at home", categories:["transition", "family"]},
     {week:"12-28", text:"Getting plugged into small group and the kids are making friends. Grateful to feel welcomed at FBC", categories:["transition"]},
+    {week:"02-22", text:"Some days are harder than others with the change. Pray for grace and trust in God's plan", categories:["transition"]},
   ]},
   {family:"Stanton, Emily", elder:"Okafor", deacon:"", requests:[
     {week:"11-16", text:"Emily was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -714,6 +771,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Emily had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-14", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-28", text:"Praise — Emily received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Adjusting to the new role. Learning curve is steep but Emily is grateful for the opportunity. Pray for confidence", categories:["employment"]},
   ]},
   {family:"Gallagher, Julia", elder:"Bergmann", deacon:"Carter", requests:[
     {week:"11-30", text:"Julia was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -726,6 +784,7 @@ const RAW_DATA = [
     {week:"01-04", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-11", text:"Praise — Julia received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"01-18", text:"Praise — Julia received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Julia feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Reed, Virginia", elder:"Fitzgerald", deacon:"Nguyen", requests:[
     {week:"11-23", text:"Virginia has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -739,6 +798,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Carl is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-28", text:"Carl is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-18", text:"Praise — Carl has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Praise — Carl continues to do well after treatment. Follow-up appointment went great", categories:["medical", "praise"]},
   ]},
   {family:"Upton, Richard", elder:"Sawyer", deacon:"", requests:[
     {week:"11-16", text:"Pray for Richard's brother who is not a believer. Richard has been having spiritual conversations with him recently", categories:["salvation"]},
@@ -753,6 +813,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Priscilla had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-28", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-11", text:"Praise — Priscilla received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Priscilla to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Campbell, Steven & Catherine", elder:"Sawyer", deacon:"Webb", requests:[
     {week:"11-09", text:"Steven has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -761,6 +822,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Steven is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-14", text:"Steven is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-04", text:"Praise — Steven has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. Steven is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"Ashby, Frank & Samantha", elder:"Patel", deacon:"", requests:[
     {week:"11-16", text:"Frank's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -775,12 +837,14 @@ const RAW_DATA = [
     {week:"11-30", text:"Memorial service is this Saturday. Pray for Samuel and the extended family as they grieve and celebrate a life well lived", categories:["grief"]},
     {week:"12-14", text:"Samuel is working through grief. Some days are harder than others. Pray for comfort and for the hope of resurrection to sustain", categories:["grief"]},
     {week:"01-04", text:"Samuel is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"Finding moments of peace amid the grief. Samuel is leaning into community and Scripture. Pray for continued healing", categories:["grief"]},
   ]},
   {family:"Zhang, Howard & Pamela", elder:"Sawyer", deacon:"Hoffman", requests:[
     {week:"11-02", text:"Howard has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-16", text:"Counseling is helping but it's a slow process. Howard asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-07", text:"Howard is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"12-28", text:"Howard wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Owens, Raymond & Claire", elder:"Whitfield", deacon:"", requests:[
     {week:"11-02", text:"Raymond has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
@@ -791,6 +855,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Raymond is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"12-28", text:"Raymond wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
     {week:"12-28", text:"Raymond wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Some improvement this week. Raymond is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"Martin, Rebecca", elder:"Lindgren", deacon:"Carter", requests:[
     {week:"11-16", text:"Rebecca has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -815,6 +880,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Home study is complete. Waiting for referral. The wait is emotionally exhausting. Pray for trust in God's timing", categories:["family"]},
     {week:"12-21", text:"They received a referral! A 2-year-old boy. Working through final legal steps. Pray everything proceeds smoothly", categories:["family"]},
     {week:"01-11", text:"Praise — adoption is finalized! The family is complete. Overwhelmed with gratitude for answered prayer", categories:["family", "praise"]},
+    {week:"02-22", text:"Adoption paperwork is moving through the system. Pray for no delays and for the child they're waiting for", categories:["family"]},
   ]},
   {family:"Ellis, Larry & Natalie", elder:"Bergmann", deacon:"Reeves", requests:[
     {week:"11-16", text:"Larry was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -822,21 +888,25 @@ const RAW_DATA = [
     {week:"12-07", text:"Larry had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-14", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-28", text:"Praise — Larry received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Larry to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Olsen, Timothy & Nicole", elder:"Whitfield", deacon:"", requests:[
     {week:"11-09", text:"Timothy has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
     {week:"11-23", text:"Counseling is helping but it's a slow process. Timothy asks for continued prayer for mental health and daily strength", categories:["medical"]},
     {week:"12-14", text:"Timothy is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"01-04", text:"Timothy wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Continued prayers for Timothy's health situation. Waiting on test results this week", categories:["medical"]},
   ]},
   {family:"Sutton, Carol", elder:"Dominguez", deacon:"Webb", requests:[
     {week:"12-07", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
     {week:"01-11", text:"Carol has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
+    {week:"02-22", text:"Update on the career front: things are progressing slowly but in the right direction. Continued prayers appreciated", categories:["employment"]},
   ]},
   {family:"Hayes, Henry & Amanda", elder:"Cho", deacon:"", requests:[
     {week:"11-09", text:"The family is relocating from out of state for Henry's new job. Pray for smooth transition and quick connections at FBC", categories:["transition"]},
     {week:"11-23", text:"Still settling in. Kids are adjusting to new schools. Pray they find good friendships and feel at home", categories:["transition", "family"]},
     {week:"12-14", text:"Getting plugged into small group and the kids are making friends. Grateful to feel welcomed at FBC", categories:["transition"]},
+    {week:"02-22", text:"Adjusting well to the new chapter. Pray for continued peace and for new friendships to deepen", categories:["transition"]},
   ]},
   {family:"Martin, Kevin", elder:"Fitzgerald", deacon:"Mitchell", requests:[
     {week:"11-09", text:"Pray for Kevin's brother who is not a believer. Kevin has been having spiritual conversations with him recently", categories:["salvation"]},
@@ -857,6 +927,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Gerald's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"12-14", text:"Gerald is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
     {week:"12-21", text:"Gerald's mother is settling in well at her new home. Gerald is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Norris, Steven & Megan", elder:"Sawyer", deacon:"Garza", requests:[
     {week:"01-11", text:"Pray for safe travels — visiting family across the country for the holidays", categories:["family"]},
@@ -866,6 +937,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Angela is having some complications with the pregnancy. On modified bed rest. Pray for baby's health", categories:["medical", "family"]},
     {week:"12-28", text:"Update on Angela — complications have stabilized. Still being monitored closely. Thank you for continued prayers", categories:["medical", "family"]},
     {week:"01-18", text:"Praise — baby is doing well and Angela has been taken off bed rest! Grateful for answered prayers", categories:["family", "praise"]},
+    {week:"02-22", text:"Getting closer to the due date. Pray for a smooth delivery and for the family to feel prepared", categories:["family"]},
   ]},
   {family:"Morrison, Douglas & Rebecca", elder:"Bergmann", deacon:"Nguyen", requests:[
     {week:"11-30", text:"Douglas's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -873,6 +945,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Difficult decisions ahead regarding long-term care for Douglas's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"01-04", text:"Douglas's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-18", text:"Douglas's mother is settling in well at her new home. Douglas is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Smith, Christopher & Katherine", elder:"Cho", deacon:"", requests:[
     {week:"11-23", text:"Christopher's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -891,16 +964,20 @@ const RAW_DATA = [
     {week:"11-23", text:"Unexpected major car repair and medical bills have created financial strain. Pray for wisdom in managing finances", categories:["employment"]},
     {week:"12-07", text:"Still dealing with financial pressure. Samuel is looking into additional work. Pray for provision and open doors", categories:["employment"]},
     {week:"12-28", text:"Situation is improving. Received unexpected help and Samuel found some additional freelance work. God is providing", categories:["employment"]},
+    {week:"02-22", text:"Adjusting to the new role. Learning curve is steep but Samuel is grateful for the opportunity. Pray for confidence", categories:["employment"]},
   ]},
   {family:"Keller, Gregory & Carol", elder:"Richardson", deacon:"", requests:[
     {week:"12-28", text:"Pray for Gregory's upcoming knee surgery next month", categories:["medical"]},
     {week:"01-18", text:"Praise — Gregory's knee surgery went well. Starting physical therapy", categories:["medical", "praise"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Irving, Angela", elder:"Thompson", deacon:"Webb", requests:[
     {week:"11-23", text:"Pray for unity and healing in extended family relationships", categories:["family"]},
+    {week:"02-22", text:"Grateful for a good week as a family. Pray for continued growth in faith together", categories:["family"]},
   ]},
   {family:"Campbell, Philip", elder:"Cho", deacon:"Reeves", requests:[
     {week:"11-30", text:"Pray for Philip's coworker going through a divorce. Looking for opportunities to share Christ", categories:["salvation"]},
+    {week:"02-22", text:"Had a meaningful conversation this week about faith. Pray for the seeds planted to take root", categories:["salvation"]},
   ]},
   {family:"Norris, Dennis & Heather", elder:"Nakamura", deacon:"", requests:[
     {week:"11-09", text:"Dennis's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -920,11 +997,13 @@ const RAW_DATA = [
     {week:"01-04", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-11", text:"Praise — baby is doing well and Gregory has been taken off bed rest! Grateful for answered prayers", categories:["family", "praise"]},
     {week:"01-18", text:"Praise — Gregory received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Gregory feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Stanton, Michelle", elder:"Lindgren", deacon:"", requests:[
     {week:"11-30", text:"Michelle has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-14", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-04", text:"New medication is helping reduce migraine frequency. Michelle is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"Had a setback this week with a severe episode. Trying not to get discouraged. Pray for perseverance", categories:["medical"]},
   ]},
   {family:"Reed, Kenneth & Claire", elder:"Whitfield", deacon:"Mitchell", requests:[
     {week:"11-02", text:"Kenneth's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -932,6 +1011,7 @@ const RAW_DATA = [
     {week:"11-09", text:"Memorial service is this Saturday. Pray for Kenneth and the extended family as they grieve and celebrate a life well lived", categories:["grief"]},
     {week:"11-23", text:"Kenneth is working through grief. Some days are harder than others. Pray for comfort and for the hope of resurrection to sustain", categories:["grief"]},
     {week:"12-14", text:"Kenneth is finding healing through grief support group at church. Grateful for the community walking alongside", categories:["grief"]},
+    {week:"02-22", text:"Kenneth is taking each day as it comes. Grief support group has been helpful. Pray for comfort on the harder days", categories:["grief"]},
   ]},
   {family:"Ramsey, Daniel & Catherine", elder:"Whitfield", deacon:"", requests:[
     {week:"11-23", text:"Daniel's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -944,6 +1024,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Pray for Douglas's brother who is not a believer. Douglas has been having spiritual conversations with him recently", categories:["salvation"]},
     {week:"12-14", text:"Douglas's brother visited church last Sunday. Pray that seeds planted would take root", categories:["salvation"]},
     {week:"01-04", text:"Praise — Douglas's brother made a profession of faith! Looking into baptism classes", categories:["salvation", "praise"]},
+    {week:"02-22", text:"Spiritual growth is evident. Asking good questions and attending a small group. Pray for deep roots", categories:["salvation"]},
   ]},
   {family:"Zimmerman, Gregory", elder:"Dominguez", deacon:"", requests:[
     {week:"11-23", text:"Gregory has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -957,11 +1038,13 @@ const RAW_DATA = [
     {week:"12-28", text:"Gregory is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-04", text:"Praise — Gregory received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"01-18", text:"Praise — Gregory has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. Gregory is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"Dixon, Matthew & Megan", elder:"Dominguez", deacon:"", requests:[
     {week:"11-23", text:"Unexpected major car repair and medical bills have created financial strain. Pray for wisdom in managing finances", categories:["employment"]},
     {week:"12-07", text:"Still dealing with financial pressure. Matthew is looking into additional work. Pray for provision and open doors", categories:["employment"]},
     {week:"12-28", text:"Situation is improving. Received unexpected help and Matthew found some additional freelance work. God is providing", categories:["employment"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Matthew feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Pierce, Wayne & Hope", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-09", text:"Wayne has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -973,6 +1056,7 @@ const RAW_DATA = [
     {week:"12-14", text:"New medication is helping reduce migraine frequency. Wayne is encouraged. Pray for continued improvement", categories:["medical"]},
     {week:"12-21", text:"Wayne is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-11", text:"Praise — Wayne has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Health is stable. Wayne is grateful and wants to find ways to encourage others going through similar struggles", categories:["medical", "praise"]},
   ]},
   {family:"Preston, Gerald", elder:"Richardson", deacon:"Mitchell", requests:[
     {week:"11-02", text:"Excited to share that Gerald is expecting! Due in late spring. Pray for a healthy pregnancy", categories:["family"]},
@@ -983,9 +1067,11 @@ const RAW_DATA = [
     {week:"12-14", text:"Gerald is doing much better. Combination of counseling, medication, and prayer support making a real difference", categories:["medical"]},
     {week:"12-28", text:"Praise — baby is doing well and Gerald has been taken off bed rest! Grateful for answered prayers", categories:["family", "praise"]},
     {week:"01-04", text:"Gerald wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Mercer, Bruce", elder:"Dominguez", deacon:"", requests:[
     {week:"11-16", text:"Bruce is training for leadership role at church. Pray for spiritual growth and preparation", categories:["spiritual"]},
+    {week:"02-22", text:"Pray for Bruce to continue growing in daily dependence on the Lord", categories:["spiritual"]},
   ]},
   {family:"Norton, Jason & Diane", elder:"Dominguez", deacon:"", requests:[
     {week:"11-02", text:"Jason has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -995,6 +1081,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Jason is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"12-28", text:"Praise — Jason has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
     {week:"01-04", text:"Pray for Jason's coworker going through a divorce. Looking for opportunities to share Christ", categories:["salvation"]},
+    {week:"02-22", text:"Had a meaningful conversation this week about faith. Pray for the seeds planted to take root", categories:["salvation"]},
   ]},
   {family:"Gallagher, Andrew & Hannah", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-09", text:"Pray for Andrew's brother who is not a believer. Andrew has been having spiritual conversations with him recently", categories:["salvation"]},
@@ -1003,6 +1090,7 @@ const RAW_DATA = [
   ]},
   {family:"Thornton, Ashley", elder:"Okafor", deacon:"", requests:[
     {week:"11-09", text:"Thanksgiving for a good report from recent medical tests", categories:["medical", "praise"]},
+    {week:"02-22", text:"Some improvement this week. Ashley is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"Gibson, Aaron & Margaret", elder:"Okafor", deacon:"", requests:[
     {week:"11-02", text:"Aaron was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -1017,6 +1105,7 @@ const RAW_DATA = [
   ]},
   {family:"MacLeod, Faith", elder:"Cho", deacon:"", requests:[
     {week:"11-09", text:"Faith has a big presentation at work this week. Pray for confidence and favor", categories:["employment"]},
+    {week:"02-22", text:"Update on the career front: things are progressing slowly but in the right direction. Continued prayers appreciated", categories:["employment"]},
   ]},
   {family:"Pierce, Pamela", elder:"Dominguez", deacon:"Simmons", requests:[
     {week:"11-09", text:"Pamela has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -1026,6 +1115,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Pamela is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"12-28", text:"Pray for the family as they navigate caring for elderly parents long-distance", categories:["family"]},
     {week:"01-04", text:"Praise — Pamela has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Praise — Pamela continues to do well after treatment. Follow-up appointment went great", categories:["medical", "praise"]},
   ]},
   {family:"Xavier, Caleb & Maria", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-16", text:"Caleb has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -1041,10 +1131,12 @@ const RAW_DATA = [
   ]},
   {family:"Brennan, Steven", elder:"Thompson", deacon:"Garza", requests:[
     {week:"01-11", text:"Dealing with a difficult situation at work. Pray for wisdom and integrity", categories:["employment"]},
+    {week:"02-22", text:"Update on the career front: things are progressing slowly but in the right direction. Continued prayers appreciated", categories:["employment"]},
   ]},
   {family:"Barton, Roger & Vanessa", elder:"Nakamura", deacon:"", requests:[
     {week:"11-09", text:"Pray for a close friend who was just diagnosed with cancer", categories:["medical"]},
     {week:"12-28", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
+    {week:"02-22", text:"Recovery is going well. Roger was able to return to some normal activities this week. Grateful for healing", categories:["medical", "praise"]},
   ]},
   {family:"Edwards, Raymond & Christina", elder:"Richardson", deacon:"", requests:[
     {week:"11-02", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
@@ -1058,6 +1150,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Home study is complete. Waiting for referral. The wait is emotionally exhausting. Pray for trust in God's timing", categories:["family"]},
     {week:"12-28", text:"They received a referral! A 2-year-old boy. Working through final legal steps. Pray everything proceeds smoothly", categories:["family"]},
     {week:"01-18", text:"Praise — adoption is finalized! The family is complete. Overwhelmed with gratitude for answered prayer", categories:["family", "praise"]},
+    {week:"02-22", text:"Update on the adoption: passed another milestone this week! Getting closer. Pray for patience in the final stretch", categories:["family"]},
   ]},
   {family:"Farrell, Ashley", elder:"Dominguez", deacon:"", requests:[
     {week:"11-16", text:"Ashley has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -1066,6 +1159,7 @@ const RAW_DATA = [
     {week:"12-07", text:"Ashley is recovering at home after surgery. Physical therapy begins next week. Pray for steady progress", categories:["medical"]},
     {week:"12-21", text:"Ashley is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-11", text:"Praise — Ashley has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. Ashley is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"Jensen, Eugene & Catherine", elder:"Bergmann", deacon:"Blake", requests:[
     {week:"11-09", text:"The family is preparing for a short-term mission trip to Guatemala in February. Pray for fundraising and preparation", categories:["missions"]},
@@ -1077,6 +1171,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Halfway through chemotherapy. Eugene is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"01-11", text:"Eugene completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-18", text:"Praise — Eugene's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Some improvement this week. Eugene is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"Warren, Nathan & Natalie", elder:"Sawyer", deacon:"", requests:[
     {week:"11-09", text:"Nathan has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
@@ -1089,6 +1184,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Nathan is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"01-04", text:"Nathan wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
     {week:"01-11", text:"Praise — Nathan has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Still monitoring but feeling strong. Nathan is back to regular activities and so thankful", categories:["medical", "praise"]},
   ]},
   {family:"Pierce, Julia", elder:"Richardson", deacon:"Nguyen", requests:[
     {week:"11-23", text:"Julia's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -1096,6 +1192,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Difficult decisions ahead regarding long-term care for Julia's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"12-28", text:"Julia's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-11", text:"Julia's mother is settling in well at her new home. Julia is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Clarke, Stephanie", elder:"Bergmann", deacon:"", requests:[
     {week:"11-02", text:"Excited to share that Stephanie is expecting! Due in late spring. Pray for a healthy pregnancy", categories:["family"]},
@@ -1103,6 +1200,7 @@ const RAW_DATA = [
     {week:"11-23", text:"Stephanie is having some complications with the pregnancy. On modified bed rest. Pray for baby's health", categories:["medical", "family"]},
     {week:"12-07", text:"Update on Stephanie — complications have stabilized. Still being monitored closely. Thank you for continued prayers", categories:["medical", "family"]},
     {week:"12-28", text:"Praise — baby is doing well and Stephanie has been taken off bed rest! Grateful for answered prayers", categories:["family", "praise"]},
+    {week:"02-22", text:"Praise — great report from the doctor this week! Baby and mom are both healthy", categories:["family", "praise"]},
   ]},
   {family:"Martin, Eugene & Katherine", elder:"Thompson", deacon:"Carter", requests:[
     {week:"11-02", text:"Eugene and Katherine are going through a difficult season in their marriage. Asking for prayer for restoration and healing", categories:["family"]},
@@ -1111,6 +1209,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Continued prayers for the Martin marriage. Making progress in counseling but still a long road ahead", categories:["family"]},
     {week:"12-21", text:"Eugene and Katherine want to thank the church for prayer support. Marriage counseling is going well and they are growing closer", categories:["family"]},
     {week:"01-11", text:"Praise — Eugene and Katherine share that their marriage is in the best place it's been in years. Grateful for God's restoration", categories:["family", "praise"]},
+    {week:"02-22", text:"Had a good week together. Eugene is hopeful about the direction things are heading. Pray for continued growth", categories:["family"]},
   ]},
   {family:"Norton, Edward & Melissa", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-16", text:"Edward has been experiencing chronic back pain and is consulting with an orthopedic surgeon about options", categories:["medical"]},
@@ -1125,6 +1224,7 @@ const RAW_DATA = [
   ]},
   {family:"Young, Richard & Julia", elder:"Patel", deacon:"", requests:[
     {week:"11-02", text:"Please pray for their teenage daughter who is struggling socially at school", categories:["family"]},
+    {week:"02-22", text:"Grateful for a good week as a family. Pray for continued growth in faith together", categories:["family"]},
   ]},
   {family:"Brennan, Raymond & Melissa", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-09", text:"Raymond and Melissa are going through a difficult season in their marriage. Asking for prayer for restoration and healing", categories:["family"]},
@@ -1135,6 +1235,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-18", text:"Praise — Raymond and Melissa share that their marriage is in the best place it's been in years. Grateful for God's restoration", categories:["family", "praise"]},
     {week:"01-18", text:"New medication is helping reduce migraine frequency. Raymond is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"New medication continues to help. Raymond had fewer episodes this month. Pray for continued improvement", categories:["medical"]},
   ]},
   {family:"Hawkins, Roger & Sarah", elder:"Dominguez", deacon:"", requests:[
     {week:"11-16", text:"Roger has been struggling with anxiety and depression. Beginning to see a counselor. Pray for healing and hope", categories:["medical"]},
@@ -1147,6 +1248,7 @@ const RAW_DATA = [
     {week:"12-28", text:"Roger completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"01-04", text:"Praise — Roger's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
     {week:"01-11", text:"Roger wants to thank everyone for prayers. Feeling more like themselves. Still on the journey but hopeful", categories:["medical"]},
+    {week:"02-22", text:"Update: doctor has adjusted the treatment plan. Hopeful this will bring relief. Pray for wisdom for the medical team", categories:["medical"]},
   ]},
   {family:"Xavier, Dennis & Samantha", elder:"Cho", deacon:"Pearson", requests:[
     {week:"12-21", text:"Dennis is training for leadership role at church. Pray for spiritual growth and preparation", categories:["spiritual"]},
@@ -1166,6 +1268,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Larry has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-28", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"01-18", text:"New medication is helping reduce migraine frequency. Larry is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"New medication continues to help. Larry had fewer episodes this month. Pray for continued improvement", categories:["medical"]},
   ]},
   {family:"Campbell, Roger", elder:"Okafor", deacon:"Carter", requests:[
     {week:"11-23", text:"Roger was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -1178,6 +1281,7 @@ const RAW_DATA = [
     {week:"01-04", text:"Praise — Roger received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"01-04", text:"Roger's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-18", text:"Roger's mother is settling in well at her new home. Roger is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Reed, Megan", elder:"Fitzgerald", deacon:"", requests:[
     {week:"11-02", text:"Megan was recently diagnosed with breast cancer. Meeting with oncologist this week to discuss treatment plan", categories:["medical"]},
@@ -1186,6 +1290,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Halfway through chemotherapy. Megan is struggling but remaining hopeful. The church meal train has been a tremendous blessing", categories:["medical"]},
     {week:"12-14", text:"Megan completed final round of chemotherapy. Scan results expected next week. Pray for clear scans", categories:["medical"]},
     {week:"12-21", text:"Praise — Megan's scans came back clear! Will continue monitoring. Grateful beyond words for prayers and support", categories:["medical", "praise"]},
+    {week:"02-22", text:"Some improvement this week. Megan is encouraged but asks for continued prayer", categories:["medical"]},
   ]},
   {family:"York, Brian & Julia", elder:"Okafor", deacon:"", requests:[
     {week:"11-16", text:"Brian's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -1204,6 +1309,7 @@ const RAW_DATA = [
     {week:"12-21", text:"Mission trip is next month. Team training underway. Pray for unity and that God would prepare hearts on both sides", categories:["missions"]},
     {week:"01-11", text:"Just returned from Guatemala. Incredible experience. Pray for lasting impact in the community they served", categories:["missions"]},
     {week:"01-11", text:"Please pray for their teenage daughter who is struggling socially at school", categories:["family"]},
+    {week:"02-22", text:"Grateful for a good week as a family. Pray for continued growth in faith together", categories:["family"]},
   ]},
   {family:"Zimmerman, Wesley & Heather", elder:"Nakamura", deacon:"Garza", requests:[
     {week:"11-02", text:"Wesley was laid off last week due to company restructuring. Pray for provision and new opportunities", categories:["employment"]},
@@ -1212,6 +1318,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-14", text:"Praise — Wesley received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
     {week:"12-28", text:"Pray for a close friend who was just diagnosed with cancer", categories:["medical"]},
+    {week:"02-22", text:"Treatment side effects have been rough this round. Pray for relief and for the family as they support Wesley through this", categories:["medical"]},
   ]},
   {family:"Norton, Nicole", elder:"Dominguez", deacon:"", requests:[
     {week:"11-02", text:"Nicole's mother was hospitalized after a fall. Broken hip requiring surgery. Pray for successful surgery and recovery", categories:["medical", "family"]},
@@ -1230,6 +1337,7 @@ const RAW_DATA = [
     {week:"11-30", text:"Leah had two promising interviews this week. Pray for favor and God's direction in this process", categories:["employment"]},
     {week:"12-07", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"12-21", text:"Praise — Leah received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"Praise — the new position is a great fit. Leah feels God's provision clearly in this", categories:["employment", "praise"]},
   ]},
   {family:"Donovan, Adam", elder:"Lindgren", deacon:"Pearson", requests:[
     {week:"11-16", text:"Adam has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -1245,6 +1353,7 @@ const RAW_DATA = [
     {week:"12-14", text:"Difficult decisions ahead regarding long-term care for Daniel's mother. Pray for wisdom and family unity in this process", categories:["family"]},
     {week:"12-28", text:"Daniel's mother has moved into an assisted living facility. Adjusting to the transition. Pray for peace for the whole family", categories:["family"]},
     {week:"01-11", text:"Daniel's mother is settling in well at her new home. Daniel is grateful for the support and prayers during this transition", categories:["family"]},
+    {week:"02-22", text:"Transition continues. Some homesickness but finding joy in new routines. Pray for deeper roots here", categories:["family", "transition"]},
   ]},
   {family:"Jensen, Ian", elder:"Lindgren", deacon:"Hoffman", requests:[
     {week:"11-23", text:"Ian has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
@@ -1255,11 +1364,13 @@ const RAW_DATA = [
     {week:"12-28", text:"New medication is helping reduce migraine frequency. Ian is encouraged. Pray for continued improvement", categories:["medical"]},
     {week:"12-28", text:"Still waiting to hear back from interviews. The uncertainty is stressful. Pray for peace and patience", categories:["employment"]},
     {week:"01-11", text:"Praise — Ian received a job offer! Starting in two weeks. Thank God for His faithful provision", categories:["employment", "praise"]},
+    {week:"02-22", text:"First week at the new job went well! Pray for Ian to build good relationships with coworkers and to be a light", categories:["employment"]},
   ]},
   {family:"Norris, Grant & Martha", elder:"Lindgren", deacon:"", requests:[
     {week:"11-23", text:"Grant has been dealing with chronic migraines that are affecting daily life. Seeing a neurologist for evaluation", categories:["medical"]},
     {week:"12-07", text:"Neurologist has started a new treatment plan. Early days but hopeful. Pray for relief and answers", categories:["medical"]},
     {week:"12-28", text:"New medication is helping reduce migraine frequency. Grant is encouraged. Pray for continued improvement", categories:["medical"]},
+    {week:"02-22", text:"Had a setback this week with a severe episode. Trying not to get discouraged. Pray for perseverance", categories:["medical"]},
   ]},
   {family:"Sutton, Wayne", elder:"Sawyer", deacon:"Pearson", requests:[
     {week:"11-09", text:"Wayne's father passed away last week. Please pray for comfort and peace for the family during this time of loss", categories:["grief"]},
@@ -1275,8 +1386,9 @@ const RAW_DATA = [
     {week:"12-14", text:"David is making good progress in physical therapy. Still experiencing some pain but mobility is improving", categories:["medical"]},
     {week:"12-14", text:"Upcoming dental surgery. Pray for the procedure and recovery", categories:["medical"]},
     {week:"01-04", text:"Praise — David has been cleared to return to normal activities after back surgery. Thank God for healing", categories:["medical", "praise"]},
+    {week:"02-22", text:"Praise — David continues to do well after treatment. Follow-up appointment went great", categories:["medical", "praise"]},
   ]},
-];
+];;
 
 
 
@@ -1335,6 +1447,82 @@ async function saveFlags(flags) {
   try {
     localStorage.setItem("deacon-flags", JSON.stringify(flags));
   } catch(e) { console.error("Failed to save flags:", e); }
+}
+
+// Known people: { familyName: [{ id, name, relationship, confirmed, lastUpdated }] }
+async function loadKnownPeople() {
+  try {
+    const data = localStorage.getItem("known-people");
+    return data ? JSON.parse(data) : {};
+  } catch { return {}; }
+}
+
+async function saveKnownPeople(data) {
+  try {
+    localStorage.setItem("known-people", JSON.stringify(data));
+  } catch(e) { console.error("Failed to save known people:", e); }
+}
+
+// Track which families have been analyzed and at what request count
+async function loadAnalysisState() {
+  try {
+    const data = localStorage.getItem("analysis-state");
+    return data ? JSON.parse(data) : {};
+  } catch { return {}; }
+}
+
+async function saveAnalysisState(data) {
+  try {
+    localStorage.setItem("analysis-state", JSON.stringify(data));
+  } catch(e) { console.error("Failed to save analysis state:", e); }
+}
+
+// LLM extraction: analyze prayer requests to extract people, relationships, and concerns
+async function extractPeopleFromRequests(familyName, requests) {
+  const requestText = requests.map(r => `[${r.week}] ${r.text}`).join("\n");
+  
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1500,
+        system: `You extract people mentioned in church prayer requests. For the given family, identify each distinct person mentioned (other than the family members named in the family name itself) and their relationship to the family. For each person, also extract a brief timeline of concerns or updates from the requests.
+
+Return ONLY a JSON array with no preamble or markdown. Each element:
+- "name": string (person's first name, or a descriptor like "unnamed aunt" if no name given)
+- "relationship": string (e.g. "mother", "son", "friend", "coworker", "cousin" — use "unknown" if unclear)
+- "concerns": array of {"week": "MM-DD", "summary": "brief 5-10 word description"} showing what was said about this person each week they were mentioned
+
+If no people are mentioned besides the family members themselves, return [].
+
+Important: Consolidate references to the same person across weeks. If "mom" in week 01-04 and "my mother" in 02-08 are the same person, merge them into one entry.`,
+        messages: [
+          { role: "user", content: `Family: ${familyName}\n\nPrayer requests:\n${requestText}` }
+        ],
+      })
+    });
+    
+    const data = await response.json();
+    const text = data.content.map(i => i.text || "").join("\n");
+    const clean = text.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(clean);
+    
+    if (!Array.isArray(parsed)) return [];
+    
+    return parsed.map(p => ({
+      id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+      name: p.name || "Unknown",
+      relationship: p.relationship || "unknown",
+      concerns: Array.isArray(p.concerns) ? p.concerns : [],
+      confirmed: false,
+      lastUpdated: new Date().toISOString(),
+    }));
+  } catch (err) {
+    console.error("LLM extraction failed:", err);
+    throw err;
+  }
 }
 
 // ─── HELPER CATEGORIES & MOCK DATA ──────────────────────────────────────────
@@ -1423,16 +1611,29 @@ function App() {
   const [showAddHelper, setShowAddHelper] = useState(false);
   const [editingHelperId, setEditingHelperId] = useState(null);
   const [newHelper, setNewHelper] = useState({ name: "", phone: "", email: "", address: "", categories: [], notes: "" });
+  const [knownPeople, setKnownPeople] = useState({});
+  const [analysisState, setAnalysisState] = useState({});
+  const [analyzingFamily, setAnalyzingFamily] = useState(null);
+  const [adminViewingPeople, setAdminViewingPeople] = useState(null);
+  const [editingPerson, setEditingPerson] = useState(null);
+  const [editPersonName, setEditPersonName] = useState("");
+  const [editPersonRel, setEditPersonRel] = useState("");
+  const [personPopover, setPersonPopover] = useState(null);
+  const [analysisErrors, setAnalysisErrors] = useState({});
   const detailRef = useRef(null);
   const windowWidth = useWindowWidth();
   const isMobile = windowWidth < 768;
 
   useEffect(() => {
     (async () => {
-      const [n, f, m] = await Promise.all([loadNotes(), loadFlags(), loadManualRequests()]);
+      const [n, f, m, kp, as] = await Promise.all([
+        loadNotes(), loadFlags(), loadManualRequests(), loadKnownPeople(), loadAnalysisState()
+      ]);
       setNotes(n);
       setFlags(f);
       setManualRequests(m);
+      setKnownPeople(kp);
+      setAnalysisState(as);
       setLoaded(true);
     })();
   }, []);
@@ -1493,6 +1694,62 @@ function App() {
     setManualRequests(next);
     await saveManualRequests(next);
   }, [manualRequests]);
+
+  // Analyze a family's requests to extract known people (lazy, on-demand)
+  const analyzeFamily = useCallback(async (familyName, requests) => {
+    const totalReqs = requests.length;
+    const state = analysisState[familyName];
+    const ANALYSIS_VER = 2;
+    
+    if (state && state.requestCount >= totalReqs && (state.version || 0) >= ANALYSIS_VER) return;
+    
+    setAnalyzingFamily(familyName);
+    
+    try {
+      const extracted = await extractPeopleFromRequests(familyName, requests);
+      
+      setAnalysisErrors(prev => {
+        const next = { ...prev };
+        delete next[familyName];
+        return next;
+      });
+      
+      setKnownPeople(prev => {
+        const existing = prev[familyName] || [];
+        const confirmed = existing.filter(p => p.confirmed);
+        const confirmedNames = new Set(confirmed.map(p => p.name.toLowerCase()));
+        
+        const updatedConfirmed = confirmed.map(cp => {
+          const match = extracted.find(ep => ep.name.toLowerCase() === cp.name.toLowerCase());
+          if (match && match.concerns?.length) {
+            return { ...cp, concerns: match.concerns, lastUpdated: new Date().toISOString() };
+          }
+          return cp;
+        });
+        
+        const newEntries = extracted.filter(p => !confirmedNames.has(p.name.toLowerCase()));
+        const existingUnconfirmed = existing.filter(p => !p.confirmed);
+        const newNames = new Set(extracted.map(p => p.name.toLowerCase()));
+        const keptUnconfirmed = existingUnconfirmed.filter(p => !newNames.has(p.name.toLowerCase()));
+        
+        const merged = [...updatedConfirmed, ...keptUnconfirmed, ...newEntries];
+        const next = { ...prev, [familyName]: merged };
+        saveKnownPeople(next);
+        return next;
+      });
+      
+      setAnalysisState(prev => {
+        const next = { ...prev, [familyName]: { requestCount: totalReqs, lastAnalyzed: new Date().toISOString(), version: ANALYSIS_VER } };
+        saveAnalysisState(next);
+        return next;
+      });
+    } catch (err) {
+      console.error("Analysis failed for", familyName, err);
+      setAnalysisErrors(prev => ({ ...prev, [familyName]: err.message || "Analysis failed" }));
+    } finally {
+      setAnalyzingFamily(null);
+    }
+  }, [analysisState]);
 
   // Dynamic data source based on mode
   const [familyOverrides, setFamilyOverrides] = useState({}); // {familyName: {elder: "..."}}
@@ -1674,6 +1931,20 @@ function App() {
     setShowNotePopover(false);
     setShowPrayerPopover(false);
   }, [selectedFamily]);
+
+  // Trigger lazy LLM analysis for visible prayer guide families (one at a time, desktop only)
+  const ANALYSIS_VERSION = 2;
+  useEffect(() => {
+    if (activeTab !== "prayer" || !loaded || analyzingFamily || isMobile) return;
+    const list = getPrayerFilteredList();
+    const needsWork = list.find(family => {
+      const state = analysisState[family.family];
+      return !state || state.requestCount < family.requests.length || (state.version || 0) < ANALYSIS_VERSION;
+    });
+    if (needsWork) {
+      analyzeFamily(needsWork.family, needsWork.requests);
+    }
+  }, [activeTab, prayerDay, loaded, analyzingFamily, analysisState, isMobile]);
 
   if (!loaded) return <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",fontFamily:"'Newsreader', Georgia, serif",color:"#1d2252"}}>Loading…</div>;
 
@@ -2776,7 +3047,7 @@ function App() {
                   background: "rgba(255,255,255,0.8)",
                   border: "1px solid #cdd3e3",
                   borderRadius: 12,
-                  overflow: "hidden",
+                  position: "relative",
                 }}>
                   {/* Card header */}
                   <div style={{
@@ -2839,29 +3110,161 @@ function App() {
                     ))}
                   </div>
 
-                  {/* Praise items */}
-                  {praiseItems.length > 0 && (
-                    <div style={{
-                      padding: "12px 20px",
-                      borderTop: "1px solid #e4e8f2",
-                      background: "rgba(22,163,106,0.04)",
-                    }}>
-                      <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600, color: "#15803d", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6}}>
-                        Praise & Answered Prayer
-                      </div>
-                      {praiseItems.map((r, i) => (
-                        <div key={i} style={{
-                          fontSize: 13,
-                          lineHeight: 1.55,
-                          color: "#3d6b3d",
-                          marginBottom: 3,
+                  {/* AI Context Panel — known people */}
+                  {(() => {
+                    const people = knownPeople[family.family] || [];
+                    const isAnalyzing = analyzingFamily === family.family;
+                    const analysisInfo = analysisState[family.family];
+                    const error = analysisErrors[family.family];
+                    
+                    if (people.length === 0 && !isAnalyzing && analysisInfo && !error) return null;
+                    
+                    return (
+                      <div style={{
+                        padding: "12px 20px",
+                        borderTop: "1px solid #e4e8f2",
+                        background: "rgba(13,122,139,0.04)",
+                      }}>
+                        <div style={{
+                          fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                          color: "#0d7a8b", textTransform: "uppercase", letterSpacing: 1, marginBottom: 6,
+                          display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap",
                         }}>
-                          <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 11, color: "#15803d", marginRight: 6}}>{activeWeekLabels[r.week]}</span>
-                          {r.text}
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0d7a8b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                          </svg>
+                          People Context
+                          {isAnalyzing && <span style={{fontWeight: 400, fontStyle: "italic", textTransform: "none", letterSpacing: 0}}> — analyzing…</span>}
+                          {error && (
+                            <span style={{fontWeight: 400, fontStyle: "italic", textTransform: "none", letterSpacing: 0, color: "#b45309"}}> — could not analyze</span>
+                          )}
+                          {!isAnalyzing && people.length === 0 && !analysisInfo && !error && (
+                            <button
+                              onClick={() => analyzeFamily(family.family, family.requests)}
+                              style={{
+                                padding: "2px 10px", borderRadius: 5, marginLeft: 4,
+                                border: "1px solid #0d7a8b", background: "rgba(13,122,139,0.08)",
+                                fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600,
+                                color: "#0d7a8b", cursor: "pointer", textTransform: "none", letterSpacing: 0,
+                              }}
+                            >
+                              Analyze
+                            </button>
+                          )}
+                          {error && !isAnalyzing && (
+                            <button
+                              onClick={() => analyzeFamily(family.family, family.requests)}
+                              style={{
+                                padding: "2px 10px", borderRadius: 5, marginLeft: 4,
+                                border: "1px solid #b45309", background: "rgba(180,83,9,0.08)",
+                                fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600,
+                                color: "#b45309", cursor: "pointer", textTransform: "none", letterSpacing: 0,
+                              }}
+                            >
+                              Retry
+                            </button>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  )}
+                        {people.length > 0 && (
+                          <div style={{display: "flex", gap: 6, flexWrap: "wrap"}}>
+                            {people.map(p => {
+                              const isOpen = personPopover?.familyName === family.family && personPopover?.personId === p.id;
+                              const latestConcern = p.concerns?.length > 0 ? p.concerns[p.concerns.length - 1] : null;
+                              return (
+                                <div key={p.id} style={{position: "relative"}}>
+                                  <span
+                                    onClick={() => {
+                                      if (isOpen) {
+                                        setPersonPopover(null);
+                                      } else if (p.concerns?.length > 0) {
+                                        setPersonPopover({familyName: family.family, personId: p.id});
+                                      }
+                                    }}
+                                    style={{
+                                      fontFamily: "'Montserrat', sans-serif", fontSize: 11,
+                                      padding: "3px 9px", borderRadius: 6,
+                                      background: isOpen ? "rgba(13,122,139,0.18)" : (p.confirmed ? "rgba(13,122,139,0.1)" : "rgba(13,122,139,0.06)"),
+                                      color: "#1d2252",
+                                      border: isOpen ? "1px solid rgba(13,122,139,0.4)" : (p.confirmed ? "1px solid rgba(13,122,139,0.25)" : "1px solid rgba(13,122,139,0.12)"),
+                                      cursor: p.concerns?.length > 0 ? "pointer" : "default",
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      gap: 4,
+                                      whiteSpace: "nowrap",
+                                      transition: "all 0.15s ease",
+                                    }}
+                                  >
+                                    <strong>{p.name}</strong>
+                                    {p.relationship !== "unknown" && (
+                                      <span style={{color: "#596a8a"}}> · {p.relationship}</span>
+                                    )}
+                                    {latestConcern && (
+                                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={isOpen ? "#0a5f6b" : "#0d7a8b"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink: 0, opacity: isOpen ? 1 : 0.7}}>
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="12" y1="16" x2="12" y2="12"/>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                      </svg>
+                                    )}
+                                  </span>
+                                  {isOpen && (
+                                    <div
+                                      onClick={(e) => { e.stopPropagation(); setPersonPopover(null); }}
+                                      style={{position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: 99}}
+                                    />
+                                  )}
+                                  {isOpen && p.concerns?.length > 0 && (
+                                    <div style={{
+                                      position: "absolute",
+                                      bottom: "100%",
+                                      left: 0,
+                                      marginBottom: 6,
+                                      minWidth: isMobile ? 240 : 280,
+                                      maxWidth: isMobile ? "calc(100vw - 80px)" : 360,
+                                      background: "#fff",
+                                      border: "1px solid #0d7a8b",
+                                      borderRadius: 8,
+                                      padding: "10px 12px",
+                                      boxShadow: "0 8px 24px rgba(0,0,0,0.15)",
+                                      zIndex: 100,
+                                    }}>
+                                      <div style={{
+                                        fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 700,
+                                        color: "#1d2252", marginBottom: 6,
+                                      }}>
+                                        {p.name} — {p.relationship !== "unknown" ? p.relationship : "relationship unknown"}
+                                      </div>
+                                      {[...p.concerns].reverse().map((c, ci) => (
+                                        <div key={ci} style={{
+                                          display: "flex", gap: 8, alignItems: "baseline",
+                                          marginBottom: ci < p.concerns.length - 1 ? 4 : 0,
+                                        }}>
+                                          <span style={{
+                                            fontFamily: "'Montserrat', sans-serif", fontSize: 10,
+                                            color: "#0d7a8b", fontWeight: 600, flexShrink: 0,
+                                          }}>
+                                            {activeWeekLabels[c.week] || c.week}
+                                          </span>
+                                          <span style={{
+                                            fontFamily: "'Montserrat', sans-serif", fontSize: 11,
+                                            color: "#4a5580", lineHeight: 1.4,
+                                          }}>
+                                            {c.summary}
+                                          </span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
 
                   {/* History summary */}
                   {summary && (
@@ -3604,7 +4007,7 @@ function App() {
               }}>
                 {/* Header row */}
                 <div style={{
-                  display: "grid", gridTemplateColumns: "1fr 140px 100px",
+                  display: "grid", gridTemplateColumns: "1fr 140px 140px",
                   padding: "10px 16px", borderBottom: "1px solid #cdd3e3",
                   fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 700,
                   color: "#4a5580", textTransform: "uppercase", letterSpacing: 1,
@@ -3638,18 +4041,27 @@ function App() {
 
                   return list.map((f, i) => (
                     <div key={f.family} style={{
-                      display: "grid", gridTemplateColumns: "1fr 140px 100px",
+                      display: "grid", gridTemplateColumns: "1fr 140px 140px",
                       padding: "10px 16px", alignItems: "center",
                       borderBottom: i < list.length - 1 ? "1px solid #e4e8f2" : "none",
-                      background: i % 2 === 0 ? "transparent" : "rgba(245,247,251,0.5)",
+                      background: adminViewingPeople === f.family ? "rgba(13,122,139,0.06)" : (i % 2 === 0 ? "transparent" : "rgba(245,247,251,0.5)"),
                     }}>
                       <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 13, fontWeight: 500, color: "#1d2252"}}>
                         {f.family}
+                        {knownPeople[f.family]?.length > 0 && (
+                          <span style={{
+                            marginLeft: 6, padding: "1px 6px", borderRadius: 8,
+                            background: "#eff6ff", color: "#0369a1",
+                            fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600,
+                          }}>
+                            {knownPeople[f.family].length}
+                          </span>
+                        )}
                       </span>
                       <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: f.elder ? "#4a5580" : "#596a8a"}}>
                         {f.elder || "—"}
                       </span>
-                      <div style={{textAlign: "right"}}>
+                      <div style={{textAlign: "right", display: "flex", gap: 4, justifyContent: "flex-end"}}>
                         {showArchived ? (
                           <button
                             onClick={() => setArchivedFamilies(prev => prev.filter(n => n !== f.family))}
@@ -3663,20 +4075,35 @@ function App() {
                             Restore
                           </button>
                         ) : (
-                          <button
-                            onClick={() => {
-                              setArchivedFamilies(prev => [...prev, f.family]);
-                              if (selectedFamily === f.family) setSelectedFamily(null);
-                            }}
-                            style={{
-                              padding: "4px 10px", borderRadius: 6,
-                              border: "1px solid #b8c1d6", background: "transparent",
-                              fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
-                              color: "#c43e3e", cursor: "pointer",
-                            }}
-                          >
-                            Archive
-                          </button>
+                          <>
+                            <button
+                              onClick={() => setAdminViewingPeople(adminViewingPeople === f.family ? null : f.family)}
+                              style={{
+                                padding: "4px 10px", borderRadius: 6,
+                                border: adminViewingPeople === f.family ? "1px solid #0d7a8b" : "1px solid #b8c1d6",
+                                background: adminViewingPeople === f.family ? "rgba(13,122,139,0.08)" : "transparent",
+                                fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                                color: "#0d7a8b", cursor: "pointer",
+                              }}
+                            >
+                              People
+                            </button>
+                            <button
+                              onClick={() => {
+                                setArchivedFamilies(prev => [...prev, f.family]);
+                                if (selectedFamily === f.family) setSelectedFamily(null);
+                                if (adminViewingPeople === f.family) setAdminViewingPeople(null);
+                              }}
+                              style={{
+                                padding: "4px 10px", borderRadius: 6,
+                                border: "1px solid #b8c1d6", background: "transparent",
+                                fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                                color: "#c43e3e", cursor: "pointer",
+                              }}
+                            >
+                              Archive
+                            </button>
+                          </>
                         )}
                       </div>
                     </div>
@@ -3691,6 +4118,133 @@ function App() {
                   return true;
                 }).length} families`}
               </div>
+
+              {/* ── KNOWN PEOPLE DETAIL PANEL ── */}
+              {adminViewingPeople && (() => {
+                const people = knownPeople[adminViewingPeople] || [];
+                return (
+                  <div style={{
+                    marginTop: 16, background: "rgba(255,255,255,0.95)", border: "1px solid #0d7a8b",
+                    borderRadius: 10, padding: 20,
+                  }}>
+                    <div style={{display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8}}>
+                      <div>
+                        <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 14, fontWeight: 700, color: "#1d2252"}}>
+                          Known People — {adminViewingPeople}
+                        </div>
+                        <div style={{fontFamily: "'Montserrat', sans-serif", fontSize: 11, color: "#596a8a", marginTop: 2}}>
+                          {people.length} {people.length === 1 ? "person" : "people"} cataloged
+                          {analysisState[adminViewingPeople] && (
+                            <span> · Last analyzed {new Date(analysisState[adminViewingPeople].lastAnalyzed).toLocaleDateString()}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div style={{display: "flex", gap: 6}}>
+                        <button
+                          onClick={() => {
+                            const fam = activeData.find(f => f.family === adminViewingPeople);
+                            if (fam) analyzeFamily(adminViewingPeople, fam.requests);
+                          }}
+                          disabled={analyzingFamily === adminViewingPeople}
+                          style={{
+                            padding: "6px 14px", borderRadius: 7,
+                            border: "1px solid #0d7a8b", background: "rgba(13,122,139,0.08)",
+                            fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                            color: "#0d7a8b", cursor: analyzingFamily === adminViewingPeople ? "wait" : "pointer",
+                          }}
+                        >
+                          {analyzingFamily === adminViewingPeople ? "Analyzing…" : "Re-analyze"}
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditingPerson("new");
+                            setEditPersonName("");
+                            setEditPersonRel("");
+                          }}
+                          style={{
+                            padding: "6px 14px", borderRadius: 7,
+                            border: "1px solid #1d2252", background: "#1d2252",
+                            fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                            color: "#e8ecf4", cursor: "pointer",
+                          }}
+                        >
+                          + Add Person
+                        </button>
+                        <button
+                          onClick={() => { setAdminViewingPeople(null); setEditingPerson(null); }}
+                          style={{
+                            padding: "6px 12px", borderRadius: 7,
+                            border: "1px solid #b8c1d6", background: "transparent",
+                            fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600,
+                            color: "#4a5580", cursor: "pointer",
+                          }}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                    {editingPerson && (
+                      <div style={{
+                        display: "flex", gap: 8, alignItems: "center", marginBottom: 12,
+                        padding: 12, background: "#f5f7fb", borderRadius: 8, border: "1px solid #cdd3e3", flexWrap: "wrap",
+                      }}>
+                        <input type="text" placeholder="Name" value={editPersonName} onChange={e => setEditPersonName(e.target.value)}
+                          style={{flex: 1, minWidth: 120, padding: "6px 10px", borderRadius: 6, border: "1px solid #b8c1d6", fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#1d2252", background: "#fff"}} />
+                        <input type="text" placeholder="Relationship" value={editPersonRel} onChange={e => setEditPersonRel(e.target.value)}
+                          style={{flex: 1, minWidth: 120, padding: "6px 10px", borderRadius: 6, border: "1px solid #b8c1d6", fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#1d2252", background: "#fff"}} />
+                        <button onClick={() => {
+                          if (!editPersonName.trim()) return;
+                          setKnownPeople(prev => {
+                            const existing = prev[adminViewingPeople] || [];
+                            let updated;
+                            if (editingPerson === "new") {
+                              updated = [...existing, { id: Date.now().toString() + Math.random().toString(36).slice(2, 6), name: editPersonName.trim(), relationship: editPersonRel.trim() || "unknown", confirmed: true, concerns: [], lastUpdated: new Date().toISOString() }];
+                            } else {
+                              updated = existing.map(p => p.id === editingPerson ? { ...p, name: editPersonName.trim(), relationship: editPersonRel.trim() || "unknown", confirmed: true, lastUpdated: new Date().toISOString() } : p);
+                            }
+                            const next = { ...prev, [adminViewingPeople]: updated };
+                            saveKnownPeople(next);
+                            return next;
+                          });
+                          setEditingPerson(null); setEditPersonName(""); setEditPersonRel("");
+                        }} style={{padding: "6px 14px", borderRadius: 6, border: "none", background: editPersonName.trim() ? "#1d2252" : "#cdd3e3", color: editPersonName.trim() ? "#e8ecf4" : "#8b92b3", fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600, cursor: editPersonName.trim() ? "pointer" : "default"}}>
+                          {editingPerson === "new" ? "Add" : "Save"}
+                        </button>
+                        <button onClick={() => { setEditingPerson(null); setEditPersonName(""); setEditPersonRel(""); }}
+                          style={{padding: "6px 10px", borderRadius: 6, border: "1px solid #b8c1d6", background: "transparent", fontFamily: "'Montserrat', sans-serif", fontSize: 11, fontWeight: 600, color: "#4a5580", cursor: "pointer"}}>
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                    {people.length === 0 ? (
+                      <div style={{padding: 20, textAlign: "center", fontFamily: "'Montserrat', sans-serif", fontSize: 13, color: "#596a8a", fontStyle: "italic"}}>
+                        No people cataloged yet. Click "Re-analyze" to extract from prayer requests, or add manually.
+                      </div>
+                    ) : (
+                      <div style={{border: "1px solid #cdd3e3", borderRadius: 8, overflow: "hidden"}}>
+                        <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 80px 100px", padding: "8px 12px", borderBottom: "1px solid #cdd3e3", fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 700, color: "#4a5580", textTransform: "uppercase", letterSpacing: 1, background: "#f5f7fb"}}>
+                          <span>Name</span><span>Relationship</span><span>Status</span><span style={{textAlign: "right"}}>Actions</span>
+                        </div>
+                        {people.map((p, i) => (
+                          <div key={p.id} style={{display: "grid", gridTemplateColumns: "1fr 1fr 80px 100px", padding: "8px 12px", alignItems: "center", borderBottom: i < people.length - 1 ? "1px solid #e4e8f2" : "none", background: i % 2 === 0 ? "transparent" : "rgba(245,247,251,0.5)"}}>
+                            <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 12, fontWeight: 500, color: "#1d2252"}}>{p.name}</span>
+                            <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 12, color: "#4a5580", fontStyle: p.relationship === "unknown" ? "italic" : "normal"}}>{p.relationship}</span>
+                            <span style={{fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600, color: p.confirmed ? "#15803d" : "#b45309"}}>
+                              {p.confirmed ? "Confirmed" : "Auto"}
+                              {p.concerns?.length > 0 && <span style={{color: "#596a8a", fontWeight: 400}}> · {p.concerns.length} ref{p.concerns.length > 1 ? "s" : ""}</span>}
+                            </span>
+                            <div style={{textAlign: "right", display: "flex", gap: 4, justifyContent: "flex-end"}}>
+                              {!p.confirmed && <button onClick={() => { setKnownPeople(prev => { const updated = (prev[adminViewingPeople] || []).map(x => x.id === p.id ? { ...x, confirmed: true } : x); const next = { ...prev, [adminViewingPeople]: updated }; saveKnownPeople(next); return next; }); }} style={{padding: "2px 8px", borderRadius: 5, border: "1px solid #15803d", background: "transparent", fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600, color: "#15803d", cursor: "pointer"}}>✓</button>}
+                              <button onClick={() => { setEditingPerson(p.id); setEditPersonName(p.name); setEditPersonRel(p.relationship); }} style={{padding: "2px 8px", borderRadius: 5, border: "1px solid #b8c1d6", background: "transparent", fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600, color: "#0d7a8b", cursor: "pointer"}}>Edit</button>
+                              <button onClick={() => { setKnownPeople(prev => { const updated = (prev[adminViewingPeople] || []).filter(x => x.id !== p.id); const next = { ...prev, [adminViewingPeople]: updated }; saveKnownPeople(next); return next; }); }} style={{padding: "2px 8px", borderRadius: 5, border: "1px solid #c43e3e", background: "transparent", fontFamily: "'Montserrat', sans-serif", fontSize: 10, fontWeight: 600, color: "#c43e3e", cursor: "pointer"}}>✕</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           )}
 
