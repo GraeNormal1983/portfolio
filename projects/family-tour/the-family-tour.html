@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Family Tour — A Guided Tour of Our Ancestors and Their Worlds</title>
+  <meta name="description" content="The Stevenson Family History: A guided tour of our ancestors and their worlds, from 1560s England to present-day Indiana.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+    body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    button { font-family: inherit; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d0c8c0; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #b8b0a8; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useRef, useCallback, useEffect } = React;
+
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+
+const FAMILY_LINES = {
+  cheever: { id: "cheever", label: "Cheever", color: "#8B5E3C", accent: "#C4956A" },
+  hammond: { id: "hammond", label: "Hammond", color: "#6B7C3C", accent: "#A4B86A" },
+  barber_long: { id: "barber_long", label: "Barber / Long", color: "#7B5C3C", accent: "#B49A6A" },
+  moss: { id: "moss", label: "Moss", color: "#3C7B7B", accent: "#6AB4B4" },
+  stevenson: { id: "stevenson", label: "Stevenson", color: "#3C5E8B", accent: "#6A95C4" },
+};
+const FAMILY_LINE_ORDER = ["cheever", "hammond", "barber_long", "moss", "stevenson"];
+
+const CENTURIES = [
+  { id: "1500s", label: "1500s", subtitle: "Pre-Colonial" },
+  { id: "1600s", label: "1600s", subtitle: "Colonial America" },
+  { id: "1700s", label: "1700s", subtitle: "Revolution & Early Republic" },
+  { id: "1800s", label: "1800s", subtitle: "Expansion & Civil War" },
+  { id: "1900s", label: "1900s", subtitle: "Modern Era" },
+  { id: "2000s", label: "2000s", subtitle: "Present" },
+];
+
+// Full TOC structure
+const TOC = [
+  { id: "ack", label: "Acknowledgements", type: "front" },
+  { id: "intro", label: "Introduction", type: "front" },
+  {
+    id: "part-i", label: "Part I", title: "The England/New England Cheever Ancestors", family: "cheever",
+    sections: [
+      { id: "james-cheever", label: "James Cheever", rel: "11th Great Grandfather" },
+      { id: "william-cheever", label: "William Cheever", rel: "10th Great Grandfather" },
+      { id: "ezekiel-cheever", label: "Headmaster Ezekiel Cheever", rel: "9th Great Grandfather", hi: true },
+      { id: "thomas-cheever", label: "Rev. Thomas Cheever", rel: "8th Great Grandfather" },
+      { id: "thomas-cheever-jr", label: "Thomas Cheever, Jr.", rel: "7th Great Grandfather" },
+      { id: "edward-cheever", label: "Rev. Edward Cheever", rel: "6th Great Grandfather" },
+      { id: "samuel-cheever", label: "Rev. Samuel Cheever", rel: "5th Great Grandfather" },
+    ],
+  },
+  {
+    id: "part-ii", label: "Part II", title: "The Hammond Ancestors", family: "hammond",
+    sections: [
+      { id: "elizabeth-hammond", label: "Elizabeth Penn Hammond", rel: "10th Great Grandmother" },
+      { id: "hammond-genealogy", label: "Hammond Line Genealogy" },
+    ],
+  },
+  {
+    id: "part-iii", label: "Part III", title: "The Indiana Cheever Line", family: "cheever",
+    sections: [
+      { id: "abner-cheever", label: "Abner Hersey Cheever", rel: "4th Great Grandfather", hi: true },
+      { id: "william-f-cheever", label: "William Franklin Cheever", rel: "3rd Great Grandfather" },
+      { id: "william-a-cheever", label: "William Abner Cheever", rel: "2nd Great Grandfather" },
+      { id: "clifford-cheever", label: "Clifford Hayes Cheever", rel: "Great Grandfather" },
+      { id: "neva-burgess", label: "Neva Etta Cheever Burgess", rel: "Grandmother" },
+    ],
+  },
+  {
+    id: "part-iv", label: "Part IV", title: "Ancestors of My Paternal Grandparents", family: "stevenson",
+    sections: [
+      { id: "paternal-grandfather", label: "My Paternal Grandfather's Ancestry", fam: "moss" },
+      { id: "lydia-moss", label: "A Word About Lydia Moss", fam: "moss" },
+      { id: "cw-moss", label: "Charles Wesley (C.W.) Moss", rel: "2nd Great Grandfather", fam: "moss", hi: true },
+      { id: "john-c-moss", label: "A Word About John Coleman Moss", fam: "moss" },
+      { id: "stevensons-england", label: "The Stevensons from England", fam: "stevenson" },
+      { id: "stephen-stevenson", label: "Stephen and Betty Stevenson", rel: "2nd Great Grandparents", fam: "stevenson" },
+      { id: "william-stevenson", label: "William Thomas Stevenson", rel: "Great Grandfather", fam: "stevenson" },
+      { id: "barbers", label: "My Paternal Grandmother and the Barbers", fam: "barber_long" },
+      { id: "long-jeffers", label: "The Long and Jeffers Families", fam: "barber_long" },
+      { id: "connections", label: "Barber, Moss, and Long Connections" },
+    ],
+  },
+  {
+    id: "part-v", label: "Part V", title: "Stevensons I Remember", family: "stevenson",
+    sections: [
+      { id: "ernest-stevenson", label: "Ernest and Sarah Stevenson", rel: "Grandparents" },
+      { id: "robert-stevenson", label: "Robert Glenn and Ada Mae Stevenson", rel: "Parents", hi: true },
+      { id: "bruce-stevenson", label: "Bruce Stevenson", rel: "Author" },
+    ],
+  },
+  {
+    id: "part-vi", label: "Part VI", title: "Living Between Two Worlds", family: "cheever",
+    sections: [{ id: "stories-important", label: "Stories are Important" }],
+  },
+  { id: "postscript", label: "Postscript", type: "back" },
+  {
+    id: "appendix", label: "Appendix", type: "back",
+    sections: [
+      { id: "app-ancestors", label: "Ancestors Featured in This Report" },
+      { id: "app-mayflower", label: "Direct Line to Mayflower Passengers" },
+      { id: "app-dna", label: "DNA Ethnicity & Genetic Matches" },
+      { id: "app-abner-papers", label: "Abner H. Cheever Papers, 1816–1837" },
+      { id: "app-primary", label: "Primary Source Documents" },
+    ],
+  },
+];
+
+// Flatten TOC to ordered section IDs for scrollspy
+const ALL_SECTION_IDS = [];
+TOC.forEach((item) => {
+  ALL_SECTION_IDS.push(item.id);
+  if (item.sections) item.sections.forEach((s) => ALL_SECTION_IDS.push(s.id));
+});
+
+// Content for sections (representative sample + placeholders)
+const SECTION_CONTENT = {
+  "ack": { title: "Acknowledgements", body: "Ushering this paper to its completion was a great joy. The desired information about my family was pouring out of my resources with amazing speed and nearly perfect timing. The original plan was to gather some genealogical facts about a few relatives and organize them into a 25-page paper. I was in awe at what the LORD did to turn this paper into a much larger document with remarkable detail.\n\nOur eldest son, Doug, spent months converting raw data into flowing prose. Alice proofread this document numerous times and decoded the mysterious scrawl of ancient handwriting. Our youngest son, Jeff, took an interest in putting this document online as a PDF — he purchased the web domain, created a beautiful and professional document that is easy for anyone to read.\n\nWith gratitude,\nBruce Stevenson" },
+  "intro": { title: "Introduction", body: "This paper is my attempt to provide useful genealogical and historical information for those of us who descend from the union of Ada Mae (Burgess) Stevenson (1927–2022) and Robert Glenn Stevenson (1926–2011). It is not only offered to my children but to their children and all subsequent generations.\n\nThe following questions will be addressed: Where did our ancestors come from? How did they live their lives? What were their families like? What was their culture like? Were they people of faith? It is hoped that the information learned from the lives of our ancestors provides a lens through which we can view the contexts we currently face." },
+  "james-cheever": { title: "James Cheever", subtitle: "11th Great Grandfather · Mansfield, England · 1560–1616", fam: "cheever", body: 'Our story begins with the grandparents of Ezekiel Cheever in England. James Cheever lived in Mansfield, Nottinghamshire, England circa 1560–1616. Nothing is known about his parents. James died in Mansfield at the age of 56 and was a "Yeoman" — a classification referring to one who owns and cultivates land.\n\nOn September 14, 1582, when James was 22, he married Agnes Walker in Mansfield. They had four children: William, Richard, James, and Christopher Cheever.' },
+  "william-cheever": { title: "William Cheever", subtitle: "10th Great Grandfather · London, England · b. 1584", fam: "cheever", body: 'William Cheever was born circa 1584 to James and Agnes Cheever. He was a "Skinner" by trade. On June 4, 1613, "William Cheever admitted to Freedom" and became a skinner in his own right.\n\nOn January 6th, 1613, he married Margaret Newman in All Hallowes Church, Lombard Street, London. A note with their marriage record states "not in the due place," indicating they were probably married by license but not in the Church of England. They were the parents of Ezekiel Cheever.' },
+  "ezekiel-cheever": { title: "Headmaster Ezekiel Cheever", subtitle: "9th Great Grandfather · London → Boston · 1614–1708", fam: "cheever", hi: true, body: "Ezekiel was born on January 25, 1614 in London. His grandfather was a yeoman and his father was a skinner; but Ezekiel was most noted as Headmaster of the Boston Latin School. All his sons graduated from Harvard College. Quite a rise in a single generation.\n\nHe entered Emmanuel College, Cambridge University in 1633, and felt called by God to teach Puritan children in the New England colonies. He arrived in Boston in June, 1637, at age 23.\n\nHe taught in New England a total of seventy years, the last thirty-eight as master of the Boston Latin School — the most famous college preparatory school for young men. Its many famous pupils included Benjamin Franklin, Cotton Mather, John Hancock, and Samuel Adams.\n\nEzekiel died in Boston on August 21, 1708, at age 94. At his funeral, Cotton Mather gave the eulogy, praising Cheever for his \"untiring abjuration of the devil.\"" },
+  "thomas-cheever": { title: "Reverend Thomas Cheever", subtitle: "8th Great Grandfather · Ipswich → Chelsea, MA · 1658–1749", fam: "cheever", body: "Thomas was born on August 23, 1658 in Ipswich, MA. He graduated from Harvard College in 1677 and was ordained at Malden on July 27, 1681.\n\nThomas faced charges of \"scandalous immoralities\" and was given a \"loving dismission.\" His father Ezekiel attended the trial and \"pathetically desired his soul might speak\" but was not permitted.\n\nHe was later ordained as the first minister of Rumney Marsh. He died in Chelsea on November 27, 1749 at age 91. His brother Ezekiel Jr. gained notoriety for his part in the Salem Witch Trials of 1692." },
+  "thomas-cheever-jr": { title: "Thomas Cheever, Jr.", subtitle: "7th Great Grandfather · Lynn, MA · d. 1753", fam: "cheever", body: "Thomas bought over 111 acres of farmland and was the Representative for Lynn in 1726–1727 and 1740–1742. Historian Hassam reported he was \"an enterprising man, and the Church, Town, and County records give ample evidence of his ceaseless activity.\"\n\nWith Ebenezer Merriam, Thomas built in 1723 the first mill on Saugus River." },
+  "edward-cheever": { title: "Reverend Edward Cheever", subtitle: "6th Great Grandfather · Lynn → Eastham, MA · 1717–1794", fam: "cheever", body: "Edward graduated from Harvard College in 1737 — the third and last of our Cheever ancestors to do so. He became pastor of the Third Church of Lynn in 1739.\n\nOne account notes he \"carelessly neglected to keep records\" during his ministry. Edward died August 17, 1794, at age 77." },
+  "samuel-cheever": { title: "Reverend Samuel Cheever", subtitle: "5th Great Grandfather · Eastham, MA → Stillwater, NY · 1752–1814", fam: "cheever", body: "Samuel married Thankfull Hammond on May 27, 1781 — merging the Cheever and Hammond lines. Despite being viewed as \"uneducated,\" one diarist wrote: \"This Doctor was a smart Preacher. He did not read and call it Preaching: but he Preached.\"\n\nA raging battle over theology grew in Hartland, Vermont. Samuel tried to force members to pledge they would \"not hold religious fellowship or communion with the Universalists and the Methodists.\" This split the congregation.\n\nHe died in December 1814 in Stillwater, New York, \"in the midst of his valuable work.\"" },
+  "elizabeth-hammond": { title: "Elizabeth Penn Hammond and Descendants", subtitle: "10th Great Grandmother · London → Massachusetts", fam: "hammond", body: "Elizabeth Penn Hammond was a widow who emigrated from London with four children to the Massachusetts Bay Colony in the 1630s. The Hammond line intersects with the Cheever family through the marriage of Rev. Samuel Cheever and Thankfull Hammond in 1781.\n\nThis union opened a genealogical pathway to Mayflower passengers Francis Cooke and Richard Warren." },
+  "hammond-genealogy": { title: "Our Family Genealogy from the Perspective of the Hammond Line", fam: "hammond", body: "The Hammond family genealogy reveals connections to some of the earliest European settlers in New England, including direct descent from Mayflower passengers Francis Cooke and his son John Cooke, as well as Richard Warren." },
+  "abner-cheever": { title: "Abner Hersey Cheever", subtitle: "4th Great Grandfather · Brockton, MA → Indiana · 1787–1853", fam: "cheever", hi: true, body: "Abner fought in the War of 1812, married Polly McClay, and lived with his sister Thankful in Vermont. In 1816, he set out westward with his young family.\n\nHis 18 letters to Thankful, written between 1816 and 1837, document this extraordinary journey — from wagon troubles on the Ohio River, to teaching school in Kentucky, to the devastating death of his wife Polly: \"Polly is no more... torn from my pleading bosom.\"\n\nDespite crushing losses — deaths of his first wife, multiple children, and relentless illness — the letters trace a deepening spiritual faith. \"After wading through deep water of afflictions and drinking deeply of the cup of woe, He has once more caused His face to shine upon me.\"\n\nHe became a licensed Methodist circuit preacher. His final letter reads like the Book of Job — persecution, stolen livestock, and the death of his son Horace. Yet he wrote: \"I cannot think of it as unfair because God had prompted my heart to seek after Him.\"\n\nHis gravestone reads: \"I've borne the burden in the heat of the day... I have fought a good fight, I have finished my course, I have kept the faith.\"" },
+  "william-f-cheever": { title: "William Franklin \"Frank\" Cheever", subtitle: "3rd Great Grandfather · Vermont → Sand Creek, IN · 1814–1874", fam: "cheever", body: "Frank began the journey from Vermont to Indiana at age two. The death of his mother on his fourth birthday was the peak of his chaotic early life. He met Amelia Jones when her family purchased 160 acres next to Abner's property. They married in 1834.\n\nAmelia was fondly called \"Grandma Cheever\" by those in the Fish Creek Church. Frank died April 11, 1874 at age 59. Amelia outlived him by 25 years." },
+  "william-a-cheever": { title: "William Abner Cheever", subtitle: "2nd Great Grandfather · Sand Creek, IN · b. 1841", fam: "cheever", body: "William Abner was born in 1841 in Sand Creek Township. He served in the Civil War and returned to farm the family land — cementing the Cheever identity as Indiana farming people." },
+  "clifford-cheever": { title: "Clifford Hayes Cheever", subtitle: "Great Grandfather · Sand Creek, IN · b. 1877", fam: "cheever", body: "Clifford continued the multi-generational farming tradition established by his great-grandfather Abner when he first settled in Jennings County in 1817." },
+  "neva-burgess": { title: "Neva Etta Cheever Burgess", subtitle: "Grandmother · Sand Creek, IN · b. 1902", fam: "cheever", body: "Neva was the daughter of Clifford Hayes Cheever. She married Frank Burgess. Through Neva, the Cheever line that began with James Cheever in 1560s England continued into the 20th century." },
+  "paternal-grandfather": { title: "My Paternal Grandfather's Ancestry", fam: "moss", body: "The first featured family is named Moss. George Moss was born October 17, 1786 in Virginia. He married Lydia Bilderback in 1808. They moved to Indiana in 1823. George \"purchased from a squatter a claim\" for \"one two-year-old colt\" and became one of the large landowners of Clay County." },
+  "lydia-moss": { title: "A Word About Lydia Moss", fam: "moss", body: "Lydia \"practiced midwifery and treated women and children for thirty years.\" She traveled \"through unbroken wilderness, the roads being but bridle paths\" and treated over 2,500 patients. She \"is probably the only woman in Clay County to deliver a woman in childbirth with instruments.\"" },
+  "cw-moss": { title: "Major Charles Wesley Moss", subtitle: "2nd Great Grandfather · Kentucky → Clay County, IN · 1820–1900", fam: "moss", hi: true, body: "C.W. Moss fought at Buena Vista in the Mexican-American War, was elected sheriff, named Sugar Ridge Township, and founded the town of Ashboro.\n\nWhen the Civil War broke out, he again enlisted — despite promising his family he would not. At the Battle of Marks' Mills, his horse was shot out from under him. He was captured and imprisoned at Camp Ford, Tyler, Texas.\n\nAfter a prisoner exchange, he volunteered to care for 40 ill men unable to travel. While in Indianapolis, he \"had command of the troops that guarded the State Capitol while the deceased President Lincoln lay there in state.\"\n\nHis obituary: \"An Octogenarian, Pioneer, Soldier of Two Wars, County Officer, An Intelligent, Upright, Christian Farmer Citizen.\"" },
+  "john-c-moss": { title: "A Word About John Coleman Moss", fam: "moss", body: "John Coleman Moss served in the same regiment as his uncle C.W. Moss. Both were captured at Marks' Mills. John wrote a riveting chapter about the escape of four prisoners and their journey by foot from Camp Ford in Tyler, Texas to Fort Steele, Arkansas." },
+  "stevensons-england": { title: "The Stevensons from England", fam: "stevenson", body: "Three generations of coal miners beginning with James Stevenson in Staffordshire County, England. The English government's coal miners were struggling financially, leading to a massive exodus to the United States in the 1850s." },
+  "stephen-stevenson": { title: "Stephen and Betty Stevenson", subtitle: "2nd Great Grandparents · Staffordshire → Ohio · 1824–1896", fam: "stevenson", body: "Stephen left England in 1852 aboard the \"DeWitt Clinton.\" Betty Welsby arrived in 1857 aboard the \"City of Washington.\" They married October 15, 1858 in Ohio.\n\nThey lived in \"patch\" communities — remote mining settlements with company-owned stores. They eventually settled in Vienna, Ohio. Stephen willed 25 acres each to sons William and Moses — and $50 to son James from his first marriage, who had somehow found his father from England." },
+  "william-stevenson": { title: "William Thomas Stevenson", subtitle: "Great Grandfather · Steubenville, OH → Clay County, IN · 1859–1930", fam: "stevenson", body: "Will grew up in a coal mining \"patch\" community. He made his way to Clay County, Indiana, where he married Anna \"Annie\" Moss, daughter of Major C.W. Moss. They married December 29, 1888.\n\nAnnie birthed 12 children; 10 survived. This marriage united the Stevenson and Moss lines." },
+  "barbers": { title: "My Paternal Grandmother's Story Begins with the Barbers", fam: "barber_long", body: "The Barber family was among the farming families of Clay County. Aaron Gleason Barber and the Long family formed part of the interconnected web of families near Cory, Indiana." },
+  "long-jeffers": { title: "The Long and Jeffers Farm Families", fam: "barber_long", body: "The intersection of the Long and Jeffers farming families in Clay County would eventually connect to the Stevenson line through the marriage of Ernest Stevenson and Sarah Marie Long." },
+  "connections": { title: "The Barber, Moss, and Long Connections with the Stevensons", body: "These five farming families — Barber, Moss, Long, Jeffers, and Stevenson — were deeply intertwined through marriage and geography in Clay County, Indiana." },
+  "ernest-stevenson": { title: "Ernest and Sarah Stevenson", subtitle: "Grandparents · Clay County, IN · b. 1893", fam: "stevenson", body: "Ernest Lloyd Stevenson was the third of William and Annie's children. He married Sarah Marie Long, connecting the Stevenson family with the Long farming family. Their son Robert would be among the first to leave the family farm." },
+  "robert-stevenson": { title: "Robert Glenn and Ada Mae Stevenson", subtitle: "Parents · Indiana · 1926–2011 / 1927–2022", fam: "stevenson", hi: true, body: "Robert came from the Stevenson/Moss paternal line — generations of English coal miners, Indiana pioneers, and Clay County farmers. Ada Mae descended from the Cheever/Hammond maternal line — Puritan educators, New England ministers, and frontier settlers.\n\nRobert was one of several who left the family farm, marking the \"untethering from the land\" that Bruce documents in this paper." },
+  "bruce-stevenson": { title: "Bruce Stevenson", subtitle: "Author · Indiana", fam: "stevenson", body: "Bruce Stevenson is the author of this family history, connecting 400 years of ancestors from England to Indiana. His work is animated by a conviction that \"a proper understanding of our family history may serve as a warning, a prescription, an encouragement, or a map forward; but it always serves as a blessing from God.\"" },
+  "stories-important": { title: "Stories are Important", fam: "cheever", body: "The stories of our ancestors may inform and unite us as families, and encourage us to honor God in our efforts to live according to our callings." },
+  "postscript": { title: "Postscript", body: "This paper closes with a challenge: look for personal applications as you consider the questions emanating from the diverse personal and family experiences of our ancestors." },
+};
+
+// ─── TIMELINE DATA ────────────────────────────────────────────────────────────
+
+const TIMELINE_PEOPLE = [
+  { id: "james-cheever", name: "James Cheever", born: 1560, died: 1616, families: ["cheever"], century: "1500s" },
+  { id: "william-cheever", name: "William Cheever", born: 1584, families: ["cheever"], century: "1500s" },
+  { id: "ezekiel-cheever", name: "Ezekiel Cheever", born: 1614, died: 1708, families: ["cheever"], century: "1600s", hi: true },
+  { id: "elizabeth-hammond", name: "Elizabeth Penn Hammond", families: ["hammond"], century: "1600s" },
+  { id: "thomas-cheever", name: "Rev. Thomas Cheever", born: 1658, died: 1749, families: ["cheever"], century: "1600s" },
+  { id: "thomas-cheever-jr", name: "Thomas Cheever, Jr.", died: 1753, families: ["cheever"], century: "1600s" },
+  { id: "edward-cheever", name: "Rev. Edward Cheever", born: 1717, died: 1794, families: ["cheever"], century: "1700s" },
+  { id: "samuel-cheever", name: "Rev. Samuel Cheever", born: 1752, died: 1814, families: ["cheever", "hammond"], century: "1700s" },
+  { id: "abner-cheever", name: "Abner Hersey Cheever", born: 1787, died: 1853, families: ["cheever"], century: "1700s", hi: true },
+  { id: "paternal-grandfather", name: "George & Lydia Moss", born: 1786, died: 1871, families: ["moss"], century: "1700s" },
+  { id: "william-f-cheever", name: 'William F. "Frank" Cheever', born: 1814, died: 1874, families: ["cheever"], century: "1800s" },
+  { id: "cw-moss", name: "Maj. Charles Wesley Moss", born: 1820, died: 1900, families: ["moss"], century: "1800s", hi: true },
+  { id: "stephen-stevenson", name: "Stephen & Betty Stevenson", born: 1824, died: 1896, families: ["stevenson"], century: "1800s" },
+  { id: "william-a-cheever", name: "William Abner Cheever", born: 1841, families: ["cheever"], century: "1800s" },
+  { id: "barbers", name: "Aaron Gleason Barber", families: ["barber_long"], century: "1800s" },
+  { id: "long-jeffers", name: "Henry & Sarah Long", families: ["barber_long"], century: "1800s" },
+  { id: "william-stevenson", name: "William T. Stevenson", born: 1859, died: 1930, families: ["stevenson", "moss"], century: "1800s" },
+  { id: "clifford-cheever", name: "Clifford Hayes Cheever", born: 1877, families: ["cheever"], century: "1800s" },
+  { id: "neva-burgess", name: "Neva Cheever Burgess", born: 1902, families: ["cheever"], century: "1900s" },
+  { id: "ernest-stevenson", name: "Ernest & Sarah Stevenson", born: 1893, families: ["stevenson", "barber_long"], century: "1900s" },
+  { id: "robert-stevenson", name: "Robert & Ada Mae Stevenson", born: 1926, died: 2011, families: ["stevenson", "cheever"], century: "1900s", hi: true },
+  { id: "bruce-stevenson", name: "Bruce Stevenson", families: ["stevenson", "cheever"], century: "2000s" },
+];
+
+// ─── TIMELINE SIDEBAR COMPONENT ──────────────────────────────────────────────
+
+function FamilyFilterBar({ activeLines, onToggle }) {
+  return (
+    <div style={{ padding: "12px 16px", borderBottom: "1px solid #e8e2dc" }}>
+      <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#b8b0a8", marginBottom: "7px" }}>Family lines</div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+        {FAMILY_LINE_ORDER.map((fId) => {
+          const fam = FAMILY_LINES[fId];
+          const isOn = activeLines.has(fId);
+          return (
+            <button key={fId} onClick={() => onToggle(fId)} style={{
+              display: "flex", alignItems: "center", gap: "5px",
+              padding: "4px 10px", border: `1.5px solid ${isOn ? fam.color : "#ddd8d0"}`,
+              borderRadius: "14px", fontSize: "11px", fontWeight: isOn ? 600 : 400,
+              background: isOn ? `${fam.color}0c` : "transparent",
+              color: isOn ? fam.color : "#b8b0a8",
+              cursor: "pointer", transition: "all 0.2s", opacity: isOn ? 1 : 0.55,
+            }}>
+              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: isOn ? fam.color : "#ccc5be", flexShrink: 0 }} />
+              {fam.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function TimelineSidebar({ activeLines, onToggle, activeSection, onSectionClick, onClose, isMobile }) {
+  const filtered = TIMELINE_PEOPLE.filter((p) => p.families.some((f) => activeLines.has(f)));
+  const activeCenturies = CENTURIES.filter((c) => filtered.some((p) => p.century === c.id));
+  const [clickedId, setClickedId] = useState(null);
+
+  const click = (id) => { setClickedId(id); onSectionClick(id); if (isMobile) onClose(); };
+
+  return (
+    <>
+      <FamilyFilterBar activeLines={activeLines} onToggle={onToggle} />
+      <div style={{ flex: 1, overflowY: "auto", padding: "2px 0" }}>
+        {activeCenturies.map((century) => {
+          const people = filtered.filter((p) => p.century === century.id);
+          return (
+            <div key={century.id}>
+              <div style={{ padding: "14px 14px 4px", display: "flex", alignItems: "baseline", gap: "8px" }}>
+                <span style={{ fontSize: "17px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 800, color: "#2a2520" }}>{century.label}</span>
+                <span style={{ fontSize: "10px", color: "#b8b0a8", fontStyle: "italic" }}>{century.subtitle}</span>
+              </div>
+              {people.map((person) => {
+                const fam = FAMILY_LINES[person.families[0]];
+                const isActive = clickedId === person.id;
+                return (
+                  <button key={person.id} onClick={() => click(person.id)} style={{
+                    display: "flex", alignItems: "center", gap: "10px",
+                    width: "100%", padding: "7px 14px 7px 22px", border: "none",
+                    borderLeft: isActive ? `3px solid ${fam.color}` : "3px solid transparent",
+                    background: isActive ? `${fam.color}0d` : "transparent",
+                    cursor: "pointer", textAlign: "left", transition: "all 0.15s",
+                    borderRadius: "0 6px 6px 0",
+                  }}>
+                    <div style={{
+                      width: person.hi ? "11px" : "7px", height: person.hi ? "11px" : "7px",
+                      borderRadius: "50%", background: isActive ? fam.color : fam.accent,
+                      border: person.hi ? `2px solid ${fam.color}` : "none", flexShrink: 0,
+                      boxShadow: isActive ? `0 0 8px ${fam.color}44` : "none",
+                    }} />
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: "12px", fontWeight: isActive ? 600 : 400, color: isActive ? fam.color : "#4a4540", fontFamily: "'Source Serif 4', Georgia, serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        {person.name}
+                      </div>
+                      <div style={{ fontSize: "10px", color: "#a8a0a8" }}>
+                        {person.born || ""}{person.born && person.died ? "–" : ""}{person.died || ""}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+// ─── HOOKS ────────────────────────────────────────────────────────────────────
+
+function useIsMobile() {
+  const [m, setM] = useState(typeof window !== "undefined" && window.innerWidth < 768);
+  useEffect(() => {
+    const h = () => setM(window.innerWidth < 768);
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+  return m;
+}
+
+// ─── TOC SIDEBAR ──────────────────────────────────────────────────────────────
+
+function TOCSidebar({ activeSection, onSectionClick, onClose, isMobile }) {
+  const [exp, setExp] = useState(new Set(TOC.filter(t => t.sections).map(t => t.id)));
+  const toggle = (id) => setExp(p => { const n = new Set(p); n.has(id) ? n.delete(id) : n.add(id); return n; });
+  const activeRef = useRef(null);
+
+  useEffect(() => {
+    if (activeRef.current) {
+      activeRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [activeSection]);
+
+  const click = (id) => { onSectionClick(id); if (isMobile) onClose(); };
+
+  return (
+    <div style={{ padding: "6px 0" }}>
+      {TOC.map((item) => {
+        if (item.type === "front" || (item.type === "back" && !item.sections)) {
+          const active = activeSection === item.id;
+          return (
+            <button key={item.id} ref={active ? activeRef : null} onClick={() => click(item.id)} style={{
+              display: "block", width: "100%", padding: "7px 16px", border: "none",
+              background: active ? "#f5f2ee" : "transparent", cursor: "pointer", textAlign: "left",
+              fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif",
+              color: active ? "#2a2520" : "#6a6560", fontWeight: active ? 600 : 400,
+            }}>{item.label}</button>
+          );
+        }
+        const fam = item.family ? FAMILY_LINES[item.family] : null;
+        const isExp = exp.has(item.id);
+        return (
+          <div key={item.id} style={{ marginBottom: "2px" }}>
+            <button onClick={() => toggle(item.id)} style={{
+              display: "flex", alignItems: "flex-start", gap: "8px", width: "100%",
+              padding: "10px 16px 6px", border: "none", background: "transparent",
+              cursor: "pointer", textAlign: "left",
+            }}>
+              <span style={{ fontSize: "10px", color: "#c0b8b0", marginTop: "3px", transition: "transform 0.2s", transform: isExp ? "rotate(90deg)" : "rotate(0deg)", display: "inline-block", flexShrink: 0 }}>▸</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "1px" }}>
+                  {fam && <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: fam.color, flexShrink: 0 }} />}
+                  <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: fam ? fam.color : "#8a8580" }}>{item.label}</span>
+                </div>
+                {item.title && <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: "#2a2520", lineHeight: 1.35, paddingLeft: fam ? "12px" : 0 }}>{item.title}</div>}
+              </div>
+            </button>
+            {isExp && item.sections && (
+              <div style={{ paddingBottom: "4px" }}>
+                {item.sections.map((s) => {
+                  const sf = s.fam ? FAMILY_LINES[s.fam] : fam;
+                  const active = activeSection === s.id;
+                  return (
+                    <button key={s.id} ref={active ? activeRef : null} onClick={() => click(s.id)} style={{
+                      display: "flex", alignItems: "flex-start", gap: "6px", width: "100%",
+                      padding: "5px 16px 5px 34px", border: "none",
+                      borderLeft: active ? `2px solid ${(sf || fam)?.color || "#888"}` : "2px solid transparent",
+                      background: active ? `${(sf || fam)?.color || "#888"}08` : "transparent",
+                      cursor: "pointer", textAlign: "left",
+                    }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "12.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: active || s.hi ? 600 : 400, color: active ? "#2a2520" : s.hi ? "#3a3530" : "#5a5550", lineHeight: 1.35 }}>{s.label}</div>
+                        {s.rel && <div style={{ fontSize: "10px", color: (sf || fam)?.color || "#999", fontWeight: 500, marginTop: "1px" }}>{s.rel}</div>}
+                      </div>
+                      {s.hi && <span style={{ fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.6px", textTransform: "uppercase", flexShrink: 0, marginTop: "2px", color: (sf || fam)?.color || "#999", background: `${(sf || fam)?.color || "#999"}10`, padding: "1px 5px", borderRadius: "2px" }}>★</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── FAMILY TREE MODAL ───────────────────────────────────────────────────────
+
+function FamilyTreeModal({ onClose, activeSection }) {
+  return (
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: "12px", maxWidth: "700px", width: "100%", maxHeight: "85vh", overflow: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+        <div style={{ padding: "20px 24px", borderBottom: "1px solid #e8e2dc", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: "18px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>Family Tree</h2>
+            <div style={{ fontSize: "11px", color: "#9a9590", marginTop: "2px" }}>Stevenson / Cheever Lineage Overview</div>
+          </div>
+          <button onClick={onClose} style={{ border: "none", background: "#f0ece6", borderRadius: "50%", width: "32px", height: "32px", cursor: "pointer", fontSize: "16px", color: "#8a8580", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+        </div>
+        <div style={{ padding: "24px" }}>
+          {/* Placeholder family tree visualization */}
+          <svg viewBox="0 0 600 420" style={{ width: "100%", height: "auto" }}>
+            {/* Lines */}
+            <g stroke="#ddd8d0" strokeWidth="1.5" fill="none">
+              <line x1="300" y1="48" x2="300" y2="80" />
+              <line x1="300" y1="112" x2="150" y2="150" />
+              <line x1="300" y1="112" x2="450" y2="150" />
+              <line x1="150" y1="182" x2="150" y2="210" />
+              <line x1="450" y1="182" x2="450" y2="210" />
+              <line x1="150" y1="242" x2="150" y2="270" />
+              <line x1="450" y1="242" x2="450" y2="270" />
+              <line x1="150" y1="302" x2="300" y2="340" />
+              <line x1="450" y1="302" x2="300" y2="340" />
+              <line x1="300" y1="372" x2="300" y2="400" />
+            </g>
+            {/* Nodes */}
+            {[
+              { x: 300, y: 32, label: "James Cheever", sub: "1560", color: FAMILY_LINES.cheever.color, id: "james-cheever" },
+              { x: 300, y: 96, label: "Ezekiel Cheever", sub: "1614", color: FAMILY_LINES.cheever.color, id: "ezekiel-cheever", hi: true },
+              { x: 150, y: 166, label: "Cheever Line", sub: "→ Samuel → Abner", color: FAMILY_LINES.cheever.color },
+              { x: 450, y: 166, label: "Hammond Line", sub: "Elizabeth Penn", color: FAMILY_LINES.hammond.color },
+              { x: 150, y: 226, label: "Indiana Cheevers", sub: "Frank → Clifford", color: FAMILY_LINES.cheever.color },
+              { x: 450, y: 226, label: "Moss Family", sub: "George → C.W.", color: FAMILY_LINES.moss.color },
+              { x: 150, y: 286, label: "Neva Burgess", sub: "Maternal GM", color: FAMILY_LINES.cheever.color },
+              { x: 450, y: 286, label: "Stevensons", sub: "Stephen → William → Ernest", color: FAMILY_LINES.stevenson.color },
+              { x: 300, y: 356, label: "Robert & Ada Mae", sub: "Parents", color: "#5E3C6B", id: "robert-stevenson", hi: true },
+              { x: 300, y: 408, label: "Bruce Stevenson", sub: "Author", color: "#5E3C6B", id: "bruce-stevenson" },
+            ].map((node, i) => {
+              const isActive = activeSection === node.id;
+              return (
+                <g key={i}>
+                  <rect x={node.x - 72} y={node.y - 16} width="144" height="32" rx="6"
+                    fill={isActive ? node.color : "#fff"}
+                    stroke={node.hi ? node.color : "#e0dbd5"}
+                    strokeWidth={node.hi || isActive ? "2" : "1"} />
+                  <text x={node.x} y={node.y - 2} textAnchor="middle" style={{ fontSize: "10px", fontWeight: node.hi ? 700 : 500, fill: isActive ? "#fff" : "#2a2520", fontFamily: "system-ui" }}>{node.label}</text>
+                  <text x={node.x} y={node.y + 10} textAnchor="middle" style={{ fontSize: "8px", fill: isActive ? "rgba(255,255,255,0.7)" : "#a09890", fontFamily: "system-ui" }}>{node.sub}</text>
+                </g>
+              );
+            })}
+          </svg>
+          <p style={{ marginTop: "16px", fontSize: "12px", color: "#b8b0a8", textAlign: "center", fontStyle: "italic" }}>
+            Interactive family tree — will highlight the ancestor currently in view. Full detail coming soon.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── MAIN APP ─────────────────────────────────────────────────────────────────
+
+function FamilyTourApp() {
+  const isMobile = useIsMobile();
+  const [topTab, setTopTab] = useState("tour");
+  const [navMode, setNavMode] = useState("toc");
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+  const [activeSection, setActiveSection] = useState(null);
+  const [treeOpen, setTreeOpen] = useState(false);
+  const [activeLines, setActiveLines] = useState(new Set(FAMILY_LINE_ORDER));
+  const contentRef = useRef(null);
+  const scrollingTo = useRef(false);
+
+  const toggleLine = useCallback((lineId) => {
+    setActiveLines((prev) => {
+      const next = new Set(prev);
+      if (next.has(lineId)) { if (next.size > 1) next.delete(lineId); } else next.add(lineId);
+      return next;
+    });
+  }, []);
+
+  // Build ordered list of section IDs that have content
+  const contentSections = ALL_SECTION_IDS.filter((id) => SECTION_CONTENT[id]);
+
+  // Scrollspy: observe which section is in view (only syncs in Contents mode)
+  useEffect(() => {
+    const container = contentRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (scrollingTo.current || navMode !== "toc") return;
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("data-section-id");
+            if (id) setActiveSection(id);
+          }
+        }
+      },
+      { root: container, rootMargin: "-10% 0px -80% 0px", threshold: 0 }
+    );
+    container.querySelectorAll("[data-section-id]").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [topTab, navMode]);
+
+  const handleSectionClick = useCallback((id) => {
+    setActiveSection(id);
+    const el = contentRef.current?.querySelector(`[data-section-id="${id}"]`);
+    if (el) {
+      scrollingTo.current = true;
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => { scrollingTo.current = false; }, 1000);
+    }
+  }, []);
+
+  // Close sidebar on mobile when clicking overlay
+  const overlay = isMobile && sidebarOpen;
+
+  return (
+    <div style={{ display: "flex", height: "100vh", width: "100%", fontFamily: "'DM Sans', sans-serif", background: "#faf8f5", overflow: "hidden", position: "relative" }}>
+      {/* Mobile overlay */}
+      {overlay && <div onClick={() => setSidebarOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 90 }} />}
+
+      {/* SIDEBAR */}
+      <aside style={{
+        width: "310px", minWidth: "310px",
+        height: "100vh", display: "flex", flexDirection: "column",
+        background: "#fdfcfa", borderRight: "1px solid #e8e2dc",
+        transition: "transform 0.3s ease",
+        ...(isMobile ? {
+          position: "fixed", left: 0, top: 0, zIndex: 100,
+          transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
+          boxShadow: sidebarOpen ? "4px 0 20px rgba(0,0,0,0.1)" : "none",
+        } : {
+          transform: sidebarOpen ? "translateX(0)" : "translateX(-310px)",
+          marginLeft: sidebarOpen ? "0" : "-310px",
+        }),
+      }}>
+        <div style={{ borderBottom: "1px solid #e8e2dc" }}>
+          <div style={{ padding: "16px 16px 10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <h1 style={{ margin: 0, fontSize: "15px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>thefamilytour.org</h1>
+            {isMobile && <button onClick={() => setSidebarOpen(false)} style={{ border: "none", background: "none", fontSize: "20px", color: "#8a8580", cursor: "pointer", padding: "4px" }}>✕</button>}
+          </div>
+          <div style={{ padding: "0 16px 10px" }}>
+            <div style={{ display: "flex", background: "#f0ece6", borderRadius: "8px", padding: "3px" }}>
+              {[{ id: "tour", label: "The Family Tour", icon: "📖" }, { id: "record", label: "The Family Record", icon: "🌿" }].map((tab) => (
+                <button key={tab.id} onClick={() => setTopTab(tab.id)} style={{
+                  flex: 1, padding: "8px 4px", border: "none", borderRadius: "6px",
+                  fontSize: "11px", fontWeight: 600, cursor: "pointer",
+                  background: topTab === tab.id ? "#fff" : "transparent",
+                  color: topTab === tab.id ? "#2a2520" : "#9a9590",
+                  boxShadow: topTab === tab.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
+                }}><span style={{ fontSize: "12px" }}>{tab.icon}</span>{tab.label}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+          {topTab === "tour" ? (
+            <>
+              {/* Contents / Timeline toggle */}
+              <div style={{ padding: "10px 16px 8px", flexShrink: 0 }}>
+                <div style={{ display: "flex", background: "#f0ece6", borderRadius: "6px", padding: "2px" }}>
+                  {[{ id: "toc", label: "Contents" }, { id: "timeline", label: "Timeline" }].map((mode) => (
+                    <button key={mode.id} onClick={() => setNavMode(mode.id)} style={{
+                      flex: 1, padding: "5px 0", border: "none", borderRadius: "5px",
+                      fontSize: "11px", fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
+                      background: navMode === mode.id ? "#fff" : "transparent",
+                      color: navMode === mode.id ? "#2a2520" : "#9a9590",
+                      boxShadow: navMode === mode.id ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+                    }}>{mode.label}</button>
+                  ))}
+                </div>
+              </div>
+              {navMode === "toc" ? (
+                <div style={{ flex: 1, overflowY: "auto" }}>
+                  <TOCSidebar activeSection={activeSection} onSectionClick={handleSectionClick} onClose={() => setSidebarOpen(false)} isMobile={isMobile} />
+                </div>
+              ) : (
+                <TimelineSidebar
+                  activeLines={activeLines} onToggle={toggleLine}
+                  activeSection={activeSection} onSectionClick={handleSectionClick}
+                  onClose={() => setSidebarOpen(false)} isMobile={isMobile}
+                />
+              )}
+            </>
+          ) : (
+            <div style={{ padding: "40px 20px", textAlign: "center" }}>
+              <div style={{ fontSize: "32px", marginBottom: "12px" }}>🌿</div>
+              <p style={{ fontSize: "12px", color: "#9a9590", lineHeight: 1.5 }}>The Family Record will have its own navigation.</p>
+            </div>
+          )}
+        </div>
+        <div style={{ padding: "10px 16px", borderTop: "1px solid #e8e2dc", fontSize: "10px", color: "#c0b8b0", textAlign: "center" }}>By Bruce L. Stevenson · December 2025</div>
+      </aside>
+
+      {/* MAIN */}
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
+        {/* Top bar */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: isMobile ? "10px 16px" : "11px 24px", borderBottom: "1px solid #e8e2dc", background: "#fdfcfa" }}>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: "20px", color: "#8a8580", padding: "4px", lineHeight: 1 }}>
+            {sidebarOpen && !isMobile ? "◂" : "☰"}
+          </button>
+          <span style={{ fontSize: isMobile ? "12.5px" : "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: "#2a2520", flex: 1 }}>
+            {topTab === "tour" ? "The Family Tour" : "The Family Record"}
+          </span>
+        </div>
+
+        {/* Content */}
+        {topTab === "tour" ? (
+          <div ref={contentRef} style={{ flex: 1, overflowY: "auto", padding: isMobile ? "24px 16px" : "32px 24px" }}>
+            <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+              {/* Hero */}
+              <header style={{ marginBottom: "36px", textAlign: "center" }}>
+                <div style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#c0b8b0", marginBottom: "10px" }}>The Stevenson Family History</div>
+                <h1 style={{ margin: "0 0 6px", fontSize: isMobile ? "24px" : "30px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520", lineHeight: 1.25, letterSpacing: "-0.5px" }}>
+                  A Guided Tour of Our Ancestors and Their Worlds
+                </h1>
+                <p style={{ margin: "0 0 6px", fontSize: "14.5px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#8a8580", fontStyle: "italic" }}>Messages for Our Lives</p>
+                <p style={{ margin: 0, fontSize: "12.5px", color: "#b8b0a8" }}>By Bruce L. Stevenson · December 2025</p>
+              </header>
+
+              {/* Render all sections continuously */}
+              {contentSections.map((id) => {
+                const sec = SECTION_CONTENT[id];
+                const fam = sec.fam ? FAMILY_LINES[sec.fam] : null;
+                // Find if this is a Part heading
+                const partItem = TOC.find((t) => t.id === id);
+                const isPart = partItem && partItem.title;
+                return (
+                  <section key={id} data-section-id={id} style={{ marginBottom: "36px", scrollMarginTop: "20px" }}>
+                    {/* Part divider if this is a Part-level item */}
+                    {isPart && (
+                      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "20px" }}>
+                        <div style={{ height: "1px", flex: 1, background: "#e0dbd5" }} />
+                        <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: fam?.color || "#8a8580", whiteSpace: "nowrap" }}>
+                          {partItem.label}: {partItem.title}
+                        </div>
+                        <div style={{ height: "1px", flex: 1, background: "#e0dbd5" }} />
+                      </div>
+                    )}
+                    {sec.hi && fam && (
+                      <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: fam.color, background: `${fam.color}10`, padding: "3px 8px", borderRadius: "3px", display: "inline-block", marginBottom: "8px" }}>Key Figure</span>
+                    )}
+                    <h2 style={{ margin: "0 0 4px", fontSize: isMobile ? "20px" : "24px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520", lineHeight: 1.3 }}>{sec.title}</h2>
+                    {sec.subtitle && <div style={{ fontSize: "13px", color: fam?.color || "#8a8580", fontWeight: 500, marginBottom: "4px" }}>{sec.subtitle}</div>}
+                    {fam && (
+                      <span style={{ fontSize: "10px", fontWeight: 500, color: fam.color, background: `${fam.color}0c`, padding: "2px 8px", borderRadius: "10px", border: `1px solid ${fam.color}18`, display: "inline-block", marginBottom: "12px" }}>{fam.label} Line</span>
+                    )}
+                    <div style={{ fontSize: isMobile ? "14px" : "15px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#3a3530", lineHeight: 1.8 }}>
+                      {sec.body.split("\n\n").map((p, i) => (
+                        <p key={i} style={{ margin: i === 0 ? "0 0 14px" : "14px 0" }}>{p}</p>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
+
+              {/* Footer */}
+              <footer style={{ marginTop: "40px", padding: "20px", textAlign: "center", borderTop: "1px solid #e8e2dc" }}>
+                <p style={{ margin: "0 0 8px", fontSize: "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", color: "#8a8580", lineHeight: 1.6, maxWidth: "500px", marginLeft: "auto", marginRight: "auto" }}>
+                  "A proper understanding of our family history <em style={{ textDecoration: "underline" }}>always</em> serves as a blessing from God when our history is viewed as something worthy of meditation."
+                </p>
+                <p style={{ margin: 0, fontSize: "11px", color: "#ccc5be" }}>thefamilytour.org</p>
+              </footer>
+            </div>
+          </div>
+        ) : (
+          <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px", overflow: "auto" }}>
+            <div style={{ maxWidth: "520px", textAlign: "center" }}>
+              <div style={{ fontSize: "28px", marginBottom: "16px" }}>🌿</div>
+              <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>The Family Record</h2>
+              <p style={{ fontSize: "14px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#8a8580", lineHeight: 1.65 }}>
+                A living document for future generations. Coming soon.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Floating family tree button */}
+        {topTab === "tour" && (
+          <button
+            onClick={() => setTreeOpen(true)}
+            style={{
+              position: "fixed",
+              bottom: isMobile ? "20px" : "28px",
+              right: isMobile ? "20px" : "28px",
+              width: "52px", height: "52px",
+              borderRadius: "50%",
+              border: "none",
+              background: "#2a2520",
+              color: "#fff",
+              fontSize: "22px",
+              cursor: "pointer",
+              boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "transform 0.2s, box-shadow 0.2s",
+              zIndex: 50,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.08)"; e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.3)"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)"; }}
+            title="View family tree"
+          >
+            🌳
+          </button>
+        )}
+      </main>
+
+      {/* Family tree modal */}
+      {treeOpen && <FamilyTreeModal onClose={() => setTreeOpen(false)} activeSection={activeSection} />}
+    </div>
+  );
+}
+
+    ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(FamilyTourApp));
+  </script>
+</body>
+</html>
