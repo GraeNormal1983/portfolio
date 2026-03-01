@@ -352,65 +352,102 @@
             font-size: 1.75rem;
         }
 
-        /* --- Nature break section --- */
-        .nature-break {
+        /* --- Parallax terrain divider --- */
+        .terrain-divider {
             position: relative;
-            height: clamp(280px, 35vw, 420px);
-            margin: var(--space-lg) 0;
+            height: clamp(320px, 40vw, 480px);
+            margin: var(--space-lg) 0 0;
             overflow: hidden;
-            background: var(--color-bg-alt);
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
-        .nature-break-bg {
+        .terrain-divider .terrain-layer {
+            position: absolute;
+            left: -5%;
+            width: 110%;
+            will-change: transform;
+        }
+
+        /* Sky / atmosphere gradient */
+        .terrain-sky {
             position: absolute;
             inset: 0;
-            background:
-                linear-gradient(165deg, 
-                    rgba(43, 95, 63, 0.08) 0%, 
-                    rgba(43, 95, 63, 0.03) 30%,
-                    transparent 60%),
-                linear-gradient(345deg, 
-                    rgba(43, 95, 63, 0.05) 0%, 
-                    transparent 40%);
+            background: linear-gradient(
+                180deg,
+                var(--color-bg) 0%,
+                #EEF2EE 25%,
+                #DFE8DF 50%,
+                #D4DED4 75%,
+                #C8D8C8 100%
+            );
         }
 
-        /* Layered topographic lines */
-        .nature-break-topo {
+        /* Layer 1: Distant ridge — very faint, moves slowest */
+        .terrain-far {
+            bottom: 35%;
+            height: 50%;
+        }
+
+        /* Layer 2: Mid hills — medium tone, medium speed */
+        .terrain-mid {
+            bottom: 18%;
+            height: 45%;
+        }
+
+        /* Layer 3: Near ground — richest color, moves fastest */
+        .terrain-near {
+            bottom: 0;
+            height: 40%;
+        }
+
+        /* Layer 4: Foreground grass detail */
+        .terrain-grass {
+            bottom: -2%;
+            height: 30%;
+        }
+
+        /* Ground continuation into next section */
+        .terrain-ground {
             position: absolute;
-            inset: 0;
-            opacity: 0.35;
-            background-image:
-                url("data:image/svg+xml,%3Csvg width='1200' height='400' viewBox='0 0 1200 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%232B5F3F' stroke-width='1'%3E%3Cpath d='M0 280 C200 260 400 300 600 270 C800 240 1000 280 1200 250' opacity='0.3'/%3E%3Cpath d='M0 240 C200 210 400 250 600 220 C800 190 1000 230 1200 200' opacity='0.25'/%3E%3Cpath d='M0 200 C200 170 400 200 600 175 C800 150 1000 185 1200 160' opacity='0.2'/%3E%3Cpath d='M0 165 C200 140 400 160 600 140 C800 120 1000 150 1200 130' opacity='0.15'/%3E%3Cpath d='M0 135 C200 115 400 130 600 115 C800 100 1000 120 1200 105' opacity='0.1'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: cover;
-            background-position: center;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 15%;
+            background: #3A6B4A;
         }
 
-        .nature-break-content {
-            position: relative;
-            z-index: 1;
+        /* Optional quote overlay */
+        .terrain-content {
+            position: absolute;
+            top: 12%;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
-            max-width: 560px;
+            z-index: 10;
+            max-width: 520px;
             padding: 0 2rem;
+            opacity: 0;
+            transition: opacity 0.6s ease;
         }
 
-        .nature-break-quote {
+        .terrain-content.visible {
+            opacity: 1;
+        }
+
+        .terrain-quote {
             font-family: var(--font-display);
-            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
             font-weight: 300;
             font-style: italic;
-            line-height: 1.4;
-            color: var(--color-accent);
+            line-height: 1.5;
+            color: #2B5F3F;
             letter-spacing: -0.01em;
         }
 
-        .nature-break-attribution {
+        .terrain-attribution {
             font-family: var(--font-body);
             font-size: 0.8125rem;
-            color: var(--color-text-muted);
-            margin-top: 1.25rem;
+            color: #5C8A6A;
+            margin-top: 1rem;
             letter-spacing: 0.04em;
         }
 
@@ -634,7 +671,7 @@
             .work-grid { grid-template-columns: 1fr; }
             .writing-grid { grid-template-columns: 1fr; }
             .writing-card { border-right: none; }
-            .nature-break { height: 240px; }
+            .terrain-divider { height: 260px; }
         }
     </style>
 </head>
@@ -671,13 +708,13 @@
                 </p>
                 <div class="hero-actions">
                     <a href="work.html" class="btn btn--primary">
-                        <span>View My Work</span>
+                        <span>See My Work</span>
                         <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
                         </svg>
                     </a>
-                    <a href="#" class="btn">
-                        <span>Download Resume</span>
+                    <a href="resume.html" class="btn">
+                        <span>View Resume</span>
                     </a>
                 </div>
             </div>
@@ -812,16 +849,78 @@
         </div>
     </section>
 
-    <!-- Nature Break -->
-    <div class="nature-break fade-in">
-        <div class="nature-break-bg"></div>
-        <div class="nature-break-topo"></div>
-        <div class="nature-break-content">
-            <p class="nature-break-quote">
+    <!-- Terrain Parallax Divider -->
+    <div class="terrain-divider" id="terrainDivider">
+        <!-- Sky gradient -->
+        <div class="terrain-sky"></div>
+
+        <!-- Quote overlay -->
+        <div class="terrain-content fade-in">
+            <p class="terrain-quote">
                 Good design, like good trail work, disappears into the experience it creates.
             </p>
-            <p class="nature-break-attribution">— A personal philosophy</p>
+            <p class="terrain-attribution">— A personal philosophy</p>
         </div>
+
+        <!-- Layer 1: Distant mountains -->
+        <svg class="terrain-layer terrain-far" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 280 L80 240 L180 265 L300 200 L420 230 L520 180 L620 210 L740 160 L850 195 L960 150 L1060 185 L1160 140 L1260 175 L1360 135 L1440 160 L1440 400 L0 400 Z" fill="#B8CCBA" opacity="0.5"/>
+        </svg>
+
+        <!-- Layer 2: Mid hills -->
+        <svg class="terrain-layer terrain-mid" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 260 C120 230 200 250 320 220 C440 190 500 240 640 200 C780 160 840 220 960 180 C1080 140 1160 200 1280 170 C1360 150 1400 180 1440 160 L1440 400 L0 400 Z" fill="#7FA882" opacity="0.6"/>
+            <!-- Tree silhouettes on ridge -->
+            <g fill="#6B9470" opacity="0.5">
+                <ellipse cx="200" cy="235" rx="18" ry="30"/>
+                <ellipse cx="220" cy="240" rx="14" ry="24"/>
+                <ellipse cx="510" cy="218" rx="16" ry="28"/>
+                <ellipse cx="535" cy="222" rx="12" ry="22"/>
+                <ellipse cx="850" cy="195" rx="18" ry="32"/>
+                <ellipse cx="875" cy="200" rx="14" ry="26"/>
+                <ellipse cx="1170" cy="182" rx="16" ry="28"/>
+                <ellipse cx="1195" cy="188" rx="13" ry="24"/>
+            </g>
+        </svg>
+
+        <!-- Layer 3: Near rolling ground -->
+        <svg class="terrain-layer terrain-near" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 200 C160 160 280 200 440 170 C600 140 680 190 840 150 C1000 110 1120 170 1280 140 C1380 120 1420 150 1440 140 L1440 400 L0 400 Z" fill="#4E8A5E"/>
+            <!-- Subtle terrain texture lines -->
+            <g stroke="#458054" stroke-width="0.75" fill="none" opacity="0.4">
+                <path d="M0 230 C200 200 400 230 600 205 C800 180 1000 215 1200 195 C1350 180 1420 200 1440 195"/>
+                <path d="M0 270 C180 250 380 270 580 250 C780 230 980 260 1180 245 C1340 235 1420 250 1440 245"/>
+                <path d="M0 310 C220 295 400 315 600 295 C800 275 1000 305 1200 290 C1380 280 1440 295 1440 290"/>
+            </g>
+        </svg>
+
+        <!-- Layer 4: Foreground grass -->
+        <svg class="terrain-layer terrain-grass" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 120 C100 100 180 130 300 105 C420 80 520 120 660 95 C800 70 900 110 1040 85 C1180 60 1300 100 1440 80 L1440 300 L0 300 Z" fill="#3A6B4A"/>
+            <!-- Grass blade details -->
+            <g stroke="#2F5A3E" stroke-width="1" fill="none" opacity="0.3">
+                <line x1="60" y1="115" x2="55" y2="95"/>
+                <line x1="90" y1="110" x2="87" y2="88"/>
+                <line x1="150" y1="118" x2="145" y2="96"/>
+                <line x1="250" y1="108" x2="247" y2="86"/>
+                <line x1="340" y1="102" x2="335" y2="78"/>
+                <line x1="420" y1="112" x2="415" y2="90"/>
+                <line x1="500" y1="106" x2="496" y2="82"/>
+                <line x1="580" y1="100" x2="575" y2="76"/>
+                <line x1="670" y1="95" x2="666" y2="72"/>
+                <line x1="760" y1="104" x2="756" y2="80"/>
+                <line x1="840" y1="98" x2="835" y2="74"/>
+                <line x1="930" y1="108" x2="926" y2="84"/>
+                <line x1="1020" y1="92" x2="1016" y2="68"/>
+                <line x1="1100" y1="102" x2="1096" y2="78"/>
+                <line x1="1200" y1="88" x2="1195" y2="64"/>
+                <line x1="1300" y1="96" x2="1296" y2="72"/>
+                <line x1="1380" y1="86" x2="1376" y2="62"/>
+            </g>
+        </svg>
+
+        <!-- Solid ground at bottom blending into next section -->
+        <div class="terrain-ground"></div>
     </div>
 
     <!-- Writing -->
@@ -928,8 +1027,8 @@
                         <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
                     </svg>
                 </a>
-                <a href="#" class="btn">
-                    <span>Download Resume</span>
+                <a href="resume.html" class="btn">
+                    <span>View Resume</span>
                 </a>
             </div>
         </div>
@@ -1055,6 +1154,65 @@
                 const x = e.pageX - track.offsetLeft;
                 track.scrollLeft = scrollLeft - (x - startX) * 1.5;
             });
+        })();
+
+        // --- Parallax terrain divider ---
+        (function() {
+            const divider = document.getElementById('terrainDivider');
+            if (!divider) return;
+
+            const layers = {
+                far:   divider.querySelector('.terrain-far'),
+                mid:   divider.querySelector('.terrain-mid'),
+                near:  divider.querySelector('.terrain-near'),
+                grass: divider.querySelector('.terrain-grass')
+            };
+
+            // Parallax speeds: higher = moves more relative to scroll
+            const speeds = {
+                far:   0.08,
+                mid:   0.18,
+                near:  0.32,
+                grass: 0.45
+            };
+
+            let ticking = false;
+
+            function updateParallax() {
+                const rect = divider.getBoundingClientRect();
+                const viewH = window.innerHeight;
+
+                // Only animate when divider is in/near viewport
+                if (rect.bottom < -100 || rect.top > viewH + 100) {
+                    ticking = false;
+                    return;
+                }
+
+                // Progress: 0 when divider top hits viewport bottom, 1 when divider bottom hits viewport top
+                const progress = (viewH - rect.top) / (viewH + rect.height);
+
+                // Center the parallax offset around the midpoint
+                const centered = (progress - 0.5) * 2; // -1 to 1
+
+                Object.keys(layers).forEach(key => {
+                    if (layers[key]) {
+                        const offset = centered * speeds[key] * rect.height;
+                        layers[key].style.transform = `translateY(${offset}px)`;
+                    }
+                });
+
+                ticking = false;
+            }
+
+            function onScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            updateParallax(); // initial position
         })();
     </script>
 </body>
