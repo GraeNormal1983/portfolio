@@ -12,7 +12,7 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html, body, #root { height: 100%; width: 100%; overflow: hidden; }
     body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
-    button { font-family: inherit; }
+    button { font-family: inherit; } button:focus-visible, a:focus-visible { outline: 2px solid #3B6498; outline-offset: 2px; border-radius: 4px; } button:focus:not(:focus-visible) { outline: none; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #d0c8c0; border-radius: 3px; }
@@ -28,16 +28,30 @@
     const { useState, useRef, useCallback, useEffect } = React;
 
 
-// ─── DATA ─────────────────────────────────────────────────────────────────────
+// ─── ACCESSIBLE COLORS ────────────────────────────────────────────────────────
+// All text colors verified against WCAG 2.1 AA contrast ratios
+// on backgrounds #faf8f5 (cream), #fdfcfa (sidebar), #ffffff (white)
 
 const FAMILY_LINES = {
-  cheever: { id: "cheever", label: "Cheever", color: "#8B5E3C", accent: "#C4956A" },
-  hammond: { id: "hammond", label: "Hammond", color: "#6B7C3C", accent: "#A4B86A" },
-  barber_long: { id: "barber_long", label: "Barber / Long", color: "#7B5C3C", accent: "#B49A6A" },
-  moss: { id: "moss", label: "Moss", color: "#3C7B7B", accent: "#6AB4B4" },
-  stevenson: { id: "stevenson", label: "Stevenson", color: "#3C5E8B", accent: "#6A95C4" },
+  cheever: { id: "cheever", label: "Cheever", color: "#A0522D", accent: "#C4835E" },
+  hammond: { id: "hammond", label: "Hammond", color: "#4A7C3F", accent: "#7DB572" },
+  barber_long: { id: "barber_long", label: "Barber / Long", color: "#7B5EA7", accent: "#A98ED4" },
+  moss: { id: "moss", label: "Moss", color: "#2B7A78", accent: "#5BB0AE" },
+  stevenson: { id: "stevenson", label: "Stevenson", color: "#3B6498", accent: "#6A9ACE" },
 };
 const FAMILY_LINE_ORDER = ["cheever", "hammond", "barber_long", "moss", "stevenson"];
+
+// Accessible gray palette (all ≥4.5:1 on #fdfcfa/#faf8f5 unless noted)
+const C = {
+  text: "#2a2520",        // 14.3:1 — headings, primary text
+  body: "#3a3530",        // 12.1:1 — body paragraphs
+  secondary: "#4a4540",   // 9.2:1  — sidebar person names
+  tertiary: "#5a5550",    // 7.2:1  — TOC section text
+  muted: "#6a6560",       // 5.6:1  — front matter, less important
+  meta: "#736B65",        // 5.1:1  — part labels, subtitles, dates
+  ui: "#847C75",          // 4.0:1  — disclosure arrows (3:1 UI component)
+  disabled: "#5E5852",    // 4.9:1  — disabled pill text on #ddd8d0
+};
 
 const CENTURIES = [
   { id: "1500s", label: "1500s", subtitle: "Pre-Colonial" },
@@ -48,7 +62,16 @@ const CENTURIES = [
   { id: "2000s", label: "2000s", subtitle: "Present" },
 ];
 
-// Full TOC structure
+// ─── SR-ONLY HELPER ───────────────────────────────────────────────────────────
+
+const srOnly = {
+  position: "absolute", width: "1px", height: "1px", padding: 0,
+  margin: "-1px", overflow: "hidden", clip: "rect(0,0,0,0)",
+  whiteSpace: "nowrap", border: 0,
+};
+
+// ─── TOC STRUCTURE ────────────────────────────────────────────────────────────
+
 const TOC = [
   { id: "ack", label: "Acknowledgements", type: "front" },
   { id: "intro", label: "Introduction", type: "front" },
@@ -121,14 +144,14 @@ const TOC = [
   },
 ];
 
-// Flatten TOC to ordered section IDs for scrollspy
 const ALL_SECTION_IDS = [];
 TOC.forEach((item) => {
   ALL_SECTION_IDS.push(item.id);
   if (item.sections) item.sections.forEach((s) => ALL_SECTION_IDS.push(s.id));
 });
 
-// Content for sections (representative sample + placeholders)
+// ─── SECTION CONTENT ──────────────────────────────────────────────────────────
+
 const SECTION_CONTENT = {
   "ack": { title: "Acknowledgements", body: "Ushering this paper to its completion was a great joy. The desired information about my family was pouring out of my resources with amazing speed and nearly perfect timing. The original plan was to gather some genealogical facts about a few relatives and organize them into a 25-page paper. I was in awe at what the LORD did to turn this paper into a much larger document with remarkable detail.\n\nOur eldest son, Doug, spent months converting raw data into flowing prose. Alice proofread this document numerous times and decoded the mysterious scrawl of ancient handwriting. Our youngest son, Jeff, took an interest in putting this document online as a PDF — he purchased the web domain, created a beautiful and professional document that is easy for anyone to read.\n\nWith gratitude,\nBruce Stevenson" },
   "intro": { title: "Introduction", body: "This paper is my attempt to provide useful genealogical and historical information for those of us who descend from the union of Ada Mae (Burgess) Stevenson (1927–2022) and Robert Glenn Stevenson (1926–2011). It is not only offered to my children but to their children and all subsequent generations.\n\nThe following questions will be addressed: Where did our ancestors come from? How did they live their lives? What were their families like? What was their culture like? Were they people of faith? It is hoped that the information learned from the lives of our ancestors provides a lens through which we can view the contexts we currently face." },
@@ -190,26 +213,29 @@ const TIMELINE_PEOPLE = [
   { id: "bruce-stevenson", name: "Bruce Stevenson", families: ["stevenson", "cheever"], century: "2000s" },
 ];
 
-// ─── TIMELINE SIDEBAR COMPONENT ──────────────────────────────────────────────
+// ─── TIMELINE SIDEBAR ─────────────────────────────────────────────────────────
 
 function FamilyFilterBar({ activeLines, onToggle }) {
   return (
-    <div style={{ padding: "12px 16px", borderBottom: "1px solid #e8e2dc" }}>
-      <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "#b8b0a8", marginBottom: "7px" }}>Family lines</div>
+    <div style={{ padding: "12px 16px", borderBottom: "1px solid #e8e2dc" }} role="group" aria-label="Filter by family line">
+      <div style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: C.meta, marginBottom: "7px" }}>Family lines</div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
         {FAMILY_LINE_ORDER.map((fId) => {
           const fam = FAMILY_LINES[fId];
           const isOn = activeLines.has(fId);
           return (
-            <button key={fId} onClick={() => onToggle(fId)} style={{
-              display: "flex", alignItems: "center", gap: "5px",
-              padding: "4px 10px", border: `1.5px solid ${isOn ? fam.color : "#ddd8d0"}`,
-              borderRadius: "14px", fontSize: "11px", fontWeight: isOn ? 600 : 400,
-              background: isOn ? `${fam.color}0c` : "transparent",
-              color: isOn ? fam.color : "#b8b0a8",
-              cursor: "pointer", transition: "all 0.2s", opacity: isOn ? 1 : 0.55,
-            }}>
-              <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: isOn ? fam.color : "#ccc5be", flexShrink: 0 }} />
+            <button key={fId} onClick={() => onToggle(fId)}
+              aria-pressed={isOn}
+              aria-label={`${fam.label} family line`}
+              style={{
+                display: "flex", alignItems: "center", gap: "5px",
+                padding: "4px 10px", border: `1.5px solid ${isOn ? fam.color : "#ddd8d0"}`,
+                borderRadius: "14px", fontSize: "11px", fontWeight: isOn ? 600 : 400,
+                background: isOn ? `${fam.color}0c` : "transparent",
+                color: isOn ? fam.color : C.disabled,
+                cursor: "pointer", transition: "all 0.2s", opacity: isOn ? 1 : 0.55,
+              }}>
+              <span aria-hidden="true" style={{ width: "7px", height: "7px", borderRadius: "50%", background: isOn ? fam.color : C.ui, flexShrink: 0 }} />
               {fam.label}
             </button>
           );
@@ -219,50 +245,50 @@ function FamilyFilterBar({ activeLines, onToggle }) {
   );
 }
 
-function TimelineSidebar({ activeLines, onToggle, activeSection, onSectionClick, onClose, isMobile }) {
+function TimelineSidebar({ activeLines, onToggle, onSectionClick, onClose, isMobile }) {
   const filtered = TIMELINE_PEOPLE.filter((p) => p.families.some((f) => activeLines.has(f)));
   const activeCenturies = CENTURIES.filter((c) => filtered.some((p) => p.century === c.id));
   const [clickedId, setClickedId] = useState(null);
-
   const click = (id) => { setClickedId(id); onSectionClick(id); if (isMobile) onClose(); };
 
   return (
     <>
       <FamilyFilterBar activeLines={activeLines} onToggle={onToggle} />
-      <div style={{ flex: 1, overflowY: "auto", padding: "2px 0" }}>
+      <div style={{ flex: 1, overflowY: "auto", padding: "2px 0" }} role="list" aria-label="Ancestors by century">
         {activeCenturies.map((century) => {
           const people = filtered.filter((p) => p.century === century.id);
           return (
-            <div key={century.id}>
+            <div key={century.id} role="group" aria-label={`${century.label} — ${century.subtitle}`}>
               <div style={{ padding: "14px 14px 4px", display: "flex", alignItems: "baseline", gap: "8px" }}>
-                <span style={{ fontSize: "17px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 800, color: "#2a2520" }}>{century.label}</span>
-                <span style={{ fontSize: "10px", color: "#b8b0a8", fontStyle: "italic" }}>{century.subtitle}</span>
+                <span style={{ fontSize: "17px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 800, color: C.text }}>{century.label}</span>
+                <span style={{ fontSize: "10px", color: C.meta, fontStyle: "italic" }}>{century.subtitle}</span>
               </div>
               {people.map((person) => {
                 const fam = FAMILY_LINES[person.families[0]];
                 const isActive = clickedId === person.id;
+                const dateStr = `${person.born || ""}${person.born && person.died ? "–" : ""}${person.died || ""}`;
                 return (
-                  <button key={person.id} onClick={() => click(person.id)} style={{
-                    display: "flex", alignItems: "center", gap: "10px",
-                    width: "100%", padding: "7px 14px 7px 22px", border: "none",
-                    borderLeft: isActive ? `3px solid ${fam.color}` : "3px solid transparent",
-                    background: isActive ? `${fam.color}0d` : "transparent",
-                    cursor: "pointer", textAlign: "left", transition: "all 0.15s",
-                    borderRadius: "0 6px 6px 0",
-                  }}>
-                    <div style={{
+                  <button key={person.id} role="listitem" onClick={() => click(person.id)}
+                    aria-label={`${person.name}${dateStr ? ", " + dateStr : ""}, ${fam.label} line`}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "10px",
+                      width: "100%", padding: "7px 14px 7px 22px", border: "none",
+                      borderLeft: isActive ? `3px solid ${fam.color}` : "3px solid transparent",
+                      background: isActive ? `${fam.color}0d` : "transparent",
+                      cursor: "pointer", textAlign: "left", transition: "all 0.15s",
+                      borderRadius: "0 6px 6px 0", minHeight: "44px",
+                    }}>
+                    <div aria-hidden="true" style={{
                       width: person.hi ? "11px" : "7px", height: person.hi ? "11px" : "7px",
                       borderRadius: "50%", background: isActive ? fam.color : fam.accent,
                       border: person.hi ? `2px solid ${fam.color}` : "none", flexShrink: 0,
                       boxShadow: isActive ? `0 0 8px ${fam.color}44` : "none",
                     }} />
                     <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: "12px", fontWeight: isActive ? 600 : 400, color: isActive ? fam.color : "#4a4540", fontFamily: "'Source Serif 4', Georgia, serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div style={{ fontSize: "12px", fontWeight: isActive ? 600 : 400, color: isActive ? fam.color : C.secondary, fontFamily: "'Source Serif 4', Georgia, serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {person.name}
                       </div>
-                      <div style={{ fontSize: "10px", color: "#a8a0a8" }}>
-                        {person.born || ""}{person.born && person.died ? "–" : ""}{person.died || ""}
-                      </div>
+                      <div style={{ fontSize: "10px", color: C.meta }}>{dateStr}</div>
                     </div>
                   </button>
                 );
@@ -295,63 +321,73 @@ function TOCSidebar({ activeSection, onSectionClick, onClose, isMobile }) {
   const activeRef = useRef(null);
 
   useEffect(() => {
-    if (activeRef.current) {
-      activeRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    }
+    if (activeRef.current) activeRef.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [activeSection]);
 
   const click = (id) => { onSectionClick(id); if (isMobile) onClose(); };
 
   return (
-    <div style={{ padding: "6px 0" }}>
+    <nav style={{ padding: "6px 0" }} aria-label="Table of contents">
       {TOC.map((item) => {
         if (item.type === "front" || (item.type === "back" && !item.sections)) {
           const active = activeSection === item.id;
           return (
-            <button key={item.id} ref={active ? activeRef : null} onClick={() => click(item.id)} style={{
-              display: "block", width: "100%", padding: "7px 16px", border: "none",
-              background: active ? "#f5f2ee" : "transparent", cursor: "pointer", textAlign: "left",
-              fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif",
-              color: active ? "#2a2520" : "#6a6560", fontWeight: active ? 600 : 400,
-            }}>{item.label}</button>
+            <button key={item.id} ref={active ? activeRef : null} onClick={() => click(item.id)}
+              aria-current={active ? "true" : undefined}
+              style={{
+                display: "block", width: "100%", padding: "7px 16px", border: "none",
+                background: active ? "#f5f2ee" : "transparent", cursor: "pointer", textAlign: "left",
+                fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif",
+                color: active ? C.text : C.muted, fontWeight: active ? 600 : 400, minHeight: "44px",
+              }}>{item.label}</button>
           );
         }
         const fam = item.family ? FAMILY_LINES[item.family] : null;
         const isExp = exp.has(item.id);
         return (
           <div key={item.id} style={{ marginBottom: "2px" }}>
-            <button onClick={() => toggle(item.id)} style={{
-              display: "flex", alignItems: "flex-start", gap: "8px", width: "100%",
-              padding: "10px 16px 6px", border: "none", background: "transparent",
-              cursor: "pointer", textAlign: "left",
-            }}>
-              <span style={{ fontSize: "10px", color: "#c0b8b0", marginTop: "3px", transition: "transform 0.2s", transform: isExp ? "rotate(90deg)" : "rotate(0deg)", display: "inline-block", flexShrink: 0 }}>▸</span>
+            <button onClick={() => toggle(item.id)}
+              aria-expanded={isExp}
+              aria-label={`${item.label}: ${item.title || item.label}${isExp ? ", expanded" : ", collapsed"}`}
+              style={{
+                display: "flex", alignItems: "flex-start", gap: "8px", width: "100%",
+                padding: "10px 16px 6px", border: "none", background: "transparent",
+                cursor: "pointer", textAlign: "left", minHeight: "44px",
+              }}>
+              <span aria-hidden="true" style={{ fontSize: "14px", color: C.ui, marginTop: "1px", transition: "transform 0.2s", transform: isExp ? "rotate(90deg)" : "rotate(0deg)", display: "inline-block", flexShrink: 0 }}>▸</span>
               <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "1px" }}>
-                  {fam && <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: fam.color, flexShrink: 0 }} />}
-                  <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: fam ? fam.color : "#8a8580" }}>{item.label}</span>
+                <div style={{ marginBottom: "1px" }}>
+                  <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", color: C.meta }}>{item.label}</span>
                 </div>
-                {item.title && <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: "#2a2520", lineHeight: 1.35, paddingLeft: fam ? "12px" : 0 }}>{item.title}</div>}
+                {item.title && <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: C.text, lineHeight: 1.35 }}>{item.title}</div>}
               </div>
             </button>
             {isExp && item.sections && (
-              <div style={{ paddingBottom: "4px" }}>
+              <div style={{ paddingBottom: "4px" }} role="list">
                 {item.sections.map((s) => {
                   const sf = s.fam ? FAMILY_LINES[s.fam] : fam;
                   const active = activeSection === s.id;
                   return (
-                    <button key={s.id} ref={active ? activeRef : null} onClick={() => click(s.id)} style={{
-                      display: "flex", alignItems: "flex-start", gap: "6px", width: "100%",
-                      padding: "5px 16px 5px 34px", border: "none",
-                      borderLeft: active ? `2px solid ${(sf || fam)?.color || "#888"}` : "2px solid transparent",
-                      background: active ? `${(sf || fam)?.color || "#888"}08` : "transparent",
-                      cursor: "pointer", textAlign: "left",
-                    }}>
+                    <button key={s.id} ref={active ? activeRef : null} onClick={() => click(s.id)}
+                      role="listitem"
+                      aria-current={active ? "true" : undefined}
+                      style={{
+                        display: "flex", alignItems: "flex-start", gap: "6px", width: "100%",
+                        padding: "5px 16px 5px 34px", border: "none",
+                        borderLeft: active ? `2px solid ${(sf || fam)?.color || "#888"}` : "2px solid transparent",
+                        background: active ? `${(sf || fam)?.color || "#888"}08` : "transparent",
+                        cursor: "pointer", textAlign: "left", minHeight: "44px",
+                      }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: "12.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: active || s.hi ? 600 : 400, color: active ? "#2a2520" : s.hi ? "#3a3530" : "#5a5550", lineHeight: 1.35 }}>{s.label}</div>
-                        {s.rel && <div style={{ fontSize: "10px", color: (sf || fam)?.color || "#999", fontWeight: 500, marginTop: "1px" }}>{s.rel}</div>}
+                        <div style={{ fontSize: "12.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: active || s.hi ? 600 : 400, color: active ? C.text : s.hi ? C.body : C.tertiary, lineHeight: 1.35 }}>{s.label}</div>
+                        {s.rel && <div style={{ fontSize: "10px", color: (sf || fam)?.color || C.meta, fontWeight: 500, marginTop: "1px" }}>{s.rel}</div>}
                       </div>
-                      {s.hi && <span style={{ fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.6px", textTransform: "uppercase", flexShrink: 0, marginTop: "2px", color: (sf || fam)?.color || "#999", background: `${(sf || fam)?.color || "#999"}10`, padding: "1px 5px", borderRadius: "2px" }}>★</span>}
+                      {s.hi && (
+                        <>
+                          <span aria-hidden="true" style={{ fontSize: "7.5px", fontWeight: 700, letterSpacing: "0.6px", textTransform: "uppercase", flexShrink: 0, marginTop: "2px", color: (sf || fam)?.color || C.meta, background: `${(sf || fam)?.color || C.meta}10`, padding: "1px 5px", borderRadius: "2px" }}>★</span>
+                          <span style={srOnly}>Key figure</span>
+                        </>
+                      )}
                     </button>
                   );
                 })}
@@ -360,27 +396,47 @@ function TOCSidebar({ activeSection, onSectionClick, onClose, isMobile }) {
           </div>
         );
       })}
-    </div>
+    </nav>
   );
 }
 
 // ─── FAMILY TREE MODAL ───────────────────────────────────────────────────────
 
 function FamilyTreeModal({ onClose, activeSection }) {
+  const modalRef = useRef(null);
+  const closeRef = useRef(null);
+
+  // Focus trap + Escape key
+  useEffect(() => {
+    closeRef.current?.focus();
+    const handleKey = (e) => {
+      if (e.key === "Escape") { onClose(); return; }
+      if (e.key === "Tab") {
+        const focusable = modalRef.current?.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (!focusable || focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [onClose]);
+
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: "12px", maxWidth: "700px", width: "100%", maxHeight: "85vh", overflow: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}
+      role="dialog" aria-modal="true" aria-label="Family tree overview">
+      <div ref={modalRef} onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: "12px", maxWidth: "700px", width: "100%", maxHeight: "85vh", overflow: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
         <div style={{ padding: "20px 24px", borderBottom: "1px solid #e8e2dc", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: "18px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>Family Tree</h2>
-            <div style={{ fontSize: "11px", color: "#9a9590", marginTop: "2px" }}>Stevenson / Cheever Lineage Overview</div>
+            <h2 style={{ margin: 0, fontSize: "18px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: C.text }}>Family Tree</h2>
+            <div style={{ fontSize: "11px", color: C.meta, marginTop: "2px" }}>Stevenson / Cheever Lineage Overview</div>
           </div>
-          <button onClick={onClose} style={{ border: "none", background: "#f0ece6", borderRadius: "50%", width: "32px", height: "32px", cursor: "pointer", fontSize: "16px", color: "#8a8580", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+          <button ref={closeRef} onClick={onClose} aria-label="Close family tree" style={{ border: "none", background: "#f0ece6", borderRadius: "50%", width: "36px", height: "36px", cursor: "pointer", fontSize: "16px", color: C.muted, display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
         </div>
         <div style={{ padding: "24px" }}>
-          {/* Placeholder family tree visualization */}
-          <svg viewBox="0 0 600 420" style={{ width: "100%", height: "auto" }}>
-            {/* Lines */}
+          <svg viewBox="0 0 600 420" style={{ width: "100%", height: "auto" }} role="img" aria-label="Family tree diagram showing lineage from James Cheever in 1560 through to Bruce Stevenson, with maternal Cheever/Hammond line on the left and paternal Moss/Stevenson line on the right, converging at Robert and Ada Mae Stevenson">
             <g stroke="#ddd8d0" strokeWidth="1.5" fill="none">
               <line x1="300" y1="48" x2="300" y2="80" />
               <line x1="300" y1="112" x2="150" y2="150" />
@@ -393,7 +449,6 @@ function FamilyTreeModal({ onClose, activeSection }) {
               <line x1="450" y1="302" x2="300" y2="340" />
               <line x1="300" y1="372" x2="300" y2="400" />
             </g>
-            {/* Nodes */}
             {[
               { x: 300, y: 32, label: "James Cheever", sub: "1560", color: FAMILY_LINES.cheever.color, id: "james-cheever" },
               { x: 300, y: 96, label: "Ezekiel Cheever", sub: "1614", color: FAMILY_LINES.cheever.color, id: "ezekiel-cheever", hi: true },
@@ -413,13 +468,13 @@ function FamilyTreeModal({ onClose, activeSection }) {
                     fill={isActive ? node.color : "#fff"}
                     stroke={node.hi ? node.color : "#e0dbd5"}
                     strokeWidth={node.hi || isActive ? "2" : "1"} />
-                  <text x={node.x} y={node.y - 2} textAnchor="middle" style={{ fontSize: "10px", fontWeight: node.hi ? 700 : 500, fill: isActive ? "#fff" : "#2a2520", fontFamily: "system-ui" }}>{node.label}</text>
-                  <text x={node.x} y={node.y + 10} textAnchor="middle" style={{ fontSize: "8px", fill: isActive ? "rgba(255,255,255,0.7)" : "#a09890", fontFamily: "system-ui" }}>{node.sub}</text>
+                  <text x={node.x} y={node.y - 2} textAnchor="middle" style={{ fontSize: "10px", fontWeight: node.hi ? 700 : 500, fill: isActive ? "#fff" : C.text, fontFamily: "system-ui" }}>{node.label}</text>
+                  <text x={node.x} y={node.y + 10} textAnchor="middle" style={{ fontSize: "8px", fill: isActive ? "rgba(255,255,255,0.7)" : C.meta, fontFamily: "system-ui" }}>{node.sub}</text>
                 </g>
               );
             })}
           </svg>
-          <p style={{ marginTop: "16px", fontSize: "12px", color: "#b8b0a8", textAlign: "center", fontStyle: "italic" }}>
+          <p style={{ marginTop: "16px", fontSize: "12px", color: C.meta, textAlign: "center", fontStyle: "italic" }}>
             Interactive family tree — will highlight the ancestor currently in view. Full detail coming soon.
           </p>
         </div>
@@ -449,10 +504,9 @@ function FamilyTourApp() {
     });
   }, []);
 
-  // Build ordered list of section IDs that have content
   const contentSections = ALL_SECTION_IDS.filter((id) => SECTION_CONTENT[id]);
 
-  // Scrollspy: observe which section is in view (only syncs in Contents mode)
+  // Scrollspy (Contents mode only)
   useEffect(() => {
     const container = contentRef.current;
     if (!container) return;
@@ -482,13 +536,30 @@ function FamilyTourApp() {
     }
   }, []);
 
-  // Close sidebar on mobile when clicking overlay
   const overlay = isMobile && sidebarOpen;
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100%", fontFamily: "'DM Sans', sans-serif", background: "#faf8f5", overflow: "hidden", position: "relative" }}>
+      {/* Skip to content link */}
+      <a href="#main-content" style={{ ...srOnly, position: "fixed", top: 0, left: 0, zIndex: 9999, padding: "8px 16px", background: C.text, color: "#fff", fontSize: "14px", textDecoration: "none" }}
+        onFocus={(e) => { Object.assign(e.target.style, { position: "fixed", width: "auto", height: "auto", clip: "auto", overflow: "visible", whiteSpace: "normal" }); }}
+        onBlur={(e) => { Object.assign(e.target.style, srOnly); }}>
+        Skip to content
+      </a>
+
       {/* Mobile overlay */}
       {overlay && <div onClick={() => setSidebarOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.3)", zIndex: 90 }} />}
+      {isMobile && sidebarOpen && (
+        <button onClick={() => setSidebarOpen(false)}
+          aria-label="Close navigation"
+          style={{
+            position: "fixed", left: "314px", top: "12px", zIndex: 101,
+            border: "none", background: "rgba(0,0,0,0.5)", borderRadius: "50%",
+            width: "36px", height: "36px", cursor: "pointer", fontSize: "14px",
+            color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+          }}>✕</button>
+      )}
 
       {/* SIDEBAR */}
       <aside style={{
@@ -504,23 +575,22 @@ function FamilyTourApp() {
           transform: sidebarOpen ? "translateX(0)" : "translateX(-310px)",
           marginLeft: sidebarOpen ? "0" : "-310px",
         }),
-      }}>
+      }} aria-label="Sidebar navigation">
         <div style={{ borderBottom: "1px solid #e8e2dc" }}>
-          <div style={{ padding: "16px 16px 10px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <h1 style={{ margin: 0, fontSize: "15px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>thefamilytour.org</h1>
-            {isMobile && <button onClick={() => setSidebarOpen(false)} style={{ border: "none", background: "none", fontSize: "20px", color: "#8a8580", cursor: "pointer", padding: "4px" }}>✕</button>}
-          </div>
-          <div style={{ padding: "0 16px 10px" }}>
+          <div style={{ padding: "12px 16px 10px" }}></div>
+          <div style={{ padding: "0 16px 10px" }} role="tablist" aria-label="Content sections">
             <div style={{ display: "flex", background: "#f0ece6", borderRadius: "8px", padding: "3px" }}>
               {[{ id: "tour", label: "The Family Tour", icon: "📖" }, { id: "record", label: "The Family Record", icon: "🌿" }].map((tab) => (
-                <button key={tab.id} onClick={() => setTopTab(tab.id)} style={{
-                  flex: 1, padding: "8px 4px", border: "none", borderRadius: "6px",
-                  fontSize: "11px", fontWeight: 600, cursor: "pointer",
-                  background: topTab === tab.id ? "#fff" : "transparent",
-                  color: topTab === tab.id ? "#2a2520" : "#9a9590",
-                  boxShadow: topTab === tab.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
-                }}><span style={{ fontSize: "12px" }}>{tab.icon}</span>{tab.label}</button>
+                <button key={tab.id} onClick={() => setTopTab(tab.id)}
+                  role="tab" aria-selected={topTab === tab.id} aria-controls={`${tab.id}-panel`}
+                  style={{
+                    flex: 1, padding: "8px 4px", border: "none", borderRadius: "6px",
+                    fontSize: "11px", fontWeight: 600, cursor: "pointer",
+                    background: topTab === tab.id ? "#fff" : "transparent",
+                    color: topTab === tab.id ? C.text : C.meta,
+                    boxShadow: topTab === tab.id ? "0 1px 4px rgba(0,0,0,0.08)" : "none",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "4px",
+                  }}><span aria-hidden="true" style={{ fontSize: "12px" }}>{tab.icon}</span>{tab.label}</button>
               ))}
             </div>
           </div>
@@ -529,17 +599,18 @@ function FamilyTourApp() {
         <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
           {topTab === "tour" ? (
             <>
-              {/* Contents / Timeline toggle */}
-              <div style={{ padding: "10px 16px 8px", flexShrink: 0 }}>
+              <div style={{ padding: "10px 16px 8px", flexShrink: 0 }} role="tablist" aria-label="Navigation mode">
                 <div style={{ display: "flex", background: "#f0ece6", borderRadius: "6px", padding: "2px" }}>
                   {[{ id: "toc", label: "Contents" }, { id: "timeline", label: "Timeline" }].map((mode) => (
-                    <button key={mode.id} onClick={() => setNavMode(mode.id)} style={{
-                      flex: 1, padding: "5px 0", border: "none", borderRadius: "5px",
-                      fontSize: "11px", fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
-                      background: navMode === mode.id ? "#fff" : "transparent",
-                      color: navMode === mode.id ? "#2a2520" : "#9a9590",
-                      boxShadow: navMode === mode.id ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-                    }}>{mode.label}</button>
+                    <button key={mode.id} onClick={() => setNavMode(mode.id)}
+                      role="tab" aria-selected={navMode === mode.id}
+                      style={{
+                        flex: 1, padding: "5px 0", border: "none", borderRadius: "5px",
+                        fontSize: "11px", fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
+                        background: navMode === mode.id ? "#fff" : "transparent",
+                        color: navMode === mode.id ? C.text : C.meta,
+                        boxShadow: navMode === mode.id ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+                      }}>{mode.label}</button>
                   ))}
                 </div>
               </div>
@@ -550,61 +621,58 @@ function FamilyTourApp() {
               ) : (
                 <TimelineSidebar
                   activeLines={activeLines} onToggle={toggleLine}
-                  activeSection={activeSection} onSectionClick={handleSectionClick}
+                  onSectionClick={handleSectionClick}
                   onClose={() => setSidebarOpen(false)} isMobile={isMobile}
                 />
               )}
             </>
           ) : (
             <div style={{ padding: "40px 20px", textAlign: "center" }}>
-              <div style={{ fontSize: "32px", marginBottom: "12px" }}>🌿</div>
-              <p style={{ fontSize: "12px", color: "#9a9590", lineHeight: 1.5 }}>The Family Record will have its own navigation.</p>
+              <div style={{ fontSize: "32px", marginBottom: "12px" }} aria-hidden="true">🌿</div>
+              <p style={{ fontSize: "12px", color: C.meta, lineHeight: 1.5 }}>The Family Record will have its own navigation.</p>
             </div>
           )}
         </div>
-        <div style={{ padding: "10px 16px", borderTop: "1px solid #e8e2dc", fontSize: "10px", color: "#c0b8b0", textAlign: "center" }}>By Bruce L. Stevenson · December 2025</div>
+        <div style={{ padding: "10px 16px", borderTop: "1px solid #e8e2dc", fontSize: "10px", color: C.meta, textAlign: "center" }}>By Bruce L. Stevenson · December 2025</div>
       </aside>
 
       {/* MAIN */}
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
-        {/* Top bar */}
+      <main id="main-content" style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }} aria-label="Main content">
         <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: isMobile ? "10px 16px" : "11px 24px", borderBottom: "1px solid #e8e2dc", background: "#fdfcfa" }}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ border: "none", background: "none", cursor: "pointer", fontSize: "20px", color: "#8a8580", padding: "4px", lineHeight: 1 }}>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)}
+            aria-label={sidebarOpen ? "Close navigation" : "Open navigation"}
+            aria-expanded={sidebarOpen}
+            style={{ border: "none", background: "none", cursor: "pointer", fontSize: "20px", color: C.ui, padding: "4px", lineHeight: 1, minWidth: "44px", minHeight: "44px", display: "flex", alignItems: "center", justifyContent: "center" }}>
             {sidebarOpen && !isMobile ? "◂" : "☰"}
           </button>
-          <span style={{ fontSize: isMobile ? "12.5px" : "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: "#2a2520", flex: 1 }}>
+          <span style={{ fontSize: isMobile ? "12.5px" : "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 600, color: C.text, flex: 1 }}>
             {topTab === "tour" ? "The Family Tour" : "The Family Record"}
           </span>
         </div>
 
-        {/* Content */}
         {topTab === "tour" ? (
           <div ref={contentRef} style={{ flex: 1, overflowY: "auto", padding: isMobile ? "24px 16px" : "32px 24px" }}>
             <div style={{ maxWidth: "700px", margin: "0 auto" }}>
-              {/* Hero */}
               <header style={{ marginBottom: "36px", textAlign: "center" }}>
-                <div style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: "#c0b8b0", marginBottom: "10px" }}>The Stevenson Family History</div>
-                <h1 style={{ margin: "0 0 6px", fontSize: isMobile ? "24px" : "30px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520", lineHeight: 1.25, letterSpacing: "-0.5px" }}>
+                <div style={{ fontSize: "9.5px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", color: C.meta, marginBottom: "10px" }}>The Stevenson Family History</div>
+                <h1 style={{ margin: "0 0 6px", fontSize: isMobile ? "24px" : "30px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: C.text, lineHeight: 1.25, letterSpacing: "-0.5px" }}>
                   A Guided Tour of Our Ancestors and Their Worlds
                 </h1>
-                <p style={{ margin: "0 0 6px", fontSize: "14.5px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#8a8580", fontStyle: "italic" }}>Messages for Our Lives</p>
-                <p style={{ margin: 0, fontSize: "12.5px", color: "#b8b0a8" }}>By Bruce L. Stevenson · December 2025</p>
+                <p style={{ margin: "0 0 6px", fontSize: "14.5px", fontFamily: "'Source Serif 4', Georgia, serif", color: C.meta, fontStyle: "italic" }}>Messages for Our Lives</p>
+                <p style={{ margin: 0, fontSize: "12.5px", color: C.meta }}>By Bruce L. Stevenson · December 2025</p>
               </header>
 
-              {/* Render all sections continuously */}
               {contentSections.map((id) => {
                 const sec = SECTION_CONTENT[id];
                 const fam = sec.fam ? FAMILY_LINES[sec.fam] : null;
-                // Find if this is a Part heading
                 const partItem = TOC.find((t) => t.id === id);
                 const isPart = partItem && partItem.title;
                 return (
-                  <section key={id} data-section-id={id} style={{ marginBottom: "36px", scrollMarginTop: "20px" }}>
-                    {/* Part divider if this is a Part-level item */}
+                  <section key={id} data-section-id={id} aria-label={sec.title} style={{ marginBottom: "36px", scrollMarginTop: "20px" }}>
                     {isPart && (
-                      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "20px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "20px" }} role="separator">
                         <div style={{ height: "1px", flex: 1, background: "#e0dbd5" }} />
-                        <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: fam?.color || "#8a8580", whiteSpace: "nowrap" }}>
+                        <div style={{ fontSize: "13px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: fam?.color || C.meta, whiteSpace: "nowrap" }}>
                           {partItem.label}: {partItem.title}
                         </div>
                         <div style={{ height: "1px", flex: 1, background: "#e0dbd5" }} />
@@ -613,12 +681,12 @@ function FamilyTourApp() {
                     {sec.hi && fam && (
                       <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: "0.8px", textTransform: "uppercase", color: fam.color, background: `${fam.color}10`, padding: "3px 8px", borderRadius: "3px", display: "inline-block", marginBottom: "8px" }}>Key Figure</span>
                     )}
-                    <h2 style={{ margin: "0 0 4px", fontSize: isMobile ? "20px" : "24px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520", lineHeight: 1.3 }}>{sec.title}</h2>
-                    {sec.subtitle && <div style={{ fontSize: "13px", color: fam?.color || "#8a8580", fontWeight: 500, marginBottom: "4px" }}>{sec.subtitle}</div>}
+                    <h2 style={{ margin: "0 0 4px", fontSize: isMobile ? "20px" : "24px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: C.text, lineHeight: 1.3 }}>{sec.title}</h2>
+                    {sec.subtitle && <h3 style={{ margin: "0 0 4px", fontSize: "13px", color: fam?.color || C.meta, fontWeight: 500 }}>{sec.subtitle}</h3>}
                     {fam && (
                       <span style={{ fontSize: "10px", fontWeight: 500, color: fam.color, background: `${fam.color}0c`, padding: "2px 8px", borderRadius: "10px", border: `1px solid ${fam.color}18`, display: "inline-block", marginBottom: "12px" }}>{fam.label} Line</span>
                     )}
-                    <div style={{ fontSize: isMobile ? "14px" : "15px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#3a3530", lineHeight: 1.8 }}>
+                    <div style={{ fontSize: isMobile ? "14px" : "15px", fontFamily: "'Source Serif 4', Georgia, serif", color: C.body, lineHeight: 1.8 }}>
                       {sec.body.split("\n\n").map((p, i) => (
                         <p key={i} style={{ margin: i === 0 ? "0 0 14px" : "14px 0" }}>{p}</p>
                       ))}
@@ -627,41 +695,37 @@ function FamilyTourApp() {
                 );
               })}
 
-              {/* Footer */}
               <footer style={{ marginTop: "40px", padding: "20px", textAlign: "center", borderTop: "1px solid #e8e2dc" }}>
-                <p style={{ margin: "0 0 8px", fontSize: "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", color: "#8a8580", lineHeight: 1.6, maxWidth: "500px", marginLeft: "auto", marginRight: "auto" }}>
+                <p style={{ margin: "0 0 8px", fontSize: "13.5px", fontFamily: "'Source Serif 4', Georgia, serif", fontStyle: "italic", color: C.meta, lineHeight: 1.6, maxWidth: "500px", marginLeft: "auto", marginRight: "auto" }}>
                   "A proper understanding of our family history <em style={{ textDecoration: "underline" }}>always</em> serves as a blessing from God when our history is viewed as something worthy of meditation."
                 </p>
-                <p style={{ margin: 0, fontSize: "11px", color: "#ccc5be" }}>thefamilytour.org</p>
+                <p style={{ margin: 0, fontSize: "11px", color: C.meta }}>thefamilytour.org</p>
               </footer>
             </div>
           </div>
         ) : (
           <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "40px", overflow: "auto" }}>
             <div style={{ maxWidth: "520px", textAlign: "center" }}>
-              <div style={{ fontSize: "28px", marginBottom: "16px" }}>🌿</div>
-              <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: "#2a2520" }}>The Family Record</h2>
-              <p style={{ fontSize: "14px", fontFamily: "'Source Serif 4', Georgia, serif", color: "#8a8580", lineHeight: 1.65 }}>
+              <div style={{ fontSize: "28px", marginBottom: "16px" }} aria-hidden="true">🌿</div>
+              <h2 style={{ margin: "0 0 8px", fontSize: "22px", fontFamily: "'Source Serif 4', Georgia, serif", fontWeight: 700, color: C.text }}>The Family Record</h2>
+              <p style={{ fontSize: "14px", fontFamily: "'Source Serif 4', Georgia, serif", color: C.meta, lineHeight: 1.65 }}>
                 A living document for future generations. Coming soon.
               </p>
             </div>
           </div>
         )}
 
-        {/* Floating family tree button */}
         {topTab === "tour" && (
           <button
             onClick={() => setTreeOpen(true)}
+            aria-label="View family tree"
             style={{
               position: "fixed",
               bottom: isMobile ? "20px" : "28px",
               right: isMobile ? "20px" : "28px",
               width: "52px", height: "52px",
-              borderRadius: "50%",
-              border: "none",
-              background: "#2a2520",
-              color: "#fff",
-              fontSize: "22px",
+              borderRadius: "50%", border: "none",
+              background: C.text, color: "#fff", fontSize: "22px",
               cursor: "pointer",
               boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -670,14 +734,12 @@ function FamilyTourApp() {
             }}
             onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.08)"; e.currentTarget.style.boxShadow = "0 6px 24px rgba(0,0,0,0.3)"; }}
             onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.2)"; }}
-            title="View family tree"
           >
-            🌳
+            <span aria-hidden="true">🌳</span>
           </button>
         )}
       </main>
 
-      {/* Family tree modal */}
       {treeOpen && <FamilyTreeModal onClose={() => setTreeOpen(false)} activeSection={activeSection} />}
     </div>
   );
