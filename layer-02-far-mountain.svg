@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1600 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Far-Mountian" serif:id="Far Mountian" transform="matrix(1,0,0,1,40,0)">
+        <path d="M456,225L715,65C715,65 743.053,13.981 785,14C802.829,14.008 873,65.167 911,67C947.727,68.772 1013,25 1013,25C1013,25 1066.1,-1.375 1089,-1C1099.167,-0.833 1176,44 1176,44L1296,110C1401.623,173.913 1521.356,222.86 1596,227L456,225Z" style="fill:url(#_Linear1);stroke:rgb(203,218,205);stroke-opacity:0;stroke-width:1px;"/>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-4,269,-53.800937,-0.800014,1087,-45)"><stop offset="0" style="stop-color:rgb(242,242,240);stop-opacity:1"/><stop offset="0.45" style="stop-color:rgb(230,230,224);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(227,227,220);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

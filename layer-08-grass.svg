@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1600 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Grass">
+        <path d="M1291,400L1283,400C1283.891,387.983 1286.877,377.166 1291,367C1289.917,377.639 1289.287,388.43 1291,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1259,400L1269,400C1261.847,391.264 1253.224,383.445 1244,376C1249.68,383.641 1255.261,391.334 1259,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <g transform="matrix(1,0,0,1,21,0)">
+            <path d="M1223,400L1206,400C1199.72,386.824 1191.546,375.254 1183,364C1197.363,374.118 1210.794,386.638 1223,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        </g>
+        <path d="M1144,400C1136.047,393.877 1127.42,388.815 1118,385C1122.742,389.603 1127.388,394.298 1131,400L1144,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1217,400L1211,400C1208.535,394.224 1205.353,388.148 1202,382L1217,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1377,400L1359,400C1350.641,382.312 1337.495,365.62 1324,349C1344.29,364.527 1362.73,381.092 1377,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1338,400L1326,400C1320.431,389.037 1312.307,378.503 1304,368C1316.555,377.741 1328.264,388.123 1338,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1307,400L1301,400C1300.236,395.109 1297.969,391.147 1296,387L1307,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1409,400L1391,400C1383.217,374.036 1371.559,351.159 1359,329C1380.343,351.784 1397.542,375.35 1409,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1423,400L1406,400C1404.24,372.823 1396.306,348.135 1387,324C1403.562,347.582 1416.768,372.453 1423,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1441,400L1420,400C1411.998,386.319 1401.14,373.135 1390,360C1409.873,371.299 1427.569,384.14 1441,400" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1462,400L1454,400C1452.117,397.008 1450.065,394.486 1448,392L1462,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1472,400L1462,400C1460.974,387.199 1457.022,374.568 1452,362C1460.4,373.841 1467.506,386.298 1472,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1548,400L1515,400C1502.549,358.657 1480.384,323.609 1456,290C1493.446,315.96 1525.016,351.2 1548,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1504,401L1486,401C1480.468,380.384 1472.187,363.251 1464,346C1478.555,363.355 1492.279,381.375 1504,401Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1582,400L1552,400C1539.687,353.198 1519.931,317.47 1500,282C1533.694,315.203 1561.387,354.189 1582,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M1584,400L1566,400C1571.326,354.759 1580.657,318.865 1593,290C1587.72,322.213 1582.488,354.52 1584,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M410,400L425,400C427.888,394.398 433.321,390.135 439,386C427.451,389.986 417.72,394.629 410,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M384,400L400,400C401.745,393.899 412.539,379.363 424,364C408.729,373.68 395.18,385.422 384,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M464,400L476,400C478.468,394.456 483.145,389.696 488,385C478.313,389.401 470.213,394.365 464,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M337,400L347,400C350.984,391.396 355.85,383.572 361,376C353.584,382.322 345.695,390.003 337,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M366,400L381,400C384.963,378.491 394.315,359.887 405,342C389.045,358.182 375.717,377.165 366,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M316,400C317.107,389.85 317.042,378.76 316,368C318.972,378.931 321.709,389.658 324,400L316,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M299,400L305,400C305.236,397.164 307.914,392.255 311,387L299,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M268,400L281,400L287.563,388.148L304,367C290.404,376.91 278.309,387.846 268,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M230,400L248,400C256.209,381.463 268.923,364.928 283,349C262.722,362.455 245.059,379.46 230,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M197,400L216,400C223.087,372.832 234.845,349.798 248,328C228.034,347.497 211.394,372.044 197,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M182,400L200,400C201.762,374.475 209.181,349.6 219,325C201.093,348.671 189.114,373.756 182,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M166,400L187,400C194.754,385.803 205.197,372.351 216,359C196.147,371.386 178.782,384.772 166,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <path d="M143,400L153,400C153.288,397.503 155.156,395.194 158,393C153.427,395.171 148.446,397.497 143,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <g transform="matrix(1,0,0,1,-2,0)">
+            <path d="M135,400C142.24,384.72 149.232,371.799 156,361C151.625,373.936 147.663,386.909 146,400L135,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        </g>
+        <path d="M23,400L55,400L66.127,363.463C80.643,327.36 94.573,300.308 108,281C96.644,288.641 82.252,303.211 64.162,330.146C52.139,348.046 38.484,372.523 23,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        <g transform="matrix(1,0,0,1,36,0)">
+            <path d="M23,400L55,400L68.127,364.463C86.643,326.36 97.573,310.308 113,291C101.644,298.641 82.252,314.211 59.162,340.146C44.823,356.25 33.484,380.523 23,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(1,0,0,1,-10,1)">
+            <path d="M101,400L120,389L111,399L101,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        </g>
+        <g transform="matrix(0.533333,0,0,0.541284,90.733333,183.486239)">
+            <path d="M23,400L55,400L68.127,364.463C69.768,367.004 73.198,338.02 98,300.237C86.644,307.878 84.127,314.211 61.037,340.146C46.698,356.25 31.609,384.218 23,400Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1.86px;"/>
+        </g>
+        <path d="M23,400C23,400 22.332,364.801 21.004,348.276C19.504,329.609 14,290 14,290C24.594,318.954 32.481,345.016 40,400L23,400Z" style="fill:rgb(59,108,75);stroke:rgb(161,191,164);stroke-opacity:0;stroke-width:1px;"/>
+        <g transform="matrix(1,0,0,1,-13,0)">
+            <path d="M1507,401L1496,401C1493.924,396.378 1490.006,392.642 1487,389C1492.358,393.156 1499.627,397.166 1507,401Z" style="fill:rgb(59,108,75);stroke:black;stroke-opacity:0;stroke-width:1px;"/>
+        </g>
+    </g>
+</svg>
