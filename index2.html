@@ -353,102 +353,66 @@
         }
 
         /* --- Parallax terrain divider --- */
-        .terrain-divider {
+        .parallax-divider {
             position: relative;
-            height: clamp(320px, 40vw, 480px);
-            margin: var(--space-lg) 0 0;
+            width: 100%;
+            aspect-ratio: 4 / 1;
+            max-height: 400px;
             overflow: hidden;
+            margin: var(--space-lg) 0 0;
         }
 
-        .terrain-divider .terrain-layer {
+        .parallax-divider .parallax-layer {
             position: absolute;
-            left: -5%;
-            width: 110%;
-            will-change: transform;
-        }
-
-        /* Sky / atmosphere gradient */
-        .terrain-sky {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-                180deg,
-                var(--color-bg) 0%,
-                #EEF2EE 25%,
-                #DFE8DF 50%,
-                #D4DED4 75%,
-                #C8D8C8 100%
-            );
-        }
-
-        /* Layer 1: Distant ridge — very faint, moves slowest */
-        .terrain-far {
-            bottom: 35%;
-            height: 50%;
-        }
-
-        /* Layer 2: Mid hills — medium tone, medium speed */
-        .terrain-mid {
-            bottom: 18%;
-            height: 45%;
-        }
-
-        /* Layer 3: Near ground — richest color, moves fastest */
-        .terrain-near {
-            bottom: 0;
-            height: 40%;
-        }
-
-        /* Layer 4: Foreground grass detail */
-        .terrain-grass {
-            bottom: -2%;
-            height: 30%;
-        }
-
-        /* Ground continuation into next section */
-        .terrain-ground {
-            position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            right: 0;
-            height: 15%;
-            background: #3A6B4A;
+            width: 100%;
+            height: 100%;
+            will-change: transform;
+            pointer-events: none;
         }
 
-        /* Optional quote overlay */
-        .terrain-content {
+        .parallax-divider .parallax-layer img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+        }
+
+        /* Z-index stacking */
+        .layer-sky     { z-index: 10; }
+        .layer-02      { z-index: 11; }
+        .layer-03      { z-index: 12; }
+        .go-farther-text { z-index: 13; }
+        .layer-ground  { z-index: 14; }
+        .layer-04      { z-index: 15; }
+        .layer-05      { z-index: 16; }
+        .layer-06      { z-index: 17; }
+        .layer-07      { z-index: 18; }
+        .layer-08      { z-index: 19; }
+        .layer-09      { z-index: 20; }
+
+        /* GO FARTHER text */
+        .go-farther-text {
             position: absolute;
-            top: 12%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            z-index: 10;
-            max-width: 520px;
-            padding: 0 2rem;
+            top: 56.75%;
+            left: 14%;
+            transform: translateY(80px);
             opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .terrain-content.visible {
-            opacity: 1;
-        }
-
-        .terrain-quote {
             font-family: var(--font-display);
-            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-            font-weight: 300;
-            font-style: italic;
-            line-height: 1.5;
-            color: #2B5F3F;
-            letter-spacing: -0.01em;
-        }
-
-        .terrain-attribution {
-            font-family: var(--font-body);
-            font-size: 0.8125rem;
-            color: #5C8A6A;
-            margin-top: 1rem;
-            letter-spacing: 0.04em;
+            font-weight: 800;
+            font-optical-sizing: auto;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(242, 242, 240, 0.92);
+            text-shadow:
+                0 2px 4px rgba(26, 58, 40, 0.6),
+                0 4px 16px rgba(26, 58, 40, 0.4),
+                0 0 40px rgba(90, 158, 114, 0.2);
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
         }
 
         /* --- Writing Section --- */
@@ -671,7 +635,7 @@
             .work-grid { grid-template-columns: 1fr; }
             .writing-grid { grid-template-columns: 1fr; }
             .writing-card { border-right: none; }
-            .terrain-divider { height: 260px; }
+            .parallax-divider { max-height: 260px; }
         }
     </style>
 </head>
@@ -698,8 +662,8 @@
             <div class="hero-text">
                 <p class="hero-greeting">UX Design Leader</p>
                 <h1 class="hero-title">
-                    <span class="line"><span class="line-inner">Designing products</span></span>
-                    <span class="line"><span class="line-inner">that <em>people</em> actually love</span></span>
+                    <span class="line"><span class="line-inner">Clarity is a design skill.</span></span>
+                    <span class="line"><span class="line-inner">I build teams that have it.</span></span>
                 </h1>
                 <p class="hero-description">
                     I lead design teams in creating thoughtful, human-centered experiences 
@@ -849,78 +813,62 @@
         </div>
     </section>
 
-    <!-- Terrain Parallax Divider -->
-    <div class="terrain-divider" id="terrainDivider">
-        <!-- Sky gradient -->
-        <div class="terrain-sky"></div>
+    <!-- Parallax Terrain Divider -->
+    <div class="parallax-divider" id="parallaxDivider">
 
-        <!-- Quote overlay -->
-        <div class="terrain-content fade-in">
-            <p class="terrain-quote">
-                Good design, like good trail work, disappears into the experience it creates.
-            </p>
-            <p class="terrain-attribution">— A personal philosophy</p>
+        <!-- Sky — static -->
+        <div class="parallax-layer layer-sky" data-origin="none" data-speed="0">
+            <img src="layer-01a-sky.svg" alt="">
         </div>
 
-        <!-- Layer 1: Distant mountains -->
-        <svg class="terrain-layer terrain-far" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 280 L80 240 L180 265 L300 200 L420 230 L520 180 L620 210 L740 160 L850 195 L960 150 L1060 185 L1160 140 L1260 175 L1360 135 L1440 160 L1440 400 L0 400 Z" fill="#B8CCBA" opacity="0.5"/>
-        </svg>
+        <!-- Far mountain — scale from horizon -->
+        <div class="parallax-layer layer-02" data-origin="horizon" data-speed="0.06">
+            <img src="layer-02-far-mountain.svg" alt="">
+        </div>
 
-        <!-- Layer 2: Mid hills -->
-        <svg class="terrain-layer terrain-mid" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 260 C120 230 200 250 320 220 C440 190 500 240 640 200 C780 160 840 220 960 180 C1080 140 1160 200 1280 170 C1360 150 1400 180 1440 160 L1440 400 L0 400 Z" fill="#7FA882" opacity="0.6"/>
-            <!-- Tree silhouettes on ridge -->
-            <g fill="#6B9470" opacity="0.5">
-                <ellipse cx="200" cy="235" rx="18" ry="30"/>
-                <ellipse cx="220" cy="240" rx="14" ry="24"/>
-                <ellipse cx="510" cy="218" rx="16" ry="28"/>
-                <ellipse cx="535" cy="222" rx="12" ry="22"/>
-                <ellipse cx="850" cy="195" rx="18" ry="32"/>
-                <ellipse cx="875" cy="200" rx="14" ry="26"/>
-                <ellipse cx="1170" cy="182" rx="16" ry="28"/>
-                <ellipse cx="1195" cy="188" rx="13" ry="24"/>
-            </g>
-        </svg>
+        <!-- Near mountain — scale from horizon -->
+        <div class="parallax-layer layer-03" data-origin="horizon" data-speed="0.10">
+            <img src="layer-03-near-mountain.svg" alt="">
+        </div>
 
-        <!-- Layer 3: Near rolling ground -->
-        <svg class="terrain-layer terrain-near" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 200 C160 160 280 200 440 170 C600 140 680 190 840 150 C1000 110 1120 170 1280 140 C1380 120 1420 150 1440 140 L1440 400 L0 400 Z" fill="#4E8A5E"/>
-            <!-- Subtle terrain texture lines -->
-            <g stroke="#458054" stroke-width="0.75" fill="none" opacity="0.4">
-                <path d="M0 230 C200 200 400 230 600 205 C800 180 1000 215 1200 195 C1350 180 1420 200 1440 195"/>
-                <path d="M0 270 C180 250 380 270 580 250 C780 230 980 260 1180 245 C1340 235 1420 250 1440 245"/>
-                <path d="M0 310 C220 295 400 315 600 295 C800 275 1000 305 1200 290 C1380 280 1440 295 1440 290"/>
-            </g>
-        </svg>
+        <!-- Distant trees — scale from horizon -->
+        <div class="parallax-layer layer-04" data-origin="horizon" data-speed="0.15">
+            <img src="layer-04-distant-trees.svg" alt="">
+        </div>
 
-        <!-- Layer 4: Foreground grass -->
-        <svg class="terrain-layer terrain-grass" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 120 C100 100 180 130 300 105 C420 80 520 120 660 95 C800 70 900 110 1040 85 C1180 60 1300 100 1440 80 L1440 300 L0 300 Z" fill="#3A6B4A"/>
-            <!-- Grass blade details -->
-            <g stroke="#2F5A3E" stroke-width="1" fill="none" opacity="0.3">
-                <line x1="60" y1="115" x2="55" y2="95"/>
-                <line x1="90" y1="110" x2="87" y2="88"/>
-                <line x1="150" y1="118" x2="145" y2="96"/>
-                <line x1="250" y1="108" x2="247" y2="86"/>
-                <line x1="340" y1="102" x2="335" y2="78"/>
-                <line x1="420" y1="112" x2="415" y2="90"/>
-                <line x1="500" y1="106" x2="496" y2="82"/>
-                <line x1="580" y1="100" x2="575" y2="76"/>
-                <line x1="670" y1="95" x2="666" y2="72"/>
-                <line x1="760" y1="104" x2="756" y2="80"/>
-                <line x1="840" y1="98" x2="835" y2="74"/>
-                <line x1="930" y1="108" x2="926" y2="84"/>
-                <line x1="1020" y1="92" x2="1016" y2="68"/>
-                <line x1="1100" y1="102" x2="1096" y2="78"/>
-                <line x1="1200" y1="88" x2="1195" y2="64"/>
-                <line x1="1300" y1="96" x2="1296" y2="72"/>
-                <line x1="1380" y1="86" x2="1376" y2="62"/>
-            </g>
-        </svg>
+        <!-- GO FARTHER text -->
+        <div class="go-farther-text" id="goFartherText">Go Farther</div>
 
-        <!-- Solid ground at bottom blending into next section -->
-        <div class="terrain-ground"></div>
+        <!-- Lake & shrub — scale from horizon -->
+        <div class="parallax-layer layer-05" data-origin="horizon" data-speed="0.22">
+            <img src="layer-05-lake-shrub.svg" alt="">
+        </div>
+
+        <!-- Ground plane — in front of text, scale from horizon -->
+        <div class="parallax-layer layer-ground" data-origin="horizon" data-speed="0.18">
+            <img src="layer-01b-ground.svg" alt="">
+        </div>
+
+        <!-- Shrubs — scale from horizon -->
+        <div class="parallax-layer layer-06" data-origin="horizon" data-speed="0.30">
+            <img src="layer-06-shrubs.svg" alt="">
+        </div>
+
+        <!-- Near tree — scale from bottom -->
+        <div class="parallax-layer layer-07" data-origin="bottom" data-speed="0.40">
+            <img src="layer-07-near-tree.svg" alt="">
+        </div>
+
+        <!-- Grass — scale from bottom, fast -->
+        <div class="parallax-layer layer-08" data-origin="bottom" data-speed="1.2">
+            <img src="layer-08-grass.svg" alt="">
+        </div>
+
+        <!-- Trail — scale from horizon -->
+        <div class="parallax-layer layer-09" data-origin="horizon" data-speed="0.40">
+            <img src="layer-09-trail.svg" alt="">
+        </div>
+
     </div>
 
     <!-- Writing -->
@@ -1158,61 +1106,86 @@
 
         // --- Parallax terrain divider ---
         (function() {
-            const divider = document.getElementById('terrainDivider');
+            const divider = document.getElementById('parallaxDivider');
             if (!divider) return;
 
-            const layers = {
-                far:   divider.querySelector('.terrain-far'),
-                mid:   divider.querySelector('.terrain-mid'),
-                near:  divider.querySelector('.terrain-near'),
-                grass: divider.querySelector('.terrain-grass')
-            };
+            const layers = divider.querySelectorAll('.parallax-layer');
+            const goFartherText = document.getElementById('goFartherText');
 
-            // Parallax speeds: higher = moves more relative to scroll
-            const speeds = {
-                far:   0.08,
-                mid:   0.18,
-                near:  0.32,
-                grass: 0.45
-            };
+            const HORIZON_RATIO = 227 / 400; // 0.5675
 
             let ticking = false;
+
+            function easeInOutCubic(t) {
+                return t < 0.5
+                    ? 4 * t * t * t
+                    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
 
             function updateParallax() {
                 const rect = divider.getBoundingClientRect();
                 const viewH = window.innerHeight;
+                const dividerH = rect.height;
 
-                // Only animate when divider is in/near viewport
-                if (rect.bottom < -100 || rect.top > viewH + 100) {
+                const progress = 1 - (rect.bottom / (viewH + dividerH));
+
+                if (rect.bottom < -200 || rect.top > viewH + 200) {
                     ticking = false;
                     return;
                 }
 
-                // Progress: 0 when divider top hits viewport bottom, 1 when divider bottom hits viewport top
-                const progress = (viewH - rect.top) / (viewH + rect.height);
+                layers.forEach(layer => {
+                    const speed = parseFloat(layer.dataset.speed);
+                    const origin = layer.dataset.origin;
+                    const cls = [...layer.classList].find(c => c.startsWith('layer-')) || 'unknown';
 
-                // Center the parallax offset around the midpoint
-                const centered = (progress - 0.5) * 2; // -1 to 1
+                    if (speed === 0 || origin === 'none') return;
 
-                Object.keys(layers).forEach(key => {
-                    if (layers[key]) {
-                        const offset = centered * speeds[key] * rect.height;
-                        layers[key].style.transform = `translateY(${offset}px)`;
+                    const scaleStart = 0.35;
+                    const forwardProgress = Math.max(0, (progress - scaleStart) / (1 - scaleStart));
+                    const scale = 1 + forwardProgress * speed * 2.0;
+
+                    let transformOrigin;
+                    if (origin === 'horizon') {
+                        transformOrigin = `50% ${HORIZON_RATIO * 100}%`;
+                    } else if (origin === 'bottom') {
+                        transformOrigin = `50% 100%`;
+                    }
+
+                    layer.style.transformOrigin = transformOrigin;
+
+                    if (cls === 'layer-08') {
+                        const slideDown = forwardProgress * dividerH * 0.7;
+                        layer.style.transform = `translateY(${slideDown}px) scale(${scale})`;
+                    } else {
+                        layer.style.transform = `scale(${scale})`;
                     }
                 });
+
+                // GO FARTHER text
+                const textStart = 0.15;
+                const textEnd = 0.55;
+                const textRaw = Math.max(0, Math.min(1, (progress - textStart) / (textEnd - textStart)));
+                const textEased = easeInOutCubic(textRaw);
+                const textYStart = 120;
+                const textHeight = goFartherText.offsetHeight || 40;
+                const textYEnd = -textHeight;
+                const textY = textYStart + (textYEnd - textYStart) * textEased;
+
+                goFartherText.style.opacity = Math.min(1, textEased * 2);
+                goFartherText.style.transform = `translateY(${textY}px)`;
 
                 ticking = false;
             }
 
-            function onScroll() {
+            window.addEventListener('scroll', () => {
                 if (!ticking) {
                     requestAnimationFrame(updateParallax);
                     ticking = true;
                 }
-            }
+            }, { passive: true });
 
-            window.addEventListener('scroll', onScroll, { passive: true });
-            updateParallax(); // initial position
+            updateParallax();
         })();
     </script>
 </body>
