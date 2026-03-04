@@ -64,32 +64,45 @@
 
         .hero-title {
             font-family: var(--font-display);
-            font-size: clamp(2.75rem, 5.5vw, 4.5rem);
-            font-weight: 400;
-            line-height: 1.08;
-            letter-spacing: -0.025em;
-            color: var(--color-text);
             margin-bottom: 1.5rem;
         }
 
-        .hero-title .line {
+        .hero-title .hero-line-1 {
             display: block;
-            overflow: hidden;
-            padding-bottom: 0.15em;
-        }
-
-        .hero-title .line-inner {
-            display: block;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: var(--color-text);
             opacity: 0;
-            animation: lineReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
         }
 
-        .hero-title .line:nth-child(1) .line-inner { animation-delay: 0.4s; }
-        .hero-title .line:nth-child(2) .line-inner { animation-delay: 0.55s; }
-
-        .hero-title em {
-            font-style: italic;
+        .hero-title .hero-line-1 strong {
+            font-size: 1.6em;
+            font-weight: 600;
             color: var(--color-accent);
+            letter-spacing: -0.03em;
+            filter: blur(2px);
+            opacity: 0.5;
+            transition: filter 0.4s ease-out, opacity 0.4s ease-out;
+        }
+
+        .hero-title .hero-line-1 strong.resolved {
+            filter: blur(0px);
+            opacity: 1;
+        }
+
+        .hero-title .hero-line-2 {
+            display: block;
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.015em;
+            color: #666;
+            margin-top: 0.25em;
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both;
         }
 
         .hero-description {
@@ -356,10 +369,11 @@
         .parallax-divider {
             position: relative;
             width: 100%;
+            max-width: 1600px;
+            margin: var(--space-lg) auto 0;
             aspect-ratio: 4 / 1;
             max-height: 400px;
             overflow: hidden;
-            margin: var(--space-lg) 0 0;
         }
 
         .parallax-divider .parallax-layer {
@@ -661,14 +675,14 @@
         <div class="hero-content">
             <div class="hero-text">
                 <p class="hero-greeting">UX Design Leader</p>
-                <h1 class="hero-title">
-                    <span class="line"><span class="line-inner">Clarity is a design skill.</span></span>
-                    <span class="line"><span class="line-inner">I build teams that have it.</span></span>
+                <h1 class="hero-title" id="heroTitle">
+                    <span class="hero-line-1"><strong id="clarityWord">Clarity</strong> is a design skill.</span>
+                    <span class="hero-line-2">I build teams that have it.</span>
                 </h1>
                 <p class="hero-description">
-                    I lead design teams in creating thoughtful, human-centered experiences 
-                    that drive real business outcomes. Currently exploring new opportunities 
-                    to shape products at scale.
+                    Design leader with 15+ years building focused teams inside complex 
+                    organizations — from startups to Fortune 50 retail. The craft is 
+                    how I got here, and how I stay sharp.
                 </p>
                 <div class="hero-actions">
                     <a href="work.html" class="btn btn--primary">
@@ -1003,6 +1017,14 @@
 
     <script src="scripts.js"></script>
     <script>
+        // --- Hero "Clarity" blur resolve ---
+        (function() {
+            const clarityWord = document.getElementById('clarityWord');
+            if (clarityWord) {
+                setTimeout(() => clarityWord.classList.add('resolved'), 1300);
+            }
+        })();
+
         // --- Floating hero cards ---
         (function() {
             const area = document.getElementById('heroFloatArea');
@@ -1112,7 +1134,7 @@
             const layers = divider.querySelectorAll('.parallax-layer');
             const goFartherText = document.getElementById('goFartherText');
 
-            const HORIZON_RATIO = 227 / 400; // 0.5675
+            const HORIZON_RATIO = 227 / 400;
 
             let ticking = false;
 
@@ -1134,6 +1156,12 @@
                     return;
                 }
 
+                // Responsive timing based on divider-to-viewport ratio
+                const sizeRatio = dividerH / viewH;
+                const scaleStart = Math.max(0.05, Math.min(0.25, sizeRatio * 0.8));
+                const textStart = Math.max(0.02, scaleStart - 0.10);
+                const textEnd = Math.max(0.35, scaleStart + 0.30);
+
                 layers.forEach(layer => {
                     const speed = parseFloat(layer.dataset.speed);
                     const origin = layer.dataset.origin;
@@ -1141,7 +1169,6 @@
 
                     if (speed === 0 || origin === 'none') return;
 
-                    const scaleStart = 0.35;
                     const forwardProgress = Math.max(0, (progress - scaleStart) / (1 - scaleStart));
                     const scale = 1 + forwardProgress * speed * 2.0;
 
@@ -1154,17 +1181,16 @@
 
                     layer.style.transformOrigin = transformOrigin;
 
+                    // Grass: translate down aggressively to exit the frame
                     if (cls === 'layer-08') {
-                        const slideDown = forwardProgress * dividerH * 0.7;
+                        const slideDown = forwardProgress * dividerH * 1.8;
                         layer.style.transform = `translateY(${slideDown}px) scale(${scale})`;
                     } else {
                         layer.style.transform = `scale(${scale})`;
                     }
                 });
 
-                // GO FARTHER text
-                const textStart = 0.15;
-                const textEnd = 0.55;
+                // GO FARTHER text — rises from behind ground to rest on horizon
                 const textRaw = Math.max(0, Math.min(1, (progress - textStart) / (textEnd - textStart)));
                 const textEased = easeInOutCubic(textRaw);
                 const textYStart = 120;
