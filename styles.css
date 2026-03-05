@@ -106,6 +106,18 @@ body::before {
     z-index: 500;
 }
 
+/* Solid cover for the safe area above the nav on notched iPhones */
+.nav::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: env(safe-area-inset-top, 0px);
+    background: #FAFAF5;
+    z-index: 1;
+}
+
 .nav-name {
     font-family: var(--font-display);
     font-size: 1.125rem;
