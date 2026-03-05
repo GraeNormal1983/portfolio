@@ -92,8 +92,7 @@ body::before {
     top: 0;
     left: 0;
     right: 0;
-    height: calc(var(--nav-height) + env(safe-area-inset-top, 0px));
-    padding-top: env(safe-area-inset-top, 0px);
+    height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -106,16 +105,17 @@ body::before {
     z-index: 500;
 }
 
-/* Solid cover for the safe area above the nav on notched iPhones */
+/* Solid cover above the nav to prevent scrolled content
+   from being visible in the status bar / Dynamic Island area.
+   Uses the page background color so it blends seamlessly. */
 .nav::before {
     content: '';
     position: absolute;
-    top: 0;
+    bottom: 100%;
     left: 0;
     right: 0;
-    height: env(safe-area-inset-top, 0px);
+    height: 100px; /* generous overreach to cover any status bar gap */
     background: #FAFAF5;
-    z-index: 1;
 }
 
 .nav-name {
