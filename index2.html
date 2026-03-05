@@ -1175,9 +1175,44 @@
                 clarified = true;
                 area.classList.add('clarified');
 
-                state.forEach(s => {
-                    s.el.style.left = s.gridX + '%';
-                    s.el.style.top = s.gridY + '%';
+                // Calculate grid positions from actual measurements
+                const areaW = area.offsetWidth;
+                const areaH = area.offsetHeight;
+                const centerX = areaW / 2;
+                const centerY = areaH / 2;
+                const gap = 12; // px gap between card edge and grid line
+
+                // Grid quadrant assignments: [col, row] where 0=left/top, 1=right/bottom
+                const quadrants = [
+                    [0, 0], // Card 1: top-left
+                    [1, 0], // Card 2: top-right
+                    [0, 1], // Card 3: bottom-left
+                    [1, 1], // Card 4: bottom-right
+                ];
+
+                state.forEach((s, i) => {
+                    const cardW = s.el.offsetWidth;
+                    const cardH = s.el.offsetHeight;
+                    const [col, row] = quadrants[i];
+
+                    let x, y;
+                    if (col === 0) {
+                        // Left column: card's right edge = centerX - gap
+                        x = centerX - gap - cardW;
+                    } else {
+                        // Right column: card's left edge = centerX + gap
+                        x = centerX + gap;
+                    }
+                    if (row === 0) {
+                        // Top row: card's bottom edge = centerY - gap
+                        y = centerY - gap - cardH;
+                    } else {
+                        // Bottom row: card's top edge = centerY + gap
+                        y = centerY + gap;
+                    }
+
+                    s.el.style.left = x + 'px';
+                    s.el.style.top = y + 'px';
                     s.el.style.transform = 'translate(0, 0)';
                 });
             });
