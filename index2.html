@@ -31,7 +31,7 @@
             width: 65%;
             height: 120%;
             background-image:
-                url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%232B5F3F' stroke-width='1'%3E%3Cellipse cx='400' cy='400' rx='60' ry='45' opacity='0.08'/%3E%3Cellipse cx='400' cy='400' rx='110' ry='85' opacity='0.07'/%3E%3Cellipse cx='400' cy='400' rx='165' ry='130' opacity='0.06'/%3E%3Cellipse cx='400' cy='400' rx='220' ry='178' opacity='0.05'/%3E%3Cellipse cx='400' cy='400' rx='280' ry='225' opacity='0.045'/%3E%3Cellipse cx='400' cy='400' rx='345' ry='278' opacity='0.04'/%3E%3Cellipse cx='400' cy='400' rx='410' ry='330' opacity='0.035'/%3E%3C/g%3E%3C/svg%3E");
+                url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%232B5F3F' stroke-width='1'%3E%3Cellipse cx='400' cy='400' rx='60' ry='45' opacity='0.22'/%3E%3Cellipse cx='400' cy='400' rx='110' ry='85' opacity='0.19'/%3E%3Cellipse cx='400' cy='400' rx='165' ry='130' opacity='0.16'/%3E%3Cellipse cx='400' cy='400' rx='220' ry='178' opacity='0.14'/%3E%3Cellipse cx='400' cy='400' rx='280' ry='225' opacity='0.12'/%3E%3Cellipse cx='400' cy='400' rx='345' ry='278' opacity='0.10'/%3E%3Cellipse cx='400' cy='400' rx='410' ry='330' opacity='0.08'/%3E%3C/g%3E%3C/svg%3E");
             background-size: 100% 100%;
             background-repeat: no-repeat;
             opacity: 1;
@@ -85,12 +85,16 @@
             letter-spacing: -0.03em;
             filter: blur(2px);
             opacity: 0.5;
-            transition: filter 0.4s ease-out, opacity 0.4s ease-out;
         }
 
         .hero-title .hero-line-1 strong.resolved {
-            filter: blur(0px);
-            opacity: 1;
+            animation: clarityResolve 0.8s ease-in-out forwards;
+        }
+
+        @keyframes clarityResolve {
+            0%   { filter: blur(2px); opacity: 0.5; }
+            58%  { filter: blur(3.5px); opacity: 0.45; }
+            100% { filter: blur(0px); opacity: 1; }
         }
 
         .hero-title .hero-line-2 {
@@ -153,8 +157,56 @@
             cursor: pointer;
             text-decoration: none;
             display: block;
-            will-change: transform;
-            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            will-change: transform, left, top;
+            transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        top 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        background 0.4s ease,
+                        border-color 0.4s ease,
+                        box-shadow 0.4s ease;
+        }
+
+        .hero-stat:nth-child(3) { transition-delay: 0.04s, 0.04s, 0s, 0s, 0s; }
+        .hero-stat:nth-child(4) { transition-delay: 0.08s, 0.08s, 0s, 0s, 0s; }
+        .hero-stat:nth-child(5) { transition-delay: 0.12s, 0.12s, 0s, 0s, 0s; }
+
+        /* Grid lines — hidden by default */
+        .grid-lines {
+            position: absolute;
+            inset: 5%;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.1s;
+        }
+
+        .grid-lines::before,
+        .grid-lines::after {
+            content: '';
+            position: absolute;
+            background: var(--color-accent);
+            border-radius: 1px;
+        }
+
+        .grid-lines::before {
+            left: 50%;
+            top: 8%;
+            bottom: 8%;
+            width: 1px;
+            opacity: 0.25;
+            transform: translateX(-0.5px);
+        }
+
+        .grid-lines::after {
+            top: 50%;
+            left: 8%;
+            right: 8%;
+            height: 1px;
+            opacity: 0.25;
+            transform: translateY(-0.5px);
+        }
+
+        /* Clarified state — grid appears, topo fades */
+        .hero-float-area.clarified .grid-lines {
+            opacity: 1;
         }
 
         .hero-stat:hover,
@@ -698,7 +750,8 @@
             </div>
             <div class="hero-visual">
                 <div class="hero-float-area" id="heroFloatArea">
-                    <a href="#" class="hero-stat" data-home-x="10" data-home-y="8">
+                    <div class="grid-lines"></div>
+                    <a href="#" class="hero-stat" data-home-x="10" data-home-y="8" data-grid-x="3" data-grid-y="3">
                         <div class="hero-stat-number">15+</div>
                         <div class="hero-stat-label">Years leading design</div>
                         <div class="hero-stat-cta">
@@ -706,7 +759,7 @@
                             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
                         </div>
                     </a>
-                    <a href="work.html" class="hero-stat" data-home-x="55" data-home-y="5">
+                    <a href="work.html" class="hero-stat" data-home-x="55" data-home-y="5" data-grid-x="53" data-grid-y="3">
                         <div class="hero-stat-number">40+</div>
                         <div class="hero-stat-label">Products shipped</div>
                         <div class="hero-stat-cta">
@@ -714,7 +767,7 @@
                             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
                         </div>
                     </a>
-                    <a href="about.html" class="hero-stat" data-home-x="5" data-home-y="55">
+                    <a href="about.html" class="hero-stat" data-home-x="5" data-home-y="55" data-grid-x="3" data-grid-y="53">
                         <div class="hero-stat-number">8</div>
                         <div class="hero-stat-label">Teams built & grown</div>
                         <div class="hero-stat-cta">
@@ -722,7 +775,7 @@
                             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
                         </div>
                     </a>
-                    <a href="work.html" class="hero-stat" data-home-x="52" data-home-y="58">
+                    <a href="work.html" class="hero-stat" data-home-x="52" data-home-y="58" data-grid-x="53" data-grid-y="53">
                         <div class="hero-stat-number">3</div>
                         <div class="hero-stat-label">Industries shaped</div>
                         <div class="hero-stat-cta">
@@ -1021,11 +1074,11 @@
         (function() {
             const clarityWord = document.getElementById('clarityWord');
             if (clarityWord) {
-                setTimeout(() => clarityWord.classList.add('resolved'), 1300);
+                setTimeout(() => clarityWord.classList.add('resolved'), 1450);
             }
         })();
 
-        // --- Floating hero cards ---
+        // --- Floating hero cards with clarity hover ---
         (function() {
             const area = document.getElementById('heroFloatArea');
             if (!area) return;
@@ -1033,65 +1086,87 @@
             const cards = area.querySelectorAll('.hero-stat');
             const state = [];
             let animId;
+            let startTime = null;
+            let clarified = false;
 
             cards.forEach((card, i) => {
                 const homeX = parseFloat(card.dataset.homeX);
                 const homeY = parseFloat(card.dataset.homeY);
+                const gridX = parseFloat(card.dataset.gridX);
+                const gridY = parseFloat(card.dataset.gridY);
 
-                // Each card gets unique sine wave parameters for organic movement
                 state.push({
                     el: card,
-                    homeX: homeX,
-                    homeY: homeY,
-                    // Different frequencies & phases so paths don't sync
+                    homeX, homeY,
+                    gridX, gridY,
                     freqX: 0.15 + i * 0.07,
                     freqY: 0.12 + i * 0.09,
-                    ampX: 12 + (i % 2) * 6,   // pixels of drift
+                    ampX: 12 + (i % 2) * 6,
                     ampY: 10 + ((i + 1) % 2) * 8,
                     phaseX: i * 1.8,
                     phaseY: i * 2.3 + 1.0,
-                    hovered: false
+                    cardHovered: false
                 });
 
-                // Position initially
                 card.style.left = homeX + '%';
                 card.style.top = homeY + '%';
 
                 card.addEventListener('mouseenter', () => {
-                    state[i].hovered = true;
+                    state[i].cardHovered = true;
                     card.classList.add('hovered');
                 });
 
                 card.addEventListener('mouseleave', () => {
-                    state[i].hovered = false;
+                    state[i].cardHovered = false;
                     card.classList.remove('hovered');
                 });
             });
 
-            let startTime = null;
-
             function animate(timestamp) {
                 if (!startTime) startTime = timestamp;
-                const elapsed = (timestamp - startTime) / 1000; // seconds
+                const elapsed = (timestamp - startTime) / 1000;
 
-                state.forEach(s => {
-                    if (s.hovered) return; // Freeze when hovered
-
-                    const dx = Math.sin(elapsed * s.freqX + s.phaseX) * s.ampX;
-                    const dy = Math.cos(elapsed * s.freqY + s.phaseY) * s.ampY;
-
-                    s.el.style.transform = `translate(${dx}px, ${dy}px)`;
-                });
+                if (!clarified) {
+                    state.forEach(s => {
+                        if (s.cardHovered) return;
+                        const dx = Math.sin(elapsed * s.freqX + s.phaseX) * s.ampX;
+                        const dy = Math.cos(elapsed * s.freqY + s.phaseY) * s.ampY;
+                        s.el.style.transform = `translate(${dx}px, ${dy}px)`;
+                    });
+                }
 
                 animId = requestAnimationFrame(animate);
             }
 
-            // Start animation after the hero fade-in completes
             setTimeout(() => {
                 animId = requestAnimationFrame(animate);
             }, 1600);
 
-            // Pause when not visible for performance
+            // Area hover: snap to grid
+            area.addEventListener('mouseenter', () => {
+                clarified = true;
+                area.classList.add('clarified');
+
+                state.forEach(s => {
+                    s.el.style.left = s.gridX + '%';
+                    s.el.style.top = s.gridY + '%';
+                    s.el.style.transform = 'translate(0, 0)';
+                });
+            });
+
+            // Area leave: return to drift
+            area.addEventListener('mouseleave', () => {
+                clarified = false;
+                area.classList.remove('clarified');
+
+                state.forEach(s => {
+                    s.el.style.left = s.homeX + '%';
+                    s.el.style.top = s.homeY + '%';
+                });
+
+                startTime = null;
+            });
+
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
