@@ -7,6 +7,56 @@
     <meta name="description" content="Resume — Jeff Stevenson, UX Design Leader.">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* --- Accessibility --- */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            z-index: 10000;
+            padding: 0.75rem 1.25rem;
+            background: var(--color-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0 0 8px 8px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 3px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in, .slide-in-left {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
         .page-header {
             padding-top: calc(var(--nav-height) + var(--space-xl));
             padding-bottom: var(--space-lg);
@@ -145,9 +195,11 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
-        <button class="nav-toggle" aria-label="Toggle navigation">
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
         <ul class="nav-links">
@@ -155,9 +207,11 @@
             <li><a href="work.html">Work</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="resume.html" class="active">Resume</a></li>
-            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact <span class="sr-only">(opens in new tab)</span></a></li>
         </ul>
     </nav>
+
+    <main id="main">
 
     <div class="container">
         <header class="page-header">
@@ -166,9 +220,13 @@
                 <h1 class="section-heading">Jeff Stevenson</h1>
                 <p class="page-header-subtitle">UX Design Leader</p>
             </div>
-            <div class="page-header-right">
-                <a href="#" class="btn">
+            <div class="page-header-right" style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="#" class="btn btn--primary">
                     <span>Download PDF</span>
+                </a>
+                <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn">
+                    <span>LinkedIn</span> <span class="sr-only">(opens in new tab)</span>
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9.3V12.7C12 13.4 11.4 14 10.7 14H3.3C2.6 14 2 13.4 2 12.7V5.3C2 4.6 2.6 4 3.3 4H6.7"/><polyline points="10,2 14,2 14,6"/><line x1="7" y1="9" x2="14" y2="2"/></svg>
                 </a>
             </div>
         </header>
@@ -190,14 +248,13 @@
                             </div>
                             <p class="resume-entry-org">The Home Depot</p>
                             <p class="resume-entry-description">
-                                Lead a team focused on delivering a better experience for store associates,
-primarily through their mobile device. Consolidate and simplify
-dozens of apps into a unified experience that puts focus on the information,
-tasks, and tools that drive sales, labor efficiency, and employee engagement.
-Coordinated design for a first generation computer vision tool that
-optimizes store labor, along with a roadmap for future AI use cases that
-deliver incremental value. Implemented a new analytics tool to better
-understand user behavior and clarify priorities for the product roadmap.
+                                Store associates juggled dozens of disconnected apps to do their jobs.
+Leading the effort to replace that fragmented landscape with a unified
+mobile experience focused on the tasks, tools, and information that matter
+most. Coordinated design for a computer vision tool that optimizes labor
+allocation — the first AI capability in a broader roadmap. Stood up a
+behavioral analytics practice to ground product decisions in real usage
+patterns rather than assumptions.
                             </p>
                         </div>
 
@@ -208,14 +265,12 @@ understand user behavior and clarify priorities for the product roadmap.
                             </div>
                             <p class="resume-entry-org">Kroger</p>
                             <p class="resume-entry-description">
-                                Led a team of product designers and managers supporting Kroger's internal
-merchandising tools. My teams replaced legacy systems, enabling users to
-plan and execute merchandising strategies more efficiently, more
-intelligently, and with greater confidence. Delivered modern user
-experiences that scaled to support hundreds of users in a complex, highly
-matrixed business environment. Measured outcomes to ensure our teams
-create both business value and user value. Developed a healthy culture
-where designers could grow and contribute at a high level.
+                                Kroger's merchandising teams relied on outdated, disconnected tools
+that slowed decision-making across a complex organization. Led the design
+team that replaced those systems, delivering modern experiences scaled for
+hundreds of users and grounded in measurable outcomes. Grew a high-performing
+team culture where designers developed real ownership of their craft and
+their career trajectories.
                             </p>
                         </div>
 
@@ -226,12 +281,13 @@ where designers could grow and contribute at a high level.
                             </div>
                             <p class="resume-entry-org">Paycor</p>
                             <p class="resume-entry-description">
-                                Evolved an existing SAAS platform for HR teams to be highly usable and
-scalable for the future. Defined our design process, established templates,
-and matured our design system to ensure our UX design and front-end
-engineering teams could deliver scalable solutions. Implemented a user
-research program to identify and evaluate opportunities for product growth.
-Managed designers, researchers, front-end developers, and data analysts.
+                                Inherited a product design function without a shared process, a mature
+design system, or a formal research practice. Built all three —
+establishing templates and standards that let the UX and engineering teams
+ship scalable solutions consistently. Introduced user research as a core
+input to the product roadmap, identifying and validating growth
+opportunities. Led a cross-functional team of designers, researchers,
+developers, and analysts.
                             </p>
                         </div>
 
@@ -274,6 +330,8 @@ Managed designers, researchers, front-end developers, and data analysts.
         </div>
     </section>
 
+    </main>
+
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-left">
@@ -283,7 +341,7 @@ Managed designers, researchers, front-end developers, and data analysts.
             <ul class="footer-links">
                 <li><a href="work.html">Work</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span></a></li>
                 <li><a href="#">Substack</a></li>
             </ul>
         </div>

@@ -7,6 +7,56 @@
     <meta name="description" content="About Jeff Stevenson — UX Design Leader.">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* --- Accessibility --- */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            z-index: 10000;
+            padding: 0.75rem 1.25rem;
+            background: var(--color-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0 0 8px 8px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 3px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in, .slide-in-left {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
         /* ============================================
            ABOUT PAGE STYLES
            ============================================ */
@@ -181,6 +231,109 @@
             justify-content: center;
         }
 
+        /* Speaking title as video link */
+        .speaking-title-link {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 400;
+            color: inherit;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+            text-decoration-thickness: 1px;
+            text-decoration-color: var(--color-text-muted);
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
+        }
+        .speaking-title-link:hover {
+            color: var(--color-accent);
+            text-decoration-color: var(--color-accent);
+        }
+        .speaking-title-link svg {
+            flex-shrink: 0;
+            opacity: 0.45;
+            transition: opacity 0.2s ease;
+        }
+        .speaking-title-link:hover svg {
+            opacity: 1;
+        }
+
+        /* Video modal overlay */
+        .video-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            transition: opacity 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease;
+        }
+        .video-modal-overlay.is-open {
+            display: flex;
+        }
+        .video-modal-overlay.is-visible {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(12px);
+        }
+
+        .video-modal {
+            position: relative;
+            width: 90vw;
+            max-width: 960px;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .video-modal-overlay.is-visible .video-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: -2.5rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: var(--font-body);
+            font-size: 0.8125rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.2s ease;
+        }
+        .video-modal-close:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .video-modal-player {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+        }
+        .video-modal-player video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         /* CTA */
         .about-cta {
             padding: var(--space-xl) 0;
@@ -222,10 +375,12 @@
 </head>
 <body>
 
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
-        <button class="nav-toggle" aria-label="Toggle navigation">
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
         <ul class="nav-links">
@@ -233,9 +388,11 @@
             <li><a href="work.html">Work</a></li>
             <li><a href="about.html" class="active">About</a></li>
             <li><a href="resume.html">Resume</a></li>
-            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact <span class="sr-only">(opens in new tab)</span></a></li>
         </ul>
     </nav>
+
+    <main id="main">
 
     <!-- Page Header -->
     <header class="page-header">
@@ -290,11 +447,11 @@
     </section>
 
     <!-- What I Bring -->
-    <section class="about-skills">
+    <section class="about-skills" aria-labelledby="skills-label skills-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">How I Lead</p>
-                <h2 class="section-heading">My leadership principles</h2>
+                <p class="section-label" id="skills-label">How I Lead</p>
+                <h2 class="section-heading" id="skills-heading">My leadership principles</h2>
             </div>
 
             <div class="skills-grid">
@@ -331,11 +488,11 @@
     </section>
 
     <!-- Speaking & Engagements -->
-    <section class="speaking-section">
+    <section class="speaking-section" aria-labelledby="speaking-label speaking-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">Speaking & Engagements</p>
-                <h2 class="section-heading">Talks & appearances</h2>
+                <p class="section-label" id="speaking-label">Speaking & Engagements</p>
+                <h2 class="section-heading" id="speaking-heading">Talks & appearances</h2>
             </div>
 
             <ul class="speaking-list">
@@ -350,20 +507,28 @@
                     <span class="speaking-venue">Conference / Event Name</span>
                 </li>
                 <li class="speaking-item fade-in delay-3">
-                    <span class="speaking-year">2024</span>
+                    <span class="speaking-year">2019</span>
                     <span class="speaking-title">Placeholder Talk Title</span>
-                    <span class="speaking-venue">Conference / Event Name</span>
+                    <span class="speaking-venue">Midwest UX</span>
+                </li>
+                <li class="speaking-item fade-in delay-4">
+                    <span class="speaking-year">2018</span>
+                    <button class="speaking-title-link" onclick="openVideoModal()" aria-label="Watch talk">
+                        Placeholder Talk Title
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.25"/><path d="M6.5 4.5L11.5 8L6.5 11.5V4.5Z" fill="currentColor"/></svg>
+                    </button>
+                    <span class="speaking-venue">Midwest UX</span>
                 </li>
             </ul>
         </div>
     </section>
 
     <!-- Personal -->
-    <section class="personal-section">
+    <section class="personal-section" aria-labelledby="personal-label personal-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">Outside of Work</p>
-                <h2 class="section-heading">Beyond the screen</h2>
+                <p class="section-label" id="personal-label">Outside of Work</p>
+                <h2 class="section-heading" id="personal-heading">Beyond the screen</h2>
             </div>
 
             <div class="personal-content fade-in delay-1">
@@ -389,7 +554,7 @@
             </p>
             <div class="about-cta-actions">
                 <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
-                    <span>Get in Touch</span>
+                    <span>Get in Touch</span> <span class="sr-only">(opens in new tab)</span>
                     <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
                     </svg>
@@ -401,6 +566,28 @@
         </div>
     </section>
 
+    </main>
+
+    <!-- Video Modal -->
+    <div class="video-modal-overlay" id="videoModal" onclick="closeVideoModal(event)">
+        <div class="video-modal">
+            <button class="video-modal-close" onclick="closeVideoModal(event, true)">
+                Close
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/>
+                </svg>
+            </button>
+            <div class="video-modal-player">
+                <video id="modalVideo" controls preload="none">
+                    <!-- REPLACE with your GitHub raw URL, e.g.:
+                         https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/videos/midwest-ux-2018.mp4 -->
+                    <source src="VIDEO_PLACEHOLDER_URL" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-inner">
@@ -411,7 +598,7 @@
             <ul class="footer-links">
                 <li><a href="work.html">Work</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span></a></li>
                 <li><a href="#">Substack</a></li>
             </ul>
         </div>
@@ -420,6 +607,70 @@
         </div>
     </footer>
 
+    <script>
+        let videoModalTrigger = null;
+
+        function openVideoModal() {
+            videoModalTrigger = document.activeElement;
+            const overlay = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    overlay.classList.add('is-visible');
+                    overlay.querySelector('.video-modal-close').focus();
+                });
+            });
+            video.play().catch(() => {});
+        }
+
+        function closeVideoModal(e, forceClose) {
+            const overlay = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            if (forceClose || e.target === overlay) {
+                overlay.classList.remove('is-visible');
+                document.body.style.overflow = '';
+                video.pause();
+                video.currentTime = 0;
+                overlay.addEventListener('transitionend', function handler() {
+                    overlay.removeEventListener('transitionend', handler);
+                    if (!overlay.classList.contains('is-visible')) {
+                        overlay.classList.remove('is-open');
+                        if (videoModalTrigger) {
+                            videoModalTrigger.focus();
+                            videoModalTrigger = null;
+                        }
+                    }
+                });
+            }
+        }
+
+        // Focus trap + Escape for video modal
+        document.addEventListener('keydown', function(e) {
+            const overlay = document.getElementById('videoModal');
+            if (!overlay.classList.contains('is-open')) return;
+
+            if (e.key === 'Escape') {
+                closeVideoModal(e, true);
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const modal = overlay.querySelector('.video-modal');
+                const focusable = modal.querySelectorAll('button, video, [href], [tabindex]:not([tabindex="-1"])');
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+    </script>
     <script src="scripts.js"></script>
 </body>
 </html>

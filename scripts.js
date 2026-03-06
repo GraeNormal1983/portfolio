@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle.addEventListener('click', () => {
             navLinks.classList.toggle('open');
             toggle.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
         });
 
         // Close nav on link click
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('open');
                 toggle.classList.remove('active');
+                toggle.setAttribute('aria-expanded', 'false');
             });
         });
     }

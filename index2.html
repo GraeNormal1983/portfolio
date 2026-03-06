@@ -7,6 +7,55 @@
     <meta name="description" content="UX Design Leader crafting thoughtful, human-centered experiences.">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* --- Accessibility --- */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            z-index: 10000;
+            padding: 0.75rem 1.25rem;
+            background: var(--color-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0 0 8px 8px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 3px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in, .slide-in-left {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
         /* ============================================
            HOMEPAGE — ENHANCED DESIGN
            ============================================ */
@@ -598,9 +647,9 @@
             display: flex;
             gap: 1.5rem;
             margin-top: var(--space-lg);
-            padding: 0 clamp(1.5rem, 4vw, 3rem);
+            padding: 1rem clamp(1.5rem, 4vw, 3rem) 2.5rem;
+            margin-bottom: -1.5rem;
             overflow-x: auto;
-            scroll-snap-type: x mandatory;
             scrollbar-width: none;
             -ms-overflow-style: none;
             cursor: grab;
@@ -611,7 +660,6 @@
 
         .testimonial {
             flex: 0 0 min(420px, 80vw);
-            scroll-snap-align: start;
             padding: 2.5rem;
             background: var(--color-surface);
             border: 1px solid var(--color-rule);
@@ -662,6 +710,99 @@
             color: var(--color-text-muted);
             letter-spacing: 0.04em;
             opacity: 0.6;
+        }
+
+        /* Expandable quote card */
+        .testimonial.has-full-quote {
+            cursor: pointer;
+        }
+        .testimonial-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: var(--font-body);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--color-accent);
+            margin-top: 0.75rem;
+            transition: gap 0.2s ease;
+        }
+        .testimonial.has-full-quote:hover .testimonial-read-more {
+            gap: 0.5rem;
+        }
+
+        /* Quote modal */
+        .quote-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            opacity: 0;
+            transition: opacity 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease;
+        }
+        .quote-modal-overlay.is-open {
+            display: flex;
+        }
+        .quote-modal-overlay.is-visible {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(12px);
+        }
+        .quote-modal {
+            position: relative;
+            width: 90vw;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: var(--color-surface);
+            border: 1px solid var(--color-rule);
+            border-radius: 16px;
+            padding: 3rem;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .quote-modal-overlay.is-visible .quote-modal {
+            transform: scale(1) translateY(0);
+        }
+        .quote-modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: color 0.2s ease;
+        }
+        .quote-modal-close:hover {
+            color: var(--color-text);
+        }
+        .quote-modal .testimonial-accent {
+            margin-bottom: 1.5rem;
+        }
+        .quote-modal-text {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: 1.75rem;
+        }
+        .quote-modal-author {
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .quote-modal-role {
+            font-size: 0.8125rem;
+            color: var(--color-text-muted);
+            margin-top: 0.2rem;
         }
 
         /* --- CTA --- */
@@ -752,10 +893,12 @@
 </head>
 <body>
 
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
-        <button class="nav-toggle" aria-label="Toggle navigation">
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
         <ul class="nav-links">
@@ -763,9 +906,11 @@
             <li><a href="work.html">Work</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="resume.html">Resume</a></li>
-            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact <span class="sr-only">(opens in new tab)</span></a></li>
         </ul>
     </nav>
+
+    <main id="main">
 
     <!-- Hero -->
     <section class="hero">
@@ -839,11 +984,11 @@
     </section>
 
     <!-- Featured Work -->
-    <section class="featured-work">
+    <section class="featured-work" aria-labelledby="work-label work-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">Selected Work</p>
-                <h2 class="section-heading">Projects & case studies</h2>
+                <p class="section-label" id="work-label">Selected Work</p>
+                <h2 class="section-heading" id="work-heading">Projects & case studies</h2>
             </div>
 
             <div class="work-grid">
@@ -931,7 +1076,7 @@
     </section>
 
     <!-- Parallax Terrain Divider -->
-    <div class="parallax-divider" id="parallaxDivider">
+    <div class="parallax-divider" id="parallaxDivider" role="img" aria-label="Illustrated mountain landscape with the text Go Farther">
 
         <!-- Sky — static -->
         <div class="parallax-layer layer-sky" data-origin="none" data-speed="0">
@@ -989,11 +1134,11 @@
     </div>
 
     <!-- Writing -->
-    <section class="writing-section">
+    <section class="writing-section" aria-labelledby="writing-label writing-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">Writing & Thinking</p>
-                <h2 class="section-heading">Recent essays</h2>
+                <p class="section-label" id="writing-label">Writing & Thinking</p>
+                <h2 class="section-heading" id="writing-heading">Recent essays</h2>
             </div>
 
             <div class="writing-grid">
@@ -1034,31 +1179,33 @@
     </section>
 
     <!-- Testimonials -->
-    <section class="testimonials">
+    <section class="testimonials" aria-labelledby="testimonials-label testimonials-heading">
         <div class="container">
             <div class="fade-in">
-                <p class="section-label">Kind Words</p>
-                <h2 class="section-heading">What colleagues say</h2>
+                <p class="section-label" id="testimonials-label">Kind Words</p>
+                <h2 class="section-heading" id="testimonials-heading">What colleagues say</h2>
             </div>
         </div>
 
-        <div class="testimonial-track">
-            <div class="testimonial fade-in delay-1">
+        <div class="testimonial-track" tabindex="0" role="region" aria-label="Testimonials, scrollable">
+            <div class="testimonial has-full-quote fade-in delay-1" data-full-quote="Placeholder for the full, longer testimonial from Chris. This is where the complete quote would go — it could be several sentences or even a couple of paragraphs. The card shows just the featured excerpt, and clicking reveals this full version." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
                     Placeholder testimonial from a colleague, direct report, or stakeholder 
                     about your design leadership and collaboration style.
                 </p>
+                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Chris Fladung</p>
                 <p class="testimonial-role">VP Merchandise Experience @ Kroger</p>
             </div>
 
-            <div class="testimonial fade-in delay-2">
+            <div class="testimonial has-full-quote fade-in delay-2" data-full-quote="Placeholder for the full, longer testimonial from Tom. This extended version gives the reader the complete context of the recommendation — multiple sentences that paint a richer picture of working with Jeff." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
                     Placeholder testimonial about how you approach complex problems 
                     and drive meaningful outcomes through design.
                 </p>
+                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Tom Rose</p>
                 <p class="testimonial-role">Sr. Manager, Product Design @ Kroger</p>
             </div>
@@ -1108,7 +1255,7 @@
             </p>
             <div class="cta-actions">
                 <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
-                    <span>Get in Touch</span>
+                    <span>Get in Touch</span> <span class="sr-only">(opens in new tab)</span>
                     <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
                     </svg>
@@ -1120,6 +1267,23 @@
         </div>
     </section>
 
+    </main>
+
+    <!-- Quote Modal -->
+    <div class="quote-modal-overlay" id="quoteModal" onclick="closeQuoteModal(event)">
+        <div class="quote-modal">
+            <button class="quote-modal-close" onclick="closeQuoteModal(event, true)" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
+                </svg>
+            </button>
+            <div class="testimonial-accent"></div>
+            <p class="quote-modal-text" id="quoteModalText"></p>
+            <p class="quote-modal-author" id="quoteModalAuthor"></p>
+            <p class="quote-modal-role" id="quoteModalRole"></p>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-inner">
@@ -1130,7 +1294,7 @@
             <ul class="footer-links">
                 <li><a href="work.html">Work</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span></a></li>
                 <li><a href="#">Substack</a></li>
             </ul>
         </div>
@@ -1140,6 +1304,76 @@
     </footer>
 
     <script src="scripts.js"></script>
+    <script>
+        // --- Quote modal with focus trap ---
+        let quoteModalTrigger = null;
+
+        function openQuoteModal(card) {
+            quoteModalTrigger = card;
+            const overlay = document.getElementById('quoteModal');
+            const fullQuote = card.dataset.fullQuote;
+            const author = card.querySelector('.testimonial-author').textContent;
+            const role = card.querySelector('.testimonial-role').textContent;
+
+            document.getElementById('quoteModalText').textContent = fullQuote;
+            document.getElementById('quoteModalAuthor').textContent = author;
+            document.getElementById('quoteModalRole').textContent = role;
+
+            overlay.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    overlay.classList.add('is-visible');
+                    // Move focus to close button
+                    overlay.querySelector('.quote-modal-close').focus();
+                });
+            });
+        }
+
+        function closeQuoteModal(e, forceClose) {
+            const overlay = document.getElementById('quoteModal');
+            if (forceClose || e.target === overlay) {
+                overlay.classList.remove('is-visible');
+                document.body.style.overflow = '';
+                overlay.addEventListener('transitionend', function handler() {
+                    overlay.removeEventListener('transitionend', handler);
+                    if (!overlay.classList.contains('is-visible')) {
+                        overlay.classList.remove('is-open');
+                        // Return focus to trigger
+                        if (quoteModalTrigger) {
+                            quoteModalTrigger.focus();
+                            quoteModalTrigger = null;
+                        }
+                    }
+                });
+            }
+        }
+
+        // Focus trap + Escape for quote modal
+        document.addEventListener('keydown', function(e) {
+            const overlay = document.getElementById('quoteModal');
+            if (!overlay.classList.contains('is-open')) return;
+
+            if (e.key === 'Escape') {
+                closeQuoteModal(e, true);
+                return;
+            }
+
+            if (e.key === 'Tab') {
+                const modal = overlay.querySelector('.quote-modal');
+                const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+    </script>
     <script>
         // --- Hero "Clarity" blur resolve ---
         (function() {
@@ -1291,26 +1525,102 @@
         (function() {
             const track = document.querySelector('.testimonial-track');
             if (!track) return;
-            let isDown = false, startX, scrollLeft;
+
+            let isDown = false;
+            let isDragging = false;
+            let startX, scrollLeft;
+            let velX = 0;
+            let lastX, lastTime;
+            let momentumId = null;
+
+            function stopMomentum() {
+                if (momentumId) {
+                    cancelAnimationFrame(momentumId);
+                    momentumId = null;
+                }
+            }
+
+            function coastMomentum() {
+                if (Math.abs(velX) < 0.5) {
+                    return;
+                }
+                track.scrollLeft -= velX;
+                velX *= 0.92; // friction
+                momentumId = requestAnimationFrame(coastMomentum);
+            }
+
             track.addEventListener('mousedown', e => {
+                stopMomentum();
                 isDown = true;
-                startX = e.pageX - track.offsetLeft;
+                isDragging = false;
+                startX = e.pageX;
                 scrollLeft = track.scrollLeft;
+                lastX = e.pageX;
+                lastTime = Date.now();
+                velX = 0;
             });
-            track.addEventListener('mouseleave', () => { isDown = false; });
-            track.addEventListener('mouseup', () => { isDown = false; });
+
             track.addEventListener('mousemove', e => {
                 if (!isDown) return;
+                const dx = e.pageX - startX;
+
+                // Only begin drag after a small threshold to allow clicks
+                if (!isDragging && Math.abs(dx) > 4) {
+                    isDragging = true;
+                    // Disable text selection during drag
+                    track.style.userSelect = 'none';
+                    track.style.webkitUserSelect = 'none';
+                }
+
+                if (!isDragging) return;
                 e.preventDefault();
-                const x = e.pageX - track.offsetLeft;
-                track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+
+                // Track velocity for momentum
+                const now = Date.now();
+                const dt = now - lastTime;
+                if (dt > 0) {
+                    velX = (e.pageX - lastX) / dt * 16; // normalize to ~frame time
+                    lastX = e.pageX;
+                    lastTime = now;
+                }
+
+                track.scrollLeft = scrollLeft - dx;
             });
+
+            function endDrag(e) {
+                if (!isDown) return;
+                isDown = false;
+
+                // Restore text selection
+                track.style.userSelect = '';
+                track.style.webkitUserSelect = '';
+
+                if (isDragging) {
+                    isDragging = false;
+
+                    // Prevent the click event from firing on cards after a drag
+                    track.addEventListener('click', function suppress(ev) {
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        track.removeEventListener('click', suppress, true);
+                    }, true);
+
+                    // Coast with momentum
+                    if (Math.abs(velX) > 1) {
+                        momentumId = requestAnimationFrame(coastMomentum);
+                    }
+                }
+            }
+
+            track.addEventListener('mouseup', endDrag);
+            track.addEventListener('mouseleave', endDrag);
         })();
 
         // --- Parallax terrain divider ---
         (function() {
             const divider = document.getElementById('parallaxDivider');
             if (!divider) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
             const layers = divider.querySelectorAll('.parallax-layer');
             const goFartherText = document.getElementById('goFartherText');

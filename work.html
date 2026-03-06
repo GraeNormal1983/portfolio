@@ -7,6 +7,56 @@
     <meta name="description" content="Selected case studies and projects by Jeff Stevenson, UX Design Leader.">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* --- Accessibility --- */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 1rem;
+            z-index: 10000;
+            padding: 0.75rem 1.25rem;
+            background: var(--color-accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0 0 8px 8px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 3px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-delay: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in, .slide-in-left {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
         .page-header {
             padding-top: calc(var(--nav-height) + var(--space-xl));
             padding-bottom: var(--space-lg);
@@ -100,6 +150,7 @@
             padding: var(--space-lg) 0;
             border-top: 1px solid var(--color-rule);
             transition: opacity 0.4s ease;
+            will-change: transform;
         }
         .case-study-item:last-child { border-bottom: 1px solid var(--color-rule); }
         .case-study-item.dimmed { opacity: 0.12; pointer-events: none; }
@@ -214,9 +265,11 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
-        <button class="nav-toggle" aria-label="Toggle navigation">
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
         <ul class="nav-links">
@@ -224,9 +277,11 @@
             <li><a href="work.html" class="active">Work</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="resume.html">Resume</a></li>
-            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact</a></li>
+            <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">Contact <span class="sr-only">(opens in new tab)</span></a></li>
         </ul>
     </nav>
+
+    <main id="main">
 
     <header class="page-header">
         <div class="container">
@@ -244,12 +299,12 @@
         <div class="container">
             <p class="filter-prompt">Show case studies that demonstrate&hellip;</p>
             <div class="filter-pills">
-                <button class="filter-pill" data-filter="strategy">Cross-Product Strategy</button>
-                <button class="filter-pill" data-filter="ai">AI in Design</button>
-                <button class="filter-pill" data-filter="fullprocess">End-to-End Process</button>
-                <button class="filter-pill" data-filter="mentorship">Mentorship & Team Growth</button>
-                <button class="filter-pill" data-filter="systems">Design Systems</button>
-                <button class="filter-pill" data-filter="stakeholders">Stakeholder Alignment</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="strategy">Cross-Product Strategy</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="ai">AI in Design</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="fullprocess">End-to-End Process</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="mentorship">Mentorship & Team Growth</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="systems">Design Systems</button>
+                <button class="filter-pill" aria-pressed="false" data-filter="stakeholders">Stakeholder Alignment</button>
                 <button class="filter-clear" id="clearFilters">Clear all</button>
             </div>
         </div>
@@ -336,6 +391,8 @@
         </div>
     </section>
 
+    </main>
+
     <footer class="footer">
         <div class="footer-inner">
             <div class="footer-left">
@@ -345,7 +402,7 @@
             <ul class="footer-links">
                 <li><a href="work.html">Work</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span></a></li>
                 <li><a href="#">Substack</a></li>
             </ul>
         </div>
@@ -361,8 +418,41 @@
             const caseStudies = document.querySelectorAll('.case-study-item');
             const clearBtn = document.getElementById('clearFilters');
             let activeFilters = new Set();
-
             const list = caseStudies[0]?.parentElement;
+
+            // --- FLIP animation helper ---
+            function flipAnimate(elements, callback) {
+                // FIRST: capture current positions
+                const firstRects = new Map();
+                elements.forEach(el => {
+                    firstRects.set(el, el.getBoundingClientRect());
+                });
+
+                // Execute the DOM change
+                callback();
+
+                // LAST: capture new positions & INVERT + PLAY
+                elements.forEach(el => {
+                    const first = firstRects.get(el);
+                    const last = el.getBoundingClientRect();
+                    const deltaX = first.left - last.left;
+                    const deltaY = first.top - last.top;
+
+                    if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1) return;
+
+                    // Invert: move element to its old position
+                    el.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                    el.style.transition = 'none';
+
+                    // Play: animate to new position
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            el.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+                            el.style.transform = '';
+                        });
+                    });
+                });
+            }
 
             function updateDisplay() {
                 const hasFilters = activeFilters.size > 0;
@@ -374,20 +464,36 @@
                 caseStudies.forEach(study => {
                     const studyTags = study.dataset.tags.split(',');
                     if (!hasFilters) {
-                        study.classList.remove('dimmed');
                         matched.push(study);
                     } else {
                         const isMatch = [...activeFilters].some(f => studyTags.includes(f));
-                        study.classList.toggle('dimmed', !isMatch);
                         if (isMatch) { matched.push(study); } else { unmatched.push(study); }
                     }
                 });
 
-                // Reorder DOM: matched first, then unmatched
-                if (hasFilters && list) {
-                    matched.forEach(el => list.appendChild(el));
-                    unmatched.forEach(el => list.appendChild(el));
-                }
+                // FLIP-animated reorder
+                flipAnimate(Array.from(caseStudies), () => {
+                    if (list) {
+                        matched.forEach(el => list.appendChild(el));
+                        unmatched.forEach(el => list.appendChild(el));
+                    }
+                });
+
+                // Fade matched/dimmed after a brief delay so it layers with the move
+                caseStudies.forEach(study => {
+                    const studyTags = study.dataset.tags.split(',');
+                    const isDimmed = hasFilters && ![...activeFilters].some(f => studyTags.includes(f));
+                    study.classList.toggle('dimmed', isDimmed);
+                    study.setAttribute('aria-hidden', isDimmed);
+                    // Remove dimmed items from tab order
+                    if (isDimmed) {
+                        study.setAttribute('tabindex', '-1');
+                        study.querySelectorAll('a, button').forEach(el => el.setAttribute('tabindex', '-1'));
+                    } else {
+                        study.removeAttribute('tabindex');
+                        study.querySelectorAll('a, button').forEach(el => el.removeAttribute('tabindex'));
+                    }
+                });
 
                 document.querySelectorAll('.relevance-tag').forEach(tag => {
                     tag.classList.toggle('matched', hasFilters && activeFilters.has(tag.dataset.tag));
@@ -404,13 +510,17 @@
                         activeFilters.add(filter);
                         pill.classList.add('active');
                     }
+                    pill.setAttribute('aria-pressed', activeFilters.has(filter));
                     updateDisplay();
                 });
             });
 
             clearBtn.addEventListener('click', () => {
                 activeFilters.clear();
-                pills.forEach(p => p.classList.remove('active'));
+                pills.forEach(p => {
+                    p.classList.remove('active');
+                    p.setAttribute('aria-pressed', 'false');
+                });
                 updateDisplay();
             });
         });
