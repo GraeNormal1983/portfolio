@@ -578,12 +578,7 @@
                 </svg>
             </button>
             <div class="video-modal-player">
-                <video id="modalVideo" controls preload="none">
-                    <!-- REPLACE with your GitHub raw URL, e.g.:
-                         https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/videos/midwest-ux-2018.mp4 -->
-                    <source src="VIDEO_PLACEHOLDER_URL" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+                <iframe id="modalVideo" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;inset:0;"></iframe>
             </div>
         </div>
     </div>
@@ -609,11 +604,13 @@
 
     <script>
         let videoModalTrigger = null;
+        const YOUTUBE_URL = 'https://www.youtube.com/embed/he83h5z5T2g?autoplay=1';
 
         function openVideoModal() {
             videoModalTrigger = document.activeElement;
             const overlay = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
+            const iframe = document.getElementById('modalVideo');
+            iframe.src = YOUTUBE_URL;
             overlay.classList.add('is-open');
             document.body.style.overflow = 'hidden';
             requestAnimationFrame(() => {
@@ -622,21 +619,19 @@
                     overlay.querySelector('.video-modal-close').focus();
                 });
             });
-            video.play().catch(() => {});
         }
 
         function closeVideoModal(e, forceClose) {
             const overlay = document.getElementById('videoModal');
-            const video = document.getElementById('modalVideo');
+            const iframe = document.getElementById('modalVideo');
             if (forceClose || e.target === overlay) {
                 overlay.classList.remove('is-visible');
                 document.body.style.overflow = '';
-                video.pause();
-                video.currentTime = 0;
                 overlay.addEventListener('transitionend', function handler() {
                     overlay.removeEventListener('transitionend', handler);
                     if (!overlay.classList.contains('is-visible')) {
                         overlay.classList.remove('is-open');
+                        iframe.src = '';
                         if (videoModalTrigger) {
                             videoModalTrigger.focus();
                             videoModalTrigger = null;
@@ -658,7 +653,7 @@
 
             if (e.key === 'Tab') {
                 const modal = overlay.querySelector('.video-modal');
-                const focusable = modal.querySelectorAll('button, video, [href], [tabindex]:not([tabindex="-1"])');
+                const focusable = modal.querySelectorAll('button, iframe, [href], [tabindex]:not([tabindex="-1"])');
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
                 if (e.shiftKey && document.activeElement === first) {
