@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illustrated Parallax Terrain Divider — Archive</title>
+    <style>
+        :root {
+            --color-bg: #faf9f7;
+            --color-accent: #2B5F3F;
+            --font-display: system-ui, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--color-bg); font-family: system-ui, sans-serif; }
+
+        .spacer {
+            height: 100vh; display: flex; align-items: center;
+            justify-content: center; font-size: 1.25rem; color: #999;
+        }
+
+        /* --- Parallax terrain divider --- */
+        .parallax-divider {
+            position: relative;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            aspect-ratio: 4 / 1;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .parallax-divider .parallax-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            will-change: transform;
+            pointer-events: none;
+        }
+
+        .parallax-divider .parallax-layer img {
+            display: block;
+            width: 100%; height: 100%;
+            object-fit: fill;
+        }
+
+        /* Z-index stacking */
+        .layer-sky     { z-index: 10; }
+        .layer-02      { z-index: 11; }
+        .layer-03      { z-index: 12; }
+        .go-farther-text { z-index: 13; }
+        .layer-ground  { z-index: 14; }
+        .layer-04      { z-index: 15; }
+        .layer-05      { z-index: 16; }
+        .layer-06      { z-index: 17; }
+        .layer-07      { z-index: 18; }
+        .layer-08      { z-index: 19; }
+        .layer-09      { z-index: 20; }
+
+        /* GO FARTHER text */
+        .go-farther-text {
+            position: absolute;
+            top: 56.75%;
+            left: 14%;
+            transform: translateY(80px);
+            opacity: 0;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-optical-sizing: auto;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(242, 242, 240, 0.92);
+            text-shadow:
+                0 2px 4px rgba(26, 58, 40, 0.6),
+                0 4px 16px rgba(26, 58, 40, 0.4),
+                0 0 40px rgba(90, 158, 114, 0.2);
+            line-height: 1;
+            white-space: nowrap;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .parallax-divider { max-height: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="spacer">↓ Scroll down to see the parallax terrain effect ↓</div>
+
+    <!-- 
+        PARALLAX TERRAIN DIVIDER — ARCHIVED
+        
+        This effect uses layered SVG illustrations with scroll-driven 
+        scale transforms to create a depth-of-field parallax effect.
+        
+        Required SVG files:
+        - layer-01a-sky.svg
+        - layer-01b-ground.svg
+        - layer-02-far-mountain.svg
+        - layer-03-near-mountain.svg
+        - layer-04-distant-trees.svg
+        - layer-05-lake-shrub.svg
+        - layer-06-shrubs.svg
+        - layer-07-near-tree.svg
+        - layer-08-grass.svg
+        - layer-09-trail.svg
+    -->
+
+    <div class="parallax-divider" id="parallaxDivider" role="img" aria-label="Illustrated mountain landscape with the text Go Farther">
+
+        <!-- Sky — static -->
+        <div class="parallax-layer layer-sky" data-origin="none" data-speed="0">
+            <img src="layer-01a-sky.svg" alt="">
+        </div>
+
+        <!-- Far mountain — scale from horizon -->
+        <div class="parallax-layer layer-02" data-origin="horizon" data-speed="0.06">
+            <img src="layer-02-far-mountain.svg" alt="">
+        </div>
+
+        <!-- Near mountain — scale from horizon -->
+        <div class="parallax-layer layer-03" data-origin="horizon" data-speed="0.10">
+            <img src="layer-03-near-mountain.svg" alt="">
+        </div>
+
+        <!-- Distant trees — scale from horizon -->
+        <div class="parallax-layer layer-04" data-origin="horizon" data-speed="0.15">
+            <img src="layer-04-distant-trees.svg" alt="">
+        </div>
+
+        <!-- GO FARTHER text -->
+        <div class="go-farther-text" id="goFartherText">Go Farther</div>
+
+        <!-- Lake & shrub — scale from horizon -->
+        <div class="parallax-layer layer-05" data-origin="horizon" data-speed="0.22">
+            <img src="layer-05-lake-shrub.svg" alt="">
+        </div>
+
+        <!-- Ground plane — in front of text, scale from horizon -->
+        <div class="parallax-layer layer-ground" data-origin="horizon" data-speed="0.18">
+            <img src="layer-01b-ground.svg" alt="">
+        </div>
+
+        <!-- Shrubs — scale from horizon -->
+        <div class="parallax-layer layer-06" data-origin="horizon" data-speed="0.30">
+            <img src="layer-06-shrubs.svg" alt="">
+        </div>
+
+        <!-- Near tree — scale from bottom -->
+        <div class="parallax-layer layer-07" data-origin="bottom" data-speed="0.40">
+            <img src="layer-07-near-tree.svg" alt="">
+        </div>
+
+        <!-- Grass — scale from bottom, fast -->
+        <div class="parallax-layer layer-08" data-origin="bottom" data-speed="1.2">
+            <img src="layer-08-grass.svg" alt="">
+        </div>
+
+        <!-- Trail — scale from horizon -->
+        <div class="parallax-layer layer-09" data-origin="horizon" data-speed="0.40">
+            <img src="layer-09-trail.svg" alt="">
+        </div>
+
+    </div>
+
+    <div class="spacer">Content continues below</div>
+
+    <script>
+        // --- Parallax terrain divider ---
+        (function() {
+            const divider = document.getElementById('parallaxDivider');
+            if (!divider) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            const layers = divider.querySelectorAll('.parallax-layer');
+            const goFartherText = document.getElementById('goFartherText');
+
+            const HORIZON_RATIO = 227 / 400;
+
+            let ticking = false;
+
+            function easeInOutCubic(t) {
+                return t < 0.5
+                    ? 4 * t * t * t
+                    : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+
+            function updateParallax() {
+                const rect = divider.getBoundingClientRect();
+                const viewH = window.innerHeight;
+                const dividerH = rect.height;
+
+                const progress = 1 - (rect.bottom / (viewH + dividerH));
+
+                if (rect.bottom < -200 || rect.top > viewH + 200) {
+                    ticking = false;
+                    return;
+                }
+
+                // Responsive timing based on divider-to-viewport ratio
+                const sizeRatio = dividerH / viewH;
+                const scaleStart = Math.max(0.05, Math.min(0.25, sizeRatio * 0.8));
+                const textStart = Math.max(0.02, scaleStart - 0.10);
+                const textEnd = Math.max(0.35, scaleStart + 0.30);
+
+                layers.forEach(layer => {
+                    const speed = parseFloat(layer.dataset.speed);
+                    const origin = layer.dataset.origin;
+                    const cls = [...layer.classList].find(c => c.startsWith('layer-')) || 'unknown';
+
+                    if (speed === 0 || origin === 'none') return;
+
+                    const forwardProgress = Math.max(0, (progress - scaleStart) / (1 - scaleStart));
+                    const scale = 1 + forwardProgress * speed * 2.0;
+
+                    let transformOrigin;
+                    if (origin === 'horizon') {
+                        transformOrigin = `50% ${HORIZON_RATIO * 100}%`;
+                    } else if (origin === 'bottom') {
+                        transformOrigin = `50% 100%`;
+                    }
+
+                    layer.style.transformOrigin = transformOrigin;
+
+                    // Grass: translate down aggressively to exit the frame
+                    if (cls === 'layer-08') {
+                        const slideDown = forwardProgress * dividerH * 1.8;
+                        layer.style.transform = `translateY(${slideDown}px) scale(${scale})`;
+                    } else {
+                        layer.style.transform = `scale(${scale})`;
+                    }
+                });
+
+                // GO FARTHER text — rises from behind ground to rest on horizon
+                const textRaw = Math.max(0, Math.min(1, (progress - textStart) / (textEnd - textStart)));
+                const textEased = easeInOutCubic(textRaw);
+                const textYStart = 120;
+                const textHeight = goFartherText.offsetHeight || 40;
+                const textYEnd = -textHeight;
+                const textY = textYStart + (textYEnd - textYStart) * textEased;
+
+                goFartherText.style.opacity = Math.min(1, textEased * 2);
+                goFartherText.style.transform = `translateY(${textY}px)`;
+
+                ticking = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    requestAnimationFrame(updateParallax);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            updateParallax();
+        })();
+    </script>
+</body>
+</html>
