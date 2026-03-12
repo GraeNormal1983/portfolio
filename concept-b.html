@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept B — Dark Alpine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0e1210;
+            --color-surface: #171c19;
+            --color-surface-raised: #1e2622;
+            --color-text: #e8e6e1;
+            --color-text-secondary: #9a9891;
+            --color-text-muted: #5e5d58;
+            --color-accent: #5ab87a;
+            --color-accent-dim: rgba(90, 184, 122, 0.10);
+            --color-accent-warm: #c9a96e;
+            --color-rule: rgba(255, 255, 255, 0.08);
+            --font-display: 'Bebas Neue', Impact, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--color-bg);
+            font-family: var(--font-body);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 clamp(1.5rem, 4vw, 3rem);
+        }
+
+        /* --- Nav --- */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            background: rgba(14, 18, 16, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--color-rule);
+        }
+        .nav-name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .nav-name a { color: var(--color-text); text-decoration: none; }
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .nav-links a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--color-accent); }
+
+        /* --- Hero --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Full-bleed background image placeholder */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--color-surface);
+            /* This would be a full-bleed photo with a dark overlay */
+            opacity: 0.4;
+        }
+        .hero::after {
+            content: 'FULL-BLEED HERO PHOTO';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--color-text-muted);
+            z-index: 0;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+        .hero-label {
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .hero-label::before {
+            content: '';
+            width: 3rem;
+            height: 1px;
+            background: var(--color-accent);
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 400;
+            line-height: 0.92;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            color: var(--color-text);
+        }
+        .hero-title .accent {
+            color: var(--color-accent);
+        }
+        .hero-subtitle {
+            font-family: var(--font-serif);
+            font-size: 1.1875rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            max-width: 520px;
+            margin-bottom: 3rem;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border: 1px solid var(--color-text-muted);
+            color: var(--color-text);
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+        .btn--primary {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            color: var(--color-bg);
+        }
+        .btn--primary:hover {
+            background: #4aa06a;
+            border-color: #4aa06a;
+            color: var(--color-bg);
+        }
+
+        /* --- Featured Work --- */
+        .featured-work {
+            padding: 7rem 0;
+            border-top: 1px solid var(--color-rule);
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+        .section-label {
+            font-family: var(--font-body);
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--color-accent-warm);
+            margin-bottom: 0.75rem;
+        }
+        .section-heading {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            line-height: 1.0;
+        }
+        .section-link {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+        .section-link:hover { color: var(--color-accent); }
+
+        /* Work cards — editorial grid */
+        .work-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
+        }
+        .work-card {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .work-card-image {
+            aspect-ratio: 16/10;
+            background: var(--color-surface-raised);
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .work-card-image::after {
+            content: 'PROJECT IMAGE';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            color: var(--color-text-muted);
+        }
+        /* Accent bar on hover */
+        .work-card-image::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--color-accent);
+            transition: width 0.4s ease;
+            z-index: 1;
+        }
+        .work-card:hover .work-card-image::before {
+            width: 100%;
+        }
+        .work-card:nth-child(2) .work-card-image {
+            aspect-ratio: 4/3;
+        }
+        .work-card-number {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            color: var(--color-accent-warm);
+            margin-bottom: 0.5rem;
+        }
+        .work-card-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            transition: color 0.2s;
+        }
+        .work-card:hover .work-card-title {
+            color: var(--color-accent);
+        }
+        .work-card-description {
+            font-size: 0.9375rem;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+        }
+        .work-card-link {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin-top: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+        .work-card:hover .work-card-link { color: var(--color-accent); }
+
+        /* --- Concept label --- */
+        .concept-badge {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            border: 1px solid var(--color-rule);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            z-index: 200;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title { font-size: clamp(3rem, 12vw, 5rem); }
+            .work-grid { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-name"><a href="#">Jeff Stevenson</a></div>
+        <ul class="nav-links">
+            <li><a href="#">Work</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Resume</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-label">UX Design Leader</div>
+                <h1 class="hero-title"><span class="accent">Clarity</span><br>is a design<br>skill.</h1>
+                <p class="hero-subtitle">
+                    When a team has clarity about what they're solving and who 
+                    they're solving it for, they do extraordinary work. I've spent 
+                    my career making that happen — across startups, SaaS, and 
+                    Fortune 50 retail.
+                </p>
+                <div class="hero-actions">
+                    <a href="#" class="btn btn--primary">See My Work</a>
+                    <a href="#" class="btn">View Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-work">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <p class="section-label">Selected Work</p>
+                    <h2 class="section-heading">Projects &<br>case studies</h2>
+                </div>
+                <a href="#" class="section-link">View all projects →</a>
+            </div>
+
+            <div class="work-grid">
+                <a href="#" class="work-card">
+                    <div class="work-card-image"></div>
+                    <span class="work-card-number">01</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">A brief description of this project and the challenge it addressed. Your most impressive case study.</p>
+                    <span class="work-card-link">Read case study →</span>
+                </a>
+                <a href="#" class="work-card">
+                    <div class="work-card-image"></div>
+                    <span class="work-card-number">02</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">A brief description of this project and the challenge it addressed.</p>
+                    <span class="work-card-link">Read case study →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="concept-badge">Concept B — Dark Alpine</div>
+
+</body>
+</html>
