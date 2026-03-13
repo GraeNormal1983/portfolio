@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Concept B — Dark Alpine</title>
+    <title>Concept B — Dark Alpine (Full Page)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
     <style>
         :root {
             --color-bg: #0e1210;
@@ -16,9 +16,10 @@
             --color-text-secondary: #9a9891;
             --color-text-muted: #5e5d58;
             --color-accent: #5ab87a;
-            --color-accent-dim: rgba(90, 184, 122, 0.10);
+            --color-accent-dim: rgba(90, 184, 122, 0.08);
             --color-accent-warm: #c9a96e;
             --color-rule: rgba(255, 255, 255, 0.08);
+            --color-rule-light: rgba(255, 255, 255, 0.04);
             --font-display: 'Bebas Neue', Impact, sans-serif;
             --font-serif: 'Source Serif 4', Georgia, serif;
             --font-body: 'DM Sans', sans-serif;
@@ -31,7 +32,6 @@
             color: var(--color-text);
             -webkit-font-smoothing: antialiased;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -40,297 +40,320 @@
 
         /* --- Nav --- */
         .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
             padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 100;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
             background: rgba(14, 18, 16, 0.85);
             backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--color-rule);
         }
-        .nav-name {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
+        .nav-name { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; }
         .nav-name a { color: var(--color-text); text-decoration: none; }
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-        .nav-links a {
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+        .nav-links a { color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
         .nav-links a:hover { color: var(--color-accent); }
 
-        /* --- Hero --- */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 5rem;
-            position: relative;
-            overflow: hidden;
-        }
-        /* Full-bleed background image placeholder */
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--color-surface);
-            /* This would be a full-bleed photo with a dark overlay */
-            opacity: 0.4;
-        }
-        .hero::after {
-            content: 'FULL-BLEED HERO PHOTO';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            color: var(--color-text-muted);
-            z-index: 0;
-        }
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-        }
-        .hero-label {
-            font-family: var(--font-body);
-            font-size: 0.6875rem;
-            font-weight: 500;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--color-accent);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .hero-label::before {
-            content: '';
-            width: 3rem;
-            height: 1px;
-            background: var(--color-accent);
-        }
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: clamp(4rem, 10vw, 8rem);
-            font-weight: 400;
-            line-height: 0.92;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            margin-bottom: 2.5rem;
-            color: var(--color-text);
-        }
-        .hero-title .accent {
-            color: var(--color-accent);
-        }
-        .hero-subtitle {
-            font-family: var(--font-serif);
-            font-size: 1.1875rem;
-            font-weight: 300;
-            font-style: italic;
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-            max-width: 520px;
-            margin-bottom: 3rem;
-        }
-        .hero-actions {
-            display: flex;
-            gap: 1.25rem;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            text-decoration: none;
-            padding: 1rem 2rem;
-            border: 1px solid var(--color-text-muted);
-            color: var(--color-text);
-            transition: all 0.3s ease;
-        }
-        .btn:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
-        }
-        .btn--primary {
-            background: var(--color-accent);
-            border-color: var(--color-accent);
-            color: var(--color-bg);
-        }
-        .btn--primary:hover {
-            background: #4aa06a;
-            border-color: #4aa06a;
-            color: var(--color-bg);
-        }
-
-        /* --- Featured Work --- */
-        .featured-work {
-            padding: 7rem 0;
-            border-top: 1px solid var(--color-rule);
-        }
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 4rem;
-        }
+        /* --- Shared --- */
         .section-label {
-            font-family: var(--font-body);
-            font-size: 0.6875rem;
-            font-weight: 500;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--color-accent-warm);
-            margin-bottom: 0.75rem;
+            font-family: var(--font-body); font-size: 0.6875rem; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--color-accent-warm); margin-bottom: 0.75rem;
         }
         .section-heading {
             font-family: var(--font-display);
             font-size: clamp(2.5rem, 5vw, 3.5rem);
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            line-height: 1.0;
+            font-weight: 400; letter-spacing: 0.04em;
+            text-transform: uppercase; line-height: 1.0;
+        }
+        .section-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 4rem;
         }
         .section-link {
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--color-text-secondary);
-            text-decoration: none;
-            transition: color 0.2s;
-            white-space: nowrap;
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--color-text-secondary);
+            text-decoration: none; transition: color 0.2s; white-space: nowrap;
         }
         .section-link:hover { color: var(--color-accent); }
 
-        /* Work cards — editorial grid */
-        .work-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 2rem;
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+            padding: 1rem 2rem; border: 1px solid var(--color-text-muted);
+            color: var(--color-text); transition: all 0.3s ease;
         }
-        .work-card {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+        .btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+        .btn--primary:hover { background: #4aa06a; border-color: #4aa06a; color: var(--color-bg); }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding-top: 5rem; position: relative; overflow: hidden;
         }
+        .hero > .container { width: 100%; }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('Jeff-hero-photo.jpg') center right / cover no-repeat;
+            opacity: 0.35;
+        }
+        .hero::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, var(--color-bg) 0%, var(--color-bg) 25%, rgba(14,18,16,0.7) 55%, rgba(14,18,16,0.3) 100%);
+        }
+        .hero-content { position: relative; z-index: 1; text-align: left; width: 100%; }
+        .hero-label {
+            font-family: var(--font-body); font-size: 0.6875rem; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-accent);
+            margin-bottom: 2rem;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 400; line-height: 0.92; letter-spacing: 0.02em;
+            text-transform: uppercase; margin-bottom: 2.5rem;
+        }
+        .hero-title .accent { color: var(--color-accent); }
+        .hero-subtitle {
+            font-family: var(--font-serif); font-size: 1.1875rem; font-weight: 300;
+            font-style: italic; line-height: 1.7; color: var(--color-text-secondary);
+            max-width: 520px; margin-bottom: 3rem;
+        }
+        .hero-actions { display: flex; gap: 1.25rem; }
+
+        /* ============================================
+           FEATURED WORK
+           ============================================ */
+        .featured-work { padding: 7rem 0; border-top: 1px solid var(--color-rule); }
+        .work-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; }
+        .work-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
         .work-card-image {
-            aspect-ratio: 16/10;
-            background: var(--color-surface-raised);
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
+            aspect-ratio: 16/10; background: var(--color-surface-raised);
+            margin-bottom: 1.5rem; position: relative; overflow: hidden;
         }
         .work-card-image::after {
-            content: 'PROJECT IMAGE';
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            letter-spacing: 0.15em;
-            color: var(--color-text-muted);
+            content: 'PROJECT IMAGE'; position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; letter-spacing: 0.15em; color: var(--color-text-muted);
         }
-        /* Accent bar on hover */
         .work-card-image::before {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 0; height: 2px;
-            background: var(--color-accent);
-            transition: width 0.4s ease;
-            z-index: 1;
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--color-accent);
+            transition: width 0.4s ease; z-index: 1;
         }
-        .work-card:hover .work-card-image::before {
-            width: 100%;
-        }
-        .work-card:nth-child(2) .work-card-image {
-            aspect-ratio: 4/3;
-        }
-        .work-card-number {
-            font-family: var(--font-display);
-            font-size: 1rem;
-            letter-spacing: 0.08em;
-            color: var(--color-accent-warm);
-            margin-bottom: 0.5rem;
-        }
+        .work-card:hover .work-card-image::before { width: 100%; }
+        .work-card:nth-child(2) .work-card-image { aspect-ratio: 4/3; }
+        .work-card-number { font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.08em; color: var(--color-accent-warm); margin-bottom: 0.5rem; }
         .work-card-title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            transition: color 0.2s;
+            font-family: var(--font-display); font-size: 1.5rem; font-weight: 400;
+            letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.75rem; transition: color 0.2s;
         }
-        .work-card:hover .work-card-title {
-            color: var(--color-accent);
-        }
-        .work-card-description {
-            font-size: 0.9375rem;
-            font-weight: 300;
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-        }
+        .work-card:hover .work-card-title { color: var(--color-accent); }
+        .work-card-description { font-size: 0.9375rem; font-weight: 300; line-height: 1.7; color: var(--color-text-secondary); }
         .work-card-link {
-            font-size: 0.6875rem;
-            font-weight: 500;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            margin-top: 1.25rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.2s;
+            font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--color-text-muted);
+            margin-top: 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s;
         }
         .work-card:hover .work-card-link { color: var(--color-accent); }
 
-        /* --- Concept label --- */
-        .concept-badge {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            font-size: 0.6875rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            background: var(--color-surface);
-            border: 1px solid var(--color-rule);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            z-index: 200;
+        /* ============================================
+           TOPO DIVIDER
+           ============================================ */
+        .topo-divider {
+            position: relative; width: 100%; height: 420px;
+            border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);
+            overflow: hidden;
+        }
+        .topo-canvas { display: block; width: 100%; height: 100%; }
+        .topo-label {
+            position: absolute; top: 22%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--font-body); font-weight: 300;
+            font-size: clamp(0.75rem, 1.2vw, 1rem);
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: rgba(90, 184, 122, 0.35); pointer-events: none;
+            white-space: nowrap; transition: opacity 0.7s ease;
+        }
+        .topo-label.hidden { opacity: 0; }
+        .topo-go-farther {
+            position: absolute; top: 44%; left: 50%;
+            transform: translate(-50%, -30%);
+            font-family: var(--font-display); font-weight: 400;
+            font-size: clamp(2.2rem, 5vw, 4.2rem);
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: rgba(90, 184, 122, 0); pointer-events: none;
+            white-space: nowrap;
+            transition: color 0.5s ease, transform 0.5s ease;
+        }
+        .topo-go-farther.revealed {
+            color: rgba(90, 184, 122, 0.30);
+            transform: translate(-50%, -50%);
         }
 
+        /* ============================================
+           WRITING / ESSAYS
+           ============================================ */
+        .writing-section { padding: 7rem 0; }
+        .writing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 0; }
+        .writing-card {
+            padding: 2.5rem 2rem; text-decoration: none; color: inherit;
+            border-right: 1px solid var(--color-rule);
+            transition: background 0.3s ease;
+        }
+        .writing-card:last-child { border-right: none; }
+        .writing-card:hover { background: var(--color-surface); }
+        .writing-card-date {
+            font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--color-accent-warm); margin-bottom: 1rem;
+        }
+        .writing-card-title {
+            font-family: var(--font-serif); font-size: 1.25rem; font-weight: 400;
+            line-height: 1.35; margin-bottom: 0.75rem; transition: color 0.2s;
+        }
+        .writing-card:hover .writing-card-title { color: var(--color-accent); }
+        .writing-card-excerpt {
+            font-size: 0.875rem; font-weight: 300; line-height: 1.7; color: var(--color-text-secondary);
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials { padding: 7rem 0; border-top: 1px solid var(--color-rule); }
+        .testimonial-track {
+            display: flex; gap: 1.5rem; margin-top: 3rem;
+            padding: 1rem clamp(1.5rem, 4vw, 3rem) 2.5rem;
+            overflow-x: auto; scrollbar-width: none; cursor: grab;
+        }
+        .testimonial-track::-webkit-scrollbar { display: none; }
+        .testimonial {
+            flex: 0 0 min(420px, 80vw); padding: 2.5rem;
+            background: var(--color-surface); border: 1px solid var(--color-rule);
+            border-radius: 4px; position: relative;
+            transition: border-color 0.3s ease;
+        }
+        .testimonial:hover { border-color: rgba(255,255,255,0.15); }
+        .testimonial-accent { width: 32px; height: 2px; background: var(--color-accent); margin-bottom: 1.5rem; }
+        .testimonial-text {
+            font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 300;
+            font-style: italic; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1.5rem;
+        }
+        .testimonial-author { font-size: 0.875rem; font-weight: 500; color: var(--color-text); }
+        .testimonial-role { font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 0.2rem; }
+        .testimonial-hint {
+            text-align: center; margin-top: 1.25rem; font-size: 0.6875rem;
+            letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); opacity: 0.5;
+        }
+
+        /* ============================================
+           LIGHT SECTION PALETTE
+           ============================================ */
+        .section-light {
+            --sl-bg: #f2f0eb;
+            --sl-text: #1a1a18;
+            --sl-text-secondary: #5a5a56;
+            --sl-text-muted: #8a8a84;
+            --sl-rule: rgba(0, 0, 0, 0.08);
+            --sl-surface: #ffffff;
+            background: var(--sl-bg);
+            color: var(--sl-text);
+        }
+        .section-light .section-label { color: var(--color-accent-warm); }
+        .section-light .section-heading { color: var(--sl-text); }
+        .section-light .section-link { color: var(--sl-text-secondary); }
+        .section-light .section-link:hover { color: var(--color-accent); }
+
+        /* Writing cards in light mode */
+        .section-light .writing-card { border-right-color: var(--sl-rule); }
+        .section-light .writing-card:hover { background: var(--sl-surface); }
+        .section-light .writing-card-date { color: #8a6d3a; }
+        .section-light .writing-card-title { color: var(--sl-text); }
+        .section-light .writing-card:hover .writing-card-title { color: #2B5F3F; }
+        .section-light .writing-card-excerpt { color: var(--sl-text-secondary); }
+
+        /* Testimonials in light mode */
+        .section-light .testimonial {
+            background: var(--sl-surface);
+            border-color: var(--sl-rule);
+        }
+        .section-light .testimonial:hover { border-color: rgba(0, 0, 0, 0.15); }
+        .section-light .testimonial-accent { background: #2B5F3F; }
+        .section-light .testimonial-text { color: var(--sl-text-secondary); }
+        .section-light .testimonial-author { color: var(--sl-text); }
+        .section-light .testimonial-role { color: var(--sl-text-muted); }
+        .section-light .testimonial-hint { color: var(--sl-text-muted); }
+
+        /* Buttons in light mode */
+        .section-light .btn {
+            border-color: var(--sl-text-muted);
+            color: var(--sl-text);
+        }
+        .section-light .btn:hover { border-color: #2B5F3F; color: #2B5F3F; }
+        .section-light .btn--primary {
+            background: #2B5F3F; border-color: #2B5F3F; color: #fff;
+        }
+        .section-light .btn--primary:hover {
+            background: #1e4a2e; border-color: #1e4a2e;
+        }
+
+        /* ============================================
+           CTA
+           ============================================ */
+        .cta-section {
+            padding: 7rem 0; border-top: 1px solid var(--color-rule); text-align: center;
+        }
+        .cta-heading {
+            font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase;
+            line-height: 1.0; margin-bottom: 1.5rem;
+        }
+        .cta-description {
+            font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 300;
+            font-style: italic; color: var(--color-text-secondary); line-height: 1.7;
+            max-width: 480px; margin: 0 auto 2.5rem;
+        }
+        .cta-actions { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 3rem clamp(1.5rem, 4vw, 3rem);
+            border-top: 1px solid var(--color-rule);
+        }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .footer-name { font-family: var(--font-display); font-size: 1.125rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .footer-tagline { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--color-accent); }
+        .footer-bottom { max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--color-rule); }
+        .footer-copyright { font-size: 0.6875rem; color: var(--color-text-muted); }
+
+        /* --- Concept label --- */
+        .concept-badge {
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--color-text-muted);
+            background: var(--color-surface); border: 1px solid var(--color-rule);
+            padding: 0.5rem 1rem; border-radius: 4px; z-index: 200;
+        }
+
+        /* --- Responsive --- */
         @media (max-width: 768px) {
             .hero-title { font-size: clamp(3rem, 12vw, 5rem); }
             .work-grid { grid-template-columns: 1fr; }
+            .writing-grid { grid-template-columns: 1fr; }
+            .writing-card { border-right: none; border-bottom: 1px solid var(--sl-rule, var(--color-rule)); }
             .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
     </style>
 </head>
@@ -346,6 +369,7 @@
         </ul>
     </nav>
 
+    <!-- ===== HERO ===== -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
@@ -365,6 +389,7 @@
         </div>
     </section>
 
+    <!-- ===== FEATURED WORK ===== -->
     <section class="featured-work">
         <div class="container">
             <div class="section-header">
@@ -380,7 +405,7 @@
                     <div class="work-card-image"></div>
                     <span class="work-card-number">01</span>
                     <h3 class="work-card-title">Placeholder Project Title</h3>
-                    <p class="work-card-description">A brief description of this project and the challenge it addressed. Your most impressive case study.</p>
+                    <p class="work-card-description">A brief description of this project and the challenge it addressed. Your most impressive, publicly-shareable case study.</p>
                     <span class="work-card-link">Read case study →</span>
                 </a>
                 <a href="#" class="work-card">
@@ -391,10 +416,251 @@
                     <span class="work-card-link">Read case study →</span>
                 </a>
             </div>
+
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="#" class="btn">View All Projects</a>
+            </div>
         </div>
     </section>
 
-    <div class="concept-badge">Concept B — Dark Alpine</div>
+    <!-- ===== TOPO DIVIDER ===== -->
+    <div class="topo-divider" id="topoSection">
+        <canvas class="topo-canvas" id="topoCanvas"></canvas>
+        <div class="topo-label" id="topoLabel">Teton Mountains</div>
+        <div class="topo-go-farther" id="topoText">Go Farther</div>
+    </div>
+
+    <!-- ===== WRITING ===== -->
+    <section class="writing-section section-light">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <p class="section-label">Writing & Thinking</p>
+                    <h2 class="section-heading">Recent essays</h2>
+                </div>
+                <a href="#" class="section-link">Read on Substack →</a>
+            </div>
+
+            <div class="writing-grid">
+                <a href="#" class="writing-card">
+                    <p class="writing-card-date">January 2026</p>
+                    <h3 class="writing-card-title">Placeholder Essay Title About Design Leadership</h3>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
+                </a>
+                <a href="#" class="writing-card">
+                    <p class="writing-card-date">December 2025</p>
+                    <h3 class="writing-card-title">Placeholder Essay Title About UX Process</h3>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
+                </a>
+                <a href="#" class="writing-card">
+                    <p class="writing-card-date">November 2025</p>
+                    <h3 class="writing-card-title">Placeholder Essay About Building Design Teams</h3>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials section-light" style="border-top: 1px solid rgba(0, 0, 0, 0.10);">
+        <div class="container">
+            <p class="section-label">Kind Words</p>
+            <h2 class="section-heading">What colleagues say</h2>
+        </div>
+
+        <div class="testimonial-track">
+            <div class="testimonial">
+                <div class="testimonial-accent"></div>
+                <p class="testimonial-text">
+                    Placeholder testimonial from a colleague about your design leadership and collaboration style.
+                </p>
+                <p class="testimonial-author">Chris Fladung</p>
+                <p class="testimonial-role">VP Merchandise Experience @ Kroger</p>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-accent"></div>
+                <p class="testimonial-text">
+                    Placeholder testimonial about how you approach complex problems and drive meaningful outcomes through design.
+                </p>
+                <p class="testimonial-author">Tom Rose</p>
+                <p class="testimonial-role">Sr. Manager, Product Design @ Kroger</p>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-accent"></div>
+                <p class="testimonial-text">
+                    Placeholder testimonial about your mentorship, team culture, and the impact you have on the people around you.
+                </p>
+                <p class="testimonial-author">Megan West</p>
+                <p class="testimonial-role">Sr. Strategy Manager @ Kroger</p>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-accent"></div>
+                <p class="testimonial-text">
+                    Placeholder testimonial about your strategic mindset and focus on delivering solutions that meet customer needs.
+                </p>
+                <p class="testimonial-author">Tina McClelland</p>
+                <p class="testimonial-role">Lead Strategic Product Coach @ Kroger</p>
+            </div>
+        </div>
+        <p class="testimonial-hint">Drag or swipe to see more →</p>
+    </section>
+
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-heading">Let's work<br>together</h2>
+            <p class="cta-description">
+                Interested in collaborating or learning more about my work? I'd love to connect.
+            </p>
+            <div class="cta-actions">
+                <a href="#" class="btn btn--primary">Get in Touch</a>
+                <a href="#" class="btn">View Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Jeff Stevenson</p>
+                <p class="footer-tagline">UX Design Leader</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#">Work</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">Substack</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Jeff Stevenson. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="concept-badge">Concept B — Dark Alpine (Full Page)</div>
+
+    <script>
+    // --- Topo relief divider (Teton Range, dark theme) ---
+    (function() {
+        const canvas = document.getElementById('topoCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const section = document.getElementById('topoSection');
+        const topoText = document.getElementById('topoText');
+        const topoLabel = document.getElementById('topoLabel');
+
+        const SEED = 42;
+        function hash(x, y) { let h = SEED+x*374761393+y*668265263; h=(h^(h>>13))*1274126177; return((h^(h>>16))&0x7fffffff)/0x7fffffff; }
+        function smoothNoise(x, y) { const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy); const v00=hash(ix,iy),v10=hash(ix+1,iy),v01=hash(ix,iy+1),v11=hash(ix+1,iy+1); return(v00+sx*(v10-v00))+sy*((v01+sx*(v11-v01))-(v00+sx*(v10-v00))); }
+        function fbm(x, y, oct) { let v=0,a=1,t=0; for(let i=0;i<oct;i++){v+=smoothNoise(x,y)*a;t+=a;x*=2.1;y*=2.1;a*=0.45;} return v/t; }
+        function ridgedNoise(x, y) { let v=0,a=1,t=0; for(let i=0;i<4;i++){const n=1-Math.abs(smoothNoise(x,y)*2-1);v+=n*n*a;t+=a;x*=2.2;y*=2.2;a*=0.45;} return v/t; }
+
+        const RIDGE_NY = 0.32;
+        function peak2D(nx,ny,cx,cy,wx,wy,s) { const dx=(nx-cx)/wx,dy=(ny-cy)/wy; return Math.exp(-Math.pow(dx*dx+dy*dy,s||0.85)); }
+
+        const peaks = [
+            {nx:0.28,h:0.55,wx:0.04,wy:0.04,s:0.80},{nx:0.34,h:0.72,wx:0.03,wy:0.035,s:0.75},
+            {nx:0.40,h:0.82,wx:0.028,wy:0.032,s:0.75},{nx:0.48,h:0.92,wx:0.030,wy:0.035,s:0.70},
+            {nx:0.53,h:0.85,wx:0.025,wy:0.030,s:0.75},{nx:0.58,h:0.70,wx:0.030,wy:0.035,s:0.80},
+            {nx:0.76,h:0.78,wx:0.035,wy:0.040,s:0.75},
+        ];
+        const ridge = [
+            {nx:0.20,h:0.25,wx:0.05,wy:0.05},{nx:0.31,h:0.42,wx:0.04,wy:0.04},
+            {nx:0.36,h:0.50,wx:0.03,wy:0.035},{nx:0.44,h:0.55,wx:0.035,wy:0.035},
+            {nx:0.555,h:0.40,wx:0.025,wy:0.03},{nx:0.64,h:0.25,wx:0.03,wy:0.035},
+            {nx:0.70,h:0.30,wx:0.03,wy:0.035},{nx:0.83,h:0.22,wx:0.04,wy:0.04},
+            {nx:0.90,h:0.12,wx:0.04,wy:0.04},
+        ];
+        const westSlope = [
+            {nx:0.35,ny:0.15,h:0.22,wx:0.08,wy:0.10},
+            {nx:0.50,ny:0.14,h:0.28,wx:0.09,wy:0.12},
+            {nx:0.75,ny:0.16,h:0.20,wx:0.07,wy:0.10},
+        ];
+
+        function terrain(nx, ny) {
+            let fm = 0;
+            for (const p of peaks) fm = Math.max(fm, p.h*peak2D(nx,ny,p.nx,RIDGE_NY,p.wx,p.wy,p.s));
+            for (const r of ridge) { const dx=(nx-r.nx)/r.wx,dy=(ny-RIDGE_NY)/r.wy; fm=Math.max(fm,r.h*Math.exp(-(dx*dx+dy*dy))); }
+            let h = fm;
+            for (const w of westSlope) { const dx=(nx-w.nx)/w.wx,dy=(ny-w.ny)/w.wy; h+=w.h*Math.exp(-(dx*dx+dy*dy))*0.5; }
+            const ed = ny-RIDGE_NY;
+            if (ed>0&&ed<0.12) h*=1-Math.pow(ed/0.12,0.5)*0.25;
+            const bH = Math.min(h,1.0);
+            h += ridgedNoise(nx*24+3.7,ny*20+1.2)*0.055*bH;
+            h += (fbm(nx*22,ny*18,5)-0.5)*0.045*(0.15+bH*0.85);
+            const cd = Math.abs(nx-0.64);
+            if (cd<0.025&&ny>RIDGE_NY-0.03) h-=(1-cd/0.025)*0.30*Math.max(0,Math.min(1,(ny-RIDGE_NY+0.03)/0.20))*bH;
+            h *= Math.min(nx/0.10,(1-nx)/0.10,ny/0.06,(1-ny)/0.06,1);
+            return Math.max(0,Math.min(1.2,h));
+        }
+
+        let heightMap,mapW,mapH;
+        function genHM(w,h) { mapW=w;mapH=h;heightMap=new Float32Array(w*h); for(let y=0;y<h;y++) for(let x=0;x<w;x++) heightMap[y*w+x]=terrain(x/w,y/h); }
+        function getH(x,y) { const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy; if(ix<0||iy<0||ix>=mapW-1||iy>=mapH-1)return 0; return(heightMap[iy*mapW+ix]+fx*(heightMap[iy*mapW+ix+1]-heightMap[iy*mapW+ix]))*(1-fy)+(heightMap[(iy+1)*mapW+ix]+fx*(heightMap[(iy+1)*mapW+ix+1]-heightMap[(iy+1)*mapW+ix]))*fy; }
+
+        function extractContours(n) {
+            const all=[];
+            for(let l=1;l<n;l++){const th=(l/n)*1.0;const sm=new Map();
+            for(let y=0;y<mapH-1;y++){for(let x=0;x<mapW-1;x++){const v00=heightMap[y*mapW+x],v10=heightMap[y*mapW+x+1],v01=heightMap[(y+1)*mapW+x],v11=heightMap[(y+1)*mapW+x+1];let c=0;if(v00>=th)c|=1;if(v10>=th)c|=2;if(v11>=th)c|=4;if(v01>=th)c|=8;if(c===0||c===15)continue;const lr=(a,b,va,vb)=>a+(th-va)/(vb-va)*(b-a);const t={x:lr(x,x+1,v00,v10),y:y},r={x:x+1,y:lr(y,y+1,v10,v11)},bo={x:lr(x,x+1,v01,v11),y:y+1},le={x:x,y:lr(y,y+1,v00,v01)};const sg=[];switch(c){case 1:sg.push([t,le]);break;case 2:sg.push([t,r]);break;case 3:sg.push([le,r]);break;case 4:sg.push([r,bo]);break;case 5:sg.push([t,r],[bo,le]);break;case 6:sg.push([t,bo]);break;case 7:sg.push([le,bo]);break;case 8:sg.push([le,bo]);break;case 9:sg.push([t,bo]);break;case 10:sg.push([t,le],[r,bo]);break;case 11:sg.push([r,bo]);break;case 12:sg.push([le,r]);break;case 13:sg.push([t,r]);break;case 14:sg.push([t,le]);break;}
+            for(const[a,b]of sg){const kA=`${a.x.toFixed(3)},${a.y.toFixed(3)}`,kB=`${b.x.toFixed(3)},${b.y.toFixed(3)}`;if(!sm.has(kA))sm.set(kA,[]);if(!sm.has(kB))sm.set(kB,[]);sm.get(kA).push({key:kB});sm.get(kB).push({key:kA});}}}
+            const vi=new Set(),ch=[];for(const[sk]of sm){if(vi.has(sk))continue;const c=[];let cu=sk;while(cu&&!vi.has(cu)){vi.add(cu);const[cx,cy]=cu.split(',').map(Number);c.push({x:cx,y:cy});const nx=sm.get(cu);let f=false;for(const n of nx){if(!vi.has(n.key)){cu=n.key;f=true;break;}}if(!f)break;}if(c.length>4)ch.push(c);}
+            all.push({threshold:th,chains:ch});}return all;
+        }
+
+        let contourData,canvasW,canvasH,currentProgress=-1;
+        function init() {
+            const rect=section.getBoundingClientRect();const dpr=window.devicePixelRatio||1;
+            canvasW=rect.width;canvasH=rect.height;canvas.width=canvasW*dpr;canvas.height=canvasH*dpr;
+            ctx.setTransform(dpr,0,0,dpr,0,0);
+            const res=Math.min(450,Math.floor(canvasW/2.8));
+            genHM(res,Math.floor(res*(canvasH/canvasW)));
+            contourData=extractContours(28);currentProgress=-1;
+        }
+
+        // Dark theme: brighter green contour lines
+        const LINE_R = 90, LINE_G = 184, LINE_B = 122;
+
+        function draw(progress) {
+            const p=Math.max(0,Math.min(1,progress));
+            if(Math.abs(p-currentProgress)<0.002)return;
+            currentProgress=p;ctx.clearRect(0,0,canvasW,canvasH);
+            const maxD=canvasH*0.22,ep=Math.min(p,0.65),rcn=RIDGE_NY;
+
+            for(const{threshold,chains}of contourData){
+                const baseAlpha=0.12+threshold*0.28;
+                const lineW=0.4+threshold*0.7;
+                for(const chain of chains){
+                    ctx.beginPath();let minA=1;
+                    for(let i=0;i<chain.length;i++){
+                        const pt=chain[i],nx=pt.x/mapW,ny=pt.y/mapH;
+                        const h=getH(pt.x,pt.y),dfr=ny-rcn;
+                        let pny;
+                        if(dfr<0){const ba=Math.min(1,Math.abs(dfr)/rcn),eP=Math.min(1,ep*(1+ba*2.5));pny=rcn+dfr*(1-eP*0.95);}
+                        else{pny=rcn+dfr*(1+ep*0.4);}
+                        let hs=1;
+                        if(dfr<0){const ba=Math.min(1,Math.abs(dfr)/rcn);hs=1-ba*Math.min(1,ep*(1+ba*2.5));}
+                        const py=pny*canvasH-h*maxD*ep*Math.max(0,hs);
+                        if(dfr<0){const bh=Math.min(1,Math.abs(dfr)/rcn),a=1-bh*Math.min(1,ep*(1+bh*2.5))*0.95;if(a<minA)minA=a;}
+                        if(i===0)ctx.moveTo(nx*canvasW,py);else ctx.lineTo(nx*canvasW,py);
+                    }
+                    ctx.strokeStyle=`rgba(${LINE_R},${LINE_G},${LINE_B},${baseAlpha*Math.max(0.03,minA)})`;
+                    ctx.lineWidth=lineW;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
+                }
+            }
+            const labelDrift=ep*25;
+            topoLabel.style.transform=`translate(-50%, calc(-50% + ${labelDrift}%))`;
+            topoLabel.classList.toggle('hidden',p>0.45);
+            topoText.classList.toggle('revealed',p>0.4);
+        }
+
+        function onScroll(){const rect=section.getBoundingClientRect();const vh=window.innerHeight;requestAnimationFrame(()=>draw(Math.max(0,Math.min(1,(1-(rect.top+rect.height/2)/vh)*1.2))));}
+        init();draw(0);
+        window.addEventListener('scroll',onScroll,{passive:true});
+        window.addEventListener('resize',()=>{init();onScroll();});
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)draw(0.6);else onScroll();
+    })();
+    </script>
 
 </body>
 </html>
