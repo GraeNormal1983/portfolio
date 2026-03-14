@@ -98,7 +98,7 @@
         .hero > .container { width: 100%; }
         .hero::before {
             content: ''; position: absolute; inset: 0;
-            background: url('Jeff-hero-photo.jpg') center right / cover no-repeat;
+            background: url('Jeff-hero-photo.jpg') right center / cover no-repeat;
             opacity: 0.35;
         }
         .hero::after {
@@ -420,6 +420,14 @@
             }
             .nav-links.open { display: flex; }
             .hero-title { font-size: clamp(3rem, 12vw, 5rem); }
+            .hero::before {
+                background-position: right center;
+                opacity: 0.25;
+            }
+            .hero::after {
+                background: linear-gradient(to bottom, var(--color-bg) 0%, rgba(14,18,16,0.75) 40%, rgba(14,18,16,0.5) 100%);
+            }
+            .hero { align-items: flex-end; padding-bottom: 3rem; }
             .work-grid { grid-template-columns: 1fr; }
             .writing-grid { grid-template-columns: 1fr; }
             .writing-card { border-right: none; border-bottom: 1px solid var(--sl-rule, var(--color-rule)); }
