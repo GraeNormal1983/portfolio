@@ -3,46 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeff Stevenson — UX Design Leader</title>
-    <meta name="description" content="UX Design Leader crafting thoughtful, human-centered experiences.">
-    <link rel="stylesheet" href="styles.css">
+    <title>Concept B — Dark Alpine (Full Page)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --color-bg: #0e1210;
+            --color-surface: #171c19;
+            --color-surface-raised: #1e2622;
+            --color-text: #e8e6e1;
+            --color-text-secondary: #9a9891;
+            --color-text-muted: #5e5d58;
+            --color-accent: #5ab87a;
+            --color-accent-dim: rgba(90, 184, 122, 0.08);
+            --color-accent-warm: #c9a96e;
+            --color-rule: rgba(255, 255, 255, 0.08);
+            --color-rule-light: rgba(255, 255, 255, 0.04);
+            --font-display: 'Bebas Neue', Impact, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--color-bg);
+            font-family: var(--font-body);
+            color: var(--color-text);
+            -webkit-font-smoothing: antialiased;
+        }
+
         /* --- Accessibility --- */
         .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 1rem;
-            z-index: 10000;
-            padding: 0.75rem 1.25rem;
-            background: var(--color-accent);
-            color: #fff;
-            font-family: var(--font-body);
-            font-size: 0.875rem;
-            font-weight: 500;
-            border-radius: 0 0 8px 8px;
-            text-decoration: none;
-            transition: top 0.2s ease;
+            position: absolute; top: -100%; left: 1rem; z-index: 10000;
+            padding: 0.75rem 1.25rem; background: var(--color-accent); color: #fff;
+            font-family: var(--font-body); font-size: 0.875rem; font-weight: 500;
+            border-radius: 0 0 8px 8px; text-decoration: none; transition: top 0.2s ease;
         }
-        .skip-link:focus {
-            top: 0;
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--color-accent);
-            outline-offset: 3px;
-        }
-
+        .skip-link:focus { top: 0; }
+        :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
         .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
         }
+
+        /* --- Scroll-triggered animations --- */
+        .fade-in {
+            opacity: 0; transform: translateY(28px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .fade-in.delay-1 { transition-delay: 0.1s; }
+        .fade-in.delay-2 { transition-delay: 0.2s; }
+        .fade-in.delay-3 { transition-delay: 0.3s; }
+        .fade-in.delay-4 { transition-delay: 0.4s; }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -51,817 +65,404 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            .fade-in, .slide-in-left {
-                opacity: 1 !important;
-                transform: none !important;
+            .fade-in {
+                opacity: 1 !important; transform: none !important;
             }
         }
-        /* ============================================
-           HOMEPAGE — ENHANCED DESIGN
-           ============================================ */
-
-        /* --- Hero --- */
-        .hero {
-            min-height: 92vh;
-            display: flex;
-            align-items: center;
-            padding-top: calc(var(--nav-height) + var(--space-lg));
-            padding-bottom: var(--space-xl);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero.topo-dimmed::before {
-            opacity: 0.3;
-        }
-
-        .hero-content {
-            max-width: var(--max-width);
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 clamp(1.5rem, 4vw, 3rem);
-            position: relative;
-            z-index: 1;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: clamp(3rem, 6vw, 6rem);
-            align-items: center;
         }
 
-        .hero-greeting {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1.25rem;
+        /* --- Nav --- */
+        .nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(14, 18, 16, 0.85);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--color-rule);
-            display: inline-block;
-            opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
         }
+        .nav-name { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .nav-name a { color: var(--color-text); text-decoration: none; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+        .nav-links a { color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--color-accent); }
 
-        .hero-greeting-name {
+        /* --- Shared --- */
+        .section-label {
+            font-family: var(--font-body); font-size: 0.6875rem; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            color: var(--color-accent-warm); margin-bottom: 0.75rem;
+        }
+        .section-heading {
             font-family: var(--font-display);
-            font-size: 1.4rem;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            color: var(--color-text);
-            line-height: 1.3;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 400; letter-spacing: 0.04em;
+            text-transform: uppercase; line-height: 1.0;
         }
-
-        .hero-greeting-title {
-            font-family: var(--font-body);
-            font-size: 0.8rem;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            color: var(--color-accent);
-            margin-top: 0.2rem;
+        .section-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 4rem;
         }
+        .section-link {
+            font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--color-text-secondary);
+            text-decoration: none; transition: color 0.2s; white-space: nowrap;
+        }
+        .section-link:hover { color: var(--color-accent); }
 
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+            padding: 1rem 2rem; border: 1px solid var(--color-text-muted);
+            color: var(--color-text); transition: all 0.3s ease;
+        }
+        .btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+        .btn--primary:hover { background: var(--color-accent-warm); border-color: var(--color-accent-warm); color: var(--color-bg); }
+
+        /* ============================================
+           HERO
+           ============================================ */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            padding-top: 5rem; position: relative; overflow: hidden;
+        }
+        .hero > .container { width: 100%; }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url('Jeff-hero-photo.jpg') right center / cover no-repeat;
+            opacity: 0.35;
+        }
+        .hero::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to right, var(--color-bg) 0%, var(--color-bg) 25%, rgba(14,18,16,0.7) 55%, rgba(14,18,16,0.3) 100%);
+        }
+        .hero-content { position: relative; z-index: 1; text-align: left; width: 100%; }
+        .hero-label {
+            font-family: var(--font-body); font-size: 0.6875rem; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-accent);
+            margin-bottom: 2rem;
+        }
         .hero-title {
             font-family: var(--font-display);
-            margin-bottom: 1.5rem;
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 400; line-height: 0.92; letter-spacing: 0.02em;
+            text-transform: uppercase; margin-bottom: 2.5rem;
         }
-
-        .hero-title .hero-line-1 {
-            display: block;
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            font-weight: 400;
-            line-height: 1.2;
-            letter-spacing: -0.015em;
-            color: var(--color-text);
-            opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+        .hero-title .accent { color: var(--color-accent); }
+        .hero-subtitle {
+            font-family: var(--font-serif); font-size: 1.1875rem; font-weight: 300;
+            font-style: italic; line-height: 1.7; color: var(--color-text-secondary);
+            max-width: 520px; margin-bottom: 3rem;
         }
+        .hero-actions { display: flex; gap: 1.25rem; }
 
-        .hero-title .hero-line-1 strong {
-            font-size: 1.6em;
-            font-weight: 600;
-            color: var(--color-accent);
-            letter-spacing: -0.03em;
-            filter: blur(2px);
-            opacity: 0.5;
-        }
-
-        .hero-title .hero-line-1 strong.resolved {
-            animation: clarityResolve 0.8s ease-in-out forwards;
-        }
-
-        @keyframes clarityResolve {
-            0%   { filter: blur(2px); opacity: 0.5; }
-            58%  { filter: blur(3.5px); opacity: 0.45; }
-            100% { filter: blur(0px); opacity: 1; }
-        }
-
-        .hero-title .hero-line-2 {
-            display: block;
-            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-            font-weight: 400;
-            line-height: 1.2;
-            letter-spacing: -0.015em;
-            color: #666;
-            margin-top: 0.25em;
-            opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both;
-        }
-
-        .hero-description {
-            font-size: 1.0625rem;
-            font-weight: 300;
-            line-height: 1.75;
-            color: var(--color-text-secondary);
-            max-width: 480px;
-            margin-bottom: 2.5rem;
-            opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
-        }
-
-        /* Hero visual — floating interactive cards */
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-        }
-
-        .hero-float-area {
-            position: relative;
-            width: 100%;
-            max-width: 440px;
-            aspect-ratio: 1;
-        }
-
-        /* Topo pattern — centered in float area, fixed size */
-        .hero-float-area::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 520px;
-            height: 520px;
-            transform: translate(-50%, -50%);
-            background-image: url("data:image/svg+xml,%3Csvg width='800' height='800' viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%232B5F3F' stroke-width='1'%3E%3Cellipse cx='400' cy='400' rx='60' ry='45' opacity='0.22'/%3E%3Cellipse cx='400' cy='400' rx='110' ry='85' opacity='0.19'/%3E%3Cellipse cx='400' cy='400' rx='165' ry='130' opacity='0.16'/%3E%3Cellipse cx='400' cy='400' rx='220' ry='178' opacity='0.14'/%3E%3Cellipse cx='400' cy='400' rx='280' ry='225' opacity='0.12'/%3E%3Cellipse cx='400' cy='400' rx='345' ry='278' opacity='0.10'/%3E%3Cellipse cx='400' cy='400' rx='410' ry='330' opacity='0.08'/%3E%3C/g%3E%3C/svg%3E");
-            background-size: 100% 100%;
-            background-repeat: no-repeat;
-            pointer-events: none;
-            z-index: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .hero-float-area.clarified::before {
-            opacity: 0.3;
-        }
-
-        .hero-stat {
-            position: absolute;
-            width: 170px;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--color-rule);
-            border-radius: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-            will-change: transform, left, top;
-            transition: left 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        top 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
-                        background 0.4s ease,
-                        border-color 0.4s ease,
-                        box-shadow 0.4s ease;
-        }
-
-        .hero-stat:nth-child(3) { transition-delay: 0.04s, 0.04s, 0s, 0s, 0s; }
-        .hero-stat:nth-child(4) { transition-delay: 0.08s, 0.08s, 0s, 0s, 0s; }
-        .hero-stat:nth-child(5) { transition-delay: 0.12s, 0.12s, 0s, 0s, 0s; }
-
-        /* Grid lines — hidden by default */
-        .grid-lines {
-            position: absolute;
-            inset: 5%;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s ease 0.1s;
-        }
-
-        .grid-lines::before,
-        .grid-lines::after {
-            content: '';
-            position: absolute;
-            background: var(--color-accent);
-            border-radius: 1px;
-        }
-
-        .grid-lines::before {
-            left: 50%;
-            top: 8%;
-            bottom: 8%;
-            width: 1px;
-            opacity: 0.25;
-            transform: translateX(-0.5px);
-        }
-
-        .grid-lines::after {
-            top: 50%;
-            left: 8%;
-            right: 8%;
-            height: 1px;
-            opacity: 0.25;
-            transform: translateY(-0.5px);
-        }
-
-        /* Clarified state — grid appears, topo fades */
-        .hero-float-area.clarified .grid-lines {
-            opacity: 1;
-        }
-
-        /* Hover hint */
-        .hover-hint {
-            position: absolute;
-            bottom: -2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            opacity: 0.5;
-            transition: opacity 0.4s ease;
-            white-space: nowrap;
-        }
-
-        .hero-float-area.clarified .hover-hint {
-            opacity: 0;
-        }
-
-        .hero-stat:hover,
-        .hero-stat.hovered {
-            background: rgba(255, 255, 255, 0.95);
-            border-color: var(--color-accent);
-            box-shadow: 0 16px 48px rgba(43, 95, 63, 0.12);
-        }
-
-        .hero-stat:hover .hero-stat-number,
-        .hero-stat.hovered .hero-stat-number {
-            color: var(--color-accent-light);
-        }
-
-        .hero-stat:hover .hero-stat-cta,
-        .hero-stat.hovered .hero-stat-cta {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .hero-stat-number {
-            font-family: var(--font-display);
-            font-size: 2.25rem;
-            font-weight: 300;
-            line-height: 1;
-            letter-spacing: -0.03em;
-            color: var(--color-accent);
-            margin-bottom: 0.3rem;
-            transition: color 0.4s ease;
-        }
-
-        .hero-stat-label {
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            color: var(--color-text-muted);
-            line-height: 1.4;
-        }
-
-        .hero-stat-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-family: var(--font-body);
-            font-size: 0.6875rem;
-            font-weight: 500;
-            letter-spacing: 0.04em;
-            color: var(--color-accent);
-            margin-top: 0.75rem;
-            opacity: 0;
-            transform: translateY(4px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .hero-stat-cta svg {
-            width: 12px;
-            height: 12px;
-        }
-
-        /* --- Topographic divider --- */
-        .topo-divider {
-            width: 100%;
-            height: 80px;
-            overflow: hidden;
-            opacity: 0.5;
-        }
-
-        .topo-divider svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* --- Featured Work --- */
-        .featured-work {
-            padding: var(--space-2xl) 0;
-        }
-
-        .work-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: var(--space-lg);
-        }
-
-        .work-card {
-            background: var(--color-surface);
-            border: 1px solid var(--color-rule);
-            border-radius: 12px;
-            padding: 0;
-            overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .work-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
-            border-color: var(--color-accent-medium);
-        }
-
+        /* ============================================
+           FEATURED WORK
+           ============================================ */
+        .featured-work { padding: 7rem 0; border-top: 1px solid var(--color-rule); }
+        .work-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; }
+        .work-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; }
         .work-card-image {
-            aspect-ratio: 16 / 9;
-            background: var(--color-bg-alt);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            aspect-ratio: 16/10; background: var(--color-surface-raised);
+            margin-bottom: 1.5rem; position: relative; overflow: hidden;
         }
-
         .work-card-image::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(43, 95, 63, 0.04) 0%, transparent 50%);
-            transition: opacity 0.4s ease;
+            content: 'PROJECT IMAGE'; position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem; letter-spacing: 0.15em; color: var(--color-text-muted);
         }
-
-        .work-card:hover .work-card-image::after {
-            opacity: 0;
+        .work-card-image::before {
+            content: ''; position: absolute; bottom: 0; left: 0;
+            width: 0; height: 2px; background: var(--color-accent);
+            transition: width 0.4s ease; z-index: 1;
         }
-
-        .work-card-image-placeholder {
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-        }
-
-        .work-card-body {
-            padding: 2rem 2rem 2.25rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .work-card-number {
-            font-family: var(--font-display);
-            font-size: 0.8125rem;
-            color: var(--color-text-muted);
-            margin-bottom: 0.75rem;
-        }
-
+        .work-card:hover .work-card-image::before { width: 100%; }
+        .work-card:nth-child(2) .work-card-image { aspect-ratio: 4/3; }
+        .work-card-number { font-family: var(--font-display); font-size: 1rem; letter-spacing: 0.08em; color: var(--color-accent-warm); margin-bottom: 0.5rem; }
         .work-card-title {
-            font-family: var(--font-display);
-            font-size: 1.375rem;
-            font-weight: 400;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.75rem;
-            transition: color 0.3s ease;
+            font-family: var(--font-display); font-size: 1.5rem; font-weight: 400;
+            letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.75rem; transition: color 0.2s;
         }
-
-        .work-card:hover .work-card-title {
-            color: var(--color-accent);
-        }
-
-        .work-card-description {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-            flex-grow: 1;
-        }
-
-        .work-card-tags {
-            display: flex;
-            gap: 0.375rem;
-            flex-wrap: wrap;
-        }
-
+        .work-card:hover .work-card-title { color: var(--color-accent); }
+        .work-card-description { font-size: 0.9375rem; font-weight: 300; line-height: 1.7; color: var(--color-text-secondary); }
         .work-card-link {
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--color-accent);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            transition: gap 0.3s ease;
-            margin-top: 1.25rem;
+            font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--color-text-muted);
+            margin-top: 1.25rem; display: inline-flex; align-items: center; gap: 0.5rem; transition: color 0.2s;
         }
+        .work-card:hover .work-card-link { color: var(--color-accent); }
 
-        .work-card-link:hover { gap: 0.625rem; }
-        .work-card-link svg { width: 14px; height: 14px; }
-
-        /* Featured card — full width */
-        .work-card.featured {
-            grid-column: 1 / -1;
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-        }
-
-        .work-card.featured .work-card-image {
-            aspect-ratio: auto;
-            min-height: 320px;
-        }
-
-        .work-card.featured .work-card-body {
-            padding: 3rem;
-            justify-content: center;
-        }
-
-        .work-card.featured .work-card-title {
-            font-size: 1.75rem;
-        }
-
-        /* --- Topo relief divider --- */
-        .topo-section {
-            position: relative;
-            width: 100%;
-            max-width: 1600px;
-            margin: var(--space-lg) auto 0;
-            height: 500px;
+        /* ============================================
+           TOPO DIVIDER
+           ============================================ */
+        .topo-divider {
+            position: relative; width: 100%; height: 420px;
+            border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule);
             overflow: hidden;
         }
         .topo-canvas { display: block; width: 100%; height: 100%; }
         .topo-label {
-            position: absolute; top: 22%; left: 50%;
+            position: absolute; top: 28%; left: 50%;
             transform: translate(-50%, -50%);
-            font-family: var(--font-body);
-            font-weight: 300;
+            font-family: var(--font-body); font-weight: 300;
             font-size: clamp(0.75rem, 1.2vw, 1rem);
             letter-spacing: 0.25em; text-transform: uppercase;
-            color: rgba(43, 95, 63, 0.30); pointer-events: none;
-            white-space: nowrap;
-            transition: opacity 0.7s ease;
+            color: rgba(90, 184, 122, 0.35); pointer-events: none;
+            white-space: nowrap; transition: opacity 0.7s ease;
         }
         .topo-label.hidden { opacity: 0; }
-        .topo-text {
-            position: absolute; top: 44%; left: 50%;
+        .topo-go-farther {
+            position: absolute; top: 52%; left: 50%;
             transform: translate(-50%, -30%);
-            font-family: var(--font-display);
-            font-weight: 800;
+            font-family: var(--font-display); font-weight: 400;
             font-size: clamp(2.2rem, 5vw, 4.2rem);
-            letter-spacing: 0.14em; text-transform: uppercase;
-            color: rgba(43, 95, 63, 0); pointer-events: none;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: rgba(90, 184, 122, 0); pointer-events: none;
             white-space: nowrap;
             transition: color 0.5s ease, transform 0.5s ease;
         }
-        .topo-text.revealed {
-            color: rgba(43, 95, 63, 0.35);
+        .topo-go-farther.revealed {
+            color: rgba(90, 184, 122, 0.30);
             transform: translate(-50%, -50%);
         }
 
-        /* --- Writing Section --- */
-        .writing-section {
-            padding: var(--space-2xl) 0;
+        /* ============================================
+           WRITING / ESSAYS
+           ============================================ */
+        .writing-section { padding: 7rem 0; }
+        .writing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 0; }
+        .writing-card {
+            padding: 2.5rem 2rem; text-decoration: none; color: inherit;
+            border-right: 1px solid var(--color-rule);
+        }
+        .writing-card.visible {
+            transition: background 0.2s ease, opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .writing-card:last-child { border-right: none; }
+        .writing-card:hover { background: var(--color-surface); }
+        .writing-card-date {
+            font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--color-accent-warm); margin-bottom: 1rem;
+        }
+        .writing-card-title {
+            font-family: var(--font-serif); font-size: 1.25rem; font-weight: 400;
+            line-height: 1.35; margin-bottom: 0.75rem; transition: color 0.2s;
+        }
+        .writing-card:hover .writing-card-title { color: var(--color-accent); }
+        .writing-card-excerpt {
+            font-size: 0.875rem; font-weight: 300; line-height: 1.7; color: var(--color-text-secondary);
         }
 
-        .writing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0;
-            margin-top: var(--space-lg);
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials { padding: 7rem 0; border-top: 1px solid var(--color-rule); }
+        .testimonial-track {
+            display: flex; gap: 1.5rem; margin-top: 3rem;
+            padding: 1rem clamp(1.5rem, 4vw, 3rem) 2.5rem;
+            overflow-x: auto; scrollbar-width: none; cursor: grab;
+        }
+        .testimonial-track::-webkit-scrollbar { display: none; }
+        .testimonial {
+            flex: 0 0 min(420px, 80vw); padding: 2.5rem;
+            background: var(--color-surface); border: 1px solid var(--color-rule);
+            border-radius: 4px; position: relative;
+            transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
+        }
+        .testimonial:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+        .testimonial-accent { width: 32px; height: 2px; background: var(--color-accent); margin-bottom: 1.5rem; }
+        .testimonial-text {
+            font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 300;
+            font-style: italic; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 1.5rem;
+        }
+        .testimonial-author { font-size: 0.875rem; font-weight: 500; color: var(--color-text); }
+        .testimonial-role { font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 0.2rem; }
+        .testimonial-hint {
+            text-align: center; margin-top: 1.25rem; font-size: 0.6875rem;
+            letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-muted); opacity: 0.5;
+        }
+
+        /* ============================================
+           LIGHT SECTION PALETTE
+           ============================================ */
+        .section-light {
+            --sl-bg: #f2f0eb;
+            --sl-text: #1a1a18;
+            --sl-text-secondary: #5a5a56;
+            --sl-text-muted: #8a8a84;
+            --sl-rule: rgba(0, 0, 0, 0.08);
+            --sl-surface: #ffffff;
+            background: var(--sl-bg);
+            color: var(--sl-text);
+        }
+        .section-light .section-label { color: #8a6d3a; }
+        .section-light .section-heading { color: var(--sl-text); }
+        .section-light .section-link { color: var(--sl-text-secondary); }
+        .section-light .section-link:hover { color: var(--color-accent); }
+
+        /* Writing cards in light mode */
+        .section-light .writing-card { border-right-color: var(--sl-rule); }
+        .section-light .writing-card:hover { background: var(--sl-surface); }
+        .section-light .writing-card-date { color: #8a6d3a; }
+        .section-light .writing-card-title { color: var(--sl-text); }
+        .section-light .writing-card:hover .writing-card-title { color: #2B5F3F; }
+        .section-light .writing-card-excerpt { color: var(--sl-text-secondary); }
+
+        /* Testimonials in light mode */
+        .section-light .testimonial {
+            background: var(--sl-surface);
+            border-color: var(--sl-rule);
+        }
+        .section-light .testimonial:hover { border-color: rgba(0,0,0,0.12); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+        .section-light .testimonial-accent { background: #2B5F3F; }
+        .section-light .testimonial-text { color: var(--sl-text-secondary); }
+        .section-light .testimonial-author { color: var(--sl-text); }
+        .section-light .testimonial-role { color: var(--sl-text-muted); }
+        .section-light .testimonial-hint { color: var(--sl-text-muted); }
+
+        /* Buttons in light mode */
+        .section-light .btn {
+            border-color: var(--sl-text-muted);
+            color: var(--sl-text);
+        }
+        .section-light .btn:hover { border-color: #2B5F3F; color: #2B5F3F; }
+        .section-light .btn--primary {
+            background: #2B5F3F; border-color: #2B5F3F; color: #fff;
+        }
+        .section-light .btn--primary:hover {
+            background: #8a6d3a; border-color: #8a6d3a; color: #fff;
+        }
+
+        /* ============================================
+           CTA
+           ============================================ */
+        .cta-section {
+            padding: 7rem 0; border-top: 1px solid var(--color-rule); text-align: center;
+        }
+        .cta-heading {
+            font-family: var(--font-display); font-size: clamp(3rem, 7vw, 5rem);
+            font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase;
+            line-height: 1.0; margin-bottom: 1.5rem;
+        }
+        .cta-description {
+            font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 300;
+            font-style: italic; color: var(--color-text-secondary); line-height: 1.7;
+            max-width: 480px; margin: 0 auto 2.5rem;
+        }
+        .cta-actions { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: 3rem clamp(1.5rem, 4vw, 3rem);
             border-top: 1px solid var(--color-rule);
         }
-
-        .writing-card {
-            padding: 2.25rem 2rem;
-            border-bottom: 1px solid var(--color-rule);
-            border-right: 1px solid var(--color-rule);
-            position: relative;
-            transition: background 0.4s ease;
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .footer-name { font-family: var(--font-display); font-size: 1.125rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .footer-tagline { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--color-accent); }
+        .footer-bottom { max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--color-rule); }
+        .footer-copyright { font-size: 0.6875rem; color: var(--color-text-muted); }
 
-        .writing-card:nth-child(3n) { border-right: none; }
-
-        .writing-card:hover {
-            background: var(--color-surface);
-        }
-
-        .writing-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--color-accent);
-            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .writing-card:hover::before { width: 100%; }
-
-        .writing-card-date {
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            letter-spacing: 0.04em;
-            margin-bottom: 0.75rem;
-        }
-
-        .writing-card-title {
-            font-family: var(--font-display);
-            font-size: 1.1875rem;
-            font-weight: 400;
-            line-height: 1.35;
-            margin-bottom: 0.75rem;
-            transition: color 0.3s ease;
-        }
-
-        .writing-card:hover .writing-card-title { color: var(--color-accent); }
-
-        .writing-card-excerpt {
-            font-size: 0.9375rem;
-            color: var(--color-text-secondary);
-            line-height: 1.6;
-        }
-
-        /* --- Testimonials — horizontal scroll --- */
-        .testimonials {
-            padding: var(--space-2xl) 0;
-            overflow: hidden;
-        }
-
-        .testimonial-track {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: var(--space-lg);
-            padding: 1rem clamp(1.5rem, 4vw, 3rem) 2.5rem;
-            margin-bottom: -1.5rem;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            cursor: grab;
-        }
-
-        .testimonial-track::-webkit-scrollbar { display: none; }
-        .testimonial-track:active { cursor: grabbing; }
-
-        .testimonial {
-            flex: 0 0 min(420px, 80vw);
-            padding: 2.5rem;
-            background: var(--color-surface);
-            border: 1px solid var(--color-rule);
-            border-radius: 16px;
-            position: relative;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-        }
-
-        .testimonial:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
-        }
-
-        .testimonial-accent {
-            width: 32px;
-            height: 3px;
-            background: var(--color-accent);
-            border-radius: 2px;
-            margin-bottom: 1.5rem;
-        }
-
-        .testimonial-text {
-            font-family: var(--font-display);
-            font-size: 1.0625rem;
-            font-weight: 300;
-            font-style: italic;
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .testimonial-author {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--color-text);
-        }
-
-        .testimonial-role {
-            font-size: 0.8125rem;
-            color: var(--color-text-muted);
-            margin-top: 0.2rem;
-        }
-
-        .testimonial-hint {
-            text-align: center;
-            margin-top: 1.25rem;
-            font-size: 0.75rem;
-            color: var(--color-text-muted);
-            letter-spacing: 0.04em;
-            opacity: 0.6;
-        }
-
-        /* Expandable quote card */
-        .testimonial.has-full-quote {
-            cursor: pointer;
-        }
-        .testimonial-read-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-family: var(--font-body);
-            font-size: 0.8125rem;
-            font-weight: 500;
-            color: var(--color-accent);
-            margin-top: 0.75rem;
-            transition: gap 0.2s ease;
-        }
-        .testimonial.has-full-quote:hover .testimonial-read-more {
-            gap: 0.5rem;
-        }
-
-        /* Quote modal */
-        .quote-modal-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
+        /* --- Mobile nav --- */
+        .nav-toggle {
             display: none;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0);
-            backdrop-filter: blur(0px);
-            opacity: 0;
+            background: none; border: none; cursor: pointer;
+            width: 28px; height: 20px; position: relative;
+            padding: 0;
+        }
+        .nav-toggle span {
+            display: block; width: 100%; height: 1.5px;
+            background: var(--color-text); position: absolute; left: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .nav-toggle span:nth-child(1) { top: 0; }
+        .nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .nav-toggle span:nth-child(3) { bottom: 0; }
+        .nav-toggle.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        /* --- Quote modal --- */
+        .quote-modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0); backdrop-filter: blur(0px); opacity: 0;
             transition: opacity 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease;
         }
-        .quote-modal-overlay.is-open {
-            display: flex;
-        }
+        .quote-modal-overlay.is-open { display: flex; }
         .quote-modal-overlay.is-visible {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.82);
-            backdrop-filter: blur(12px);
+            opacity: 1; background: rgba(0,0,0,0.75); backdrop-filter: blur(12px);
         }
         .quote-modal {
-            position: relative;
-            width: 90vw;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            background: var(--color-surface);
-            border: 1px solid var(--color-rule);
-            border-radius: 16px;
-            padding: 3rem;
+            position: relative; width: 90vw; max-width: 600px; max-height: 80vh;
+            overflow-y: auto; background: var(--color-surface);
+            border: 1px solid var(--color-rule); border-radius: 4px; padding: 3rem;
             transform: scale(0.92) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
         }
-        .quote-modal-overlay.is-visible .quote-modal {
-            transform: scale(1) translateY(0);
-        }
+        .quote-modal-overlay.is-visible .quote-modal { transform: scale(1) translateY(0); }
         .quote-modal-close {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            background: none;
-            border: none;
-            color: var(--color-text-muted);
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: color 0.2s ease;
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            background: none; border: none; color: var(--color-text-muted);
+            cursor: pointer; padding: 0.25rem; transition: color 0.2s;
         }
-        .quote-modal-close:hover {
-            color: var(--color-text);
-        }
-        .quote-modal .testimonial-accent {
-            margin-bottom: 1.5rem;
-        }
+        .quote-modal-close:hover { color: var(--color-text); }
+        .quote-modal .testimonial-accent { margin-bottom: 1.5rem; }
         .quote-modal-text {
-            font-family: var(--font-display);
-            font-size: 1.125rem;
-            font-weight: 300;
-            font-style: italic;
-            line-height: 1.8;
-            color: var(--color-text-secondary);
-            margin-bottom: 1.75rem;
+            font-family: var(--font-serif); font-size: 1.125rem; font-weight: 300;
+            font-style: italic; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 1.75rem;
         }
-        .quote-modal-author {
-            font-size: 0.9375rem;
-            font-weight: 500;
-            color: var(--color-text);
-        }
-        .quote-modal-role {
-            font-size: 0.8125rem;
-            color: var(--color-text-muted);
-            margin-top: 0.2rem;
-        }
+        .quote-modal-author { font-size: 0.9375rem; font-weight: 500; color: var(--color-text); }
+        .quote-modal-role { font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 0.2rem; }
 
-        /* --- CTA --- */
-        .cta-strip {
-            padding: var(--space-xl) 0;
-            text-align: center;
-            position: relative;
+        /* Expandable testimonial cards */
+        .testimonial.has-full-quote { cursor: pointer; }
+        .testimonial-read-more {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: #2B5F3F; margin-top: 0.75rem; transition: gap 0.2s;
         }
-
-        .cta-strip::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 1px;
-            background: var(--color-accent);
-        }
-
-        .cta-strip .section-heading {
-            margin-bottom: 1rem;
-        }
-
-        .cta-description {
-            font-size: 1.0625rem;
-            color: var(--color-text-secondary);
-            max-width: 480px;
-            margin: 0 auto var(--space-md);
-        }
-
-        .cta-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* --- Animations --- */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes lineReveal {
-            from { opacity: 0; transform: translateY(100%); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Scroll-triggered with smoother easing */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-        .slide-in-left {
-            opacity: 0;
-            transform: translateX(-40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .slide-in-left.visible { opacity: 1; transform: translateX(0); }
-
-        .fade-in.delay-1, .slide-in-left.delay-1 { transition-delay: 0.1s; }
-        .fade-in.delay-2, .slide-in-left.delay-2 { transition-delay: 0.2s; }
-        .fade-in.delay-3, .slide-in-left.delay-3 { transition-delay: 0.3s; }
-        .fade-in.delay-4, .slide-in-left.delay-4 { transition-delay: 0.4s; }
+        .testimonial.has-full-quote:hover .testimonial-read-more { gap: 0.5rem; }
 
         /* --- Responsive --- */
-        @media (max-width: 968px) {
-            .hero-content { grid-template-columns: 1fr; }
-            .hero-visual { display: none; }
-            .hero::before { width: 100%; right: -20%; opacity: 0.5; }
-            .hero-greeting { border-bottom: none; padding-bottom: 0; margin-bottom: 1rem; }
-            .hero-greeting-name { display: none; }
-            .work-card.featured { grid-template-columns: 1fr; }
-            .work-card.featured .work-card-image { min-height: 200px; }
-        }
-
         @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(14, 18, 16, 0.95); backdrop-filter: blur(16px);
+                padding: 1.5rem clamp(1.5rem, 4vw, 3rem) 2rem;
+                gap: 1.25rem; border-bottom: 1px solid var(--color-rule);
+            }
+            .nav-links.open { display: flex; }
+            .hero-title { font-size: clamp(3rem, 12vw, 5rem); }
+            .hero::before {
+                background-position: right center;
+                opacity: 0.25;
+            }
+            .hero::after {
+                background: linear-gradient(to bottom, var(--color-bg) 0%, rgba(14,18,16,0.75) 40%, rgba(14,18,16,0.5) 100%);
+            }
+            .hero { align-items: flex-end; padding-bottom: 3rem; }
             .work-grid { grid-template-columns: 1fr; }
             .writing-grid { grid-template-columns: 1fr; }
-            .writing-card { border-right: none; }
-            .topo-section { height: 350px; }
+            .writing-card { border-right: none; border-bottom: 1px solid var(--sl-rule, var(--color-rule)); }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
         }
     </style>
 </head>
@@ -869,9 +470,8 @@
 
     <a href="#main" class="skip-link">Skip to content</a>
 
-    <!-- Navigation -->
     <nav class="nav" aria-label="Main navigation">
-        <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
+        <div class="nav-name"><a href="index2.html">Jeff Stevenson</a></div>
         <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
@@ -886,223 +486,100 @@
 
     <main id="main">
 
-    <!-- Hero -->
+    <!-- ===== HERO ===== -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="hero-greeting">
-                    <div class="hero-greeting-name">Jeff Stevenson</div>
-                    <div class="hero-greeting-title">UX Design Leader</div>
-                </div>
-                <h1 class="hero-title" id="heroTitle">
-                    <span class="hero-line-1"><strong id="clarityWord">Clarity</strong> is a design skill.</span>
-                    <span class="hero-line-2">I build teams that have it.</span>
-                </h1>
-                <p class="hero-description">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-label">UX Design Leader</div>
+                <h1 class="hero-title"><span class="accent">Clarity</span><br>is a design<br>skill.</h1>
+                <p class="hero-subtitle">
                     When a team has clarity about what they're solving and who 
                     they're solving it for, they do extraordinary work. I've spent 
                     my career making that happen — across startups, SaaS, and 
                     Fortune 50 retail.
                 </p>
                 <div class="hero-actions">
-                    <a href="work.html" class="btn btn--primary">
-                        <span>See My Work</span>
-                        <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                        </svg>
-                    </a>
-                    <a href="resume.html" class="btn">
-                        <span>View Resume</span>
-                    </a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="hero-float-area" id="heroFloatArea">
-                    <div class="grid-lines"></div>
-                    <a href="#" class="hero-stat" data-home-x="10" data-home-y="8" data-grid-x="7.7" data-grid-y="24.8">
-                        <div class="hero-stat-number">15+</div>
-                        <div class="hero-stat-label">Years leading design</div>
-                        <div class="hero-stat-cta">
-                            View resume
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-                        </div>
-                    </a>
-                    <a href="work.html" class="hero-stat" data-home-x="55" data-home-y="5" data-grid-x="53.6" data-grid-y="24.8">
-                        <div class="hero-stat-number">40+</div>
-                        <div class="hero-stat-label">Products shipped</div>
-                        <div class="hero-stat-cta">
-                            See my work
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-                        </div>
-                    </a>
-                    <a href="about.html" class="hero-stat" data-home-x="5" data-home-y="55" data-grid-x="7.7" data-grid-y="53.6">
-                        <div class="hero-stat-number">8</div>
-                        <div class="hero-stat-label">Teams built & grown</div>
-                        <div class="hero-stat-cta">
-                            About me
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-                        </div>
-                    </a>
-                    <a href="work.html" class="hero-stat" data-home-x="52" data-home-y="58" data-grid-x="53.6" data-grid-y="53.6">
-                        <div class="hero-stat-number">3</div>
-                        <div class="hero-stat-label">Industries shaped</div>
-                        <div class="hero-stat-cta">
-                            Explore work
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg>
-                        </div>
-                    </a>
-                    <div class="hover-hint">Hover to bring clarity</div>
+                    <a href="work.html" class="btn btn--primary">See My Work</a>
+                    <a href="resume.html" class="btn">View Resume</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Work -->
+    <!-- ===== FEATURED WORK ===== -->
     <section class="featured-work" aria-labelledby="work-label work-heading">
         <div class="container">
-            <div class="fade-in">
-                <p class="section-label" id="work-label">Selected Work</p>
-                <h2 class="section-heading" id="work-heading">Projects & case studies</h2>
+            <div class="section-header fade-in">
+                <div>
+                    <p class="section-label" id="work-label">Selected Work</p>
+                    <h2 class="section-heading" id="work-heading">Projects &<br>case studies</h2>
+                </div>
+                <a href="work.html" class="section-link">View all projects →</a>
             </div>
 
             <div class="work-grid">
-                <a href="work.html" class="work-card featured fade-in delay-1">
-                    <div class="work-card-image">
-                        <span class="work-card-image-placeholder">Project image</span>
-                    </div>
-                    <div class="work-card-body">
-                        <span class="work-card-number">01</span>
-                        <h3 class="work-card-title">Placeholder Project Title</h3>
-                        <p class="work-card-description">
-                            A brief description of this project and the challenge it addressed. 
-                            Your most impressive, publicly-shareable case study.
-                        </p>
-                        <div class="work-card-tags">
-                            <span class="work-tag">UX Strategy</span>
-                            <span class="work-tag">Design Systems</span>
-                            <span class="work-tag">Leadership</span>
-                        </div>
-                        <span class="work-card-link">
-                            Read case study
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                            </svg>
-                        </span>
-                    </div>
+                <a href="#" class="work-card fade-in delay-1">
+                    <div class="work-card-image"></div>
+                    <span class="work-card-number">01</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">A brief description of this project and the challenge it addressed. Your most impressive, publicly-shareable case study.</p>
+                    <span class="work-card-link">Read case study →</span>
                 </a>
-
-                <a href="work.html" class="work-card fade-in delay-2">
-                    <div class="work-card-image">
-                        <span class="work-card-image-placeholder">Project image</span>
-                    </div>
-                    <div class="work-card-body">
-                        <span class="work-card-number">02</span>
-                        <h3 class="work-card-title">Placeholder Project Title</h3>
-                        <p class="work-card-description">
-                            Short description of the project scope and your role.
-                        </p>
-                        <div class="work-card-tags">
-                            <span class="work-tag">Product Design</span>
-                            <span class="work-tag">Research</span>
-                        </div>
-                        <span class="work-card-link">
-                            Read case study
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                            </svg>
-                        </span>
-                    </div>
-                </a>
-
-                <a href="work.html" class="work-card fade-in delay-3">
-                    <div class="work-card-image">
-                        <span class="work-card-image-placeholder">Project image</span>
-                    </div>
-                    <div class="work-card-body">
-                        <span class="work-card-number">03</span>
-                        <h3 class="work-card-title">Placeholder Project Title</h3>
-                        <p class="work-card-description">
-                            Short description of the project scope and your role.
-                        </p>
-                        <div class="work-card-tags">
-                            <span class="work-tag">AI in Design</span>
-                            <span class="work-tag">Process</span>
-                        </div>
-                        <span class="work-card-link">
-                            Read case study
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                            </svg>
-                        </span>
-                    </div>
+                <a href="#" class="work-card fade-in delay-2">
+                    <div class="work-card-image"></div>
+                    <span class="work-card-number">02</span>
+                    <h3 class="work-card-title">Placeholder Project Title</h3>
+                    <p class="work-card-description">A brief description of this project and the challenge it addressed.</p>
+                    <span class="work-card-link">Read case study →</span>
                 </a>
             </div>
 
-            <div style="text-align: center; margin-top: var(--space-lg);" class="fade-in">
-                <a href="work.html" class="btn">
-                    <span>View All Projects</span>
-                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                    </svg>
-                </a>
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="#" class="btn">View All Projects</a>
             </div>
         </div>
     </section>
 
-    <!-- Topo Relief Divider -->
-    <div class="topo-section" id="topoSection" role="img" aria-label="Topographic contour map of the Teton Mountains that transforms from flat to three-dimensional as you scroll">
+    <!-- ===== TOPO DIVIDER ===== -->
+    <div class="topo-divider" id="topoSection">
         <canvas class="topo-canvas" id="topoCanvas"></canvas>
-        <div class="topo-label" id="topoLabel">Teton Mountains</div>
-        <div class="topo-text" id="topoText">Go Farther</div>
+        <div class="topo-label" id="topoLabel">Teton Mountain Range</div>
+        <div class="topo-go-farther" id="topoText">Go Farther</div>
     </div>
 
-    <!-- Writing -->
-    <section class="writing-section" aria-labelledby="writing-label writing-heading">
+    <!-- ===== WRITING ===== -->
+    <section class="writing-section section-light" aria-labelledby="writing-label writing-heading">
         <div class="container">
-            <div class="fade-in">
-                <p class="section-label" id="writing-label">Writing & Thinking</p>
-                <h2 class="section-heading" id="writing-heading">Recent essays</h2>
+            <div class="section-header fade-in">
+                <div>
+                    <p class="section-label" id="writing-label">Writing & Thinking</p>
+                    <h2 class="section-heading" id="writing-heading">Recent essays</h2>
+                </div>
+                <a href="https://substack.com/@jeffstevenson" class="section-link" target="_blank" rel="noopener noreferrer">Read on Substack →</a>
             </div>
 
             <div class="writing-grid">
                 <a href="#" class="writing-card fade-in delay-1">
                     <p class="writing-card-date">January 2026</p>
                     <h3 class="writing-card-title">Placeholder Essay Title About Design Leadership</h3>
-                    <p class="writing-card-excerpt">
-                        A short excerpt or description of what this essay explores and why it matters.
-                    </p>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
                 </a>
-
                 <a href="#" class="writing-card fade-in delay-2">
                     <p class="writing-card-date">December 2025</p>
                     <h3 class="writing-card-title">Placeholder Essay Title About UX Process</h3>
-                    <p class="writing-card-excerpt">
-                        A short excerpt or description of what this essay explores and why it matters.
-                    </p>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
                 </a>
-
                 <a href="#" class="writing-card fade-in delay-3">
                     <p class="writing-card-date">November 2025</p>
                     <h3 class="writing-card-title">Placeholder Essay About Building Design Teams</h3>
-                    <p class="writing-card-excerpt">
-                        A short excerpt or description of what this essay explores and why it matters.
-                    </p>
-                </a>
-            </div>
-
-            <div style="text-align: center; margin-top: var(--space-lg);" class="fade-in">
-                <a href="#" class="btn">
-                    <span>Read on Substack</span>
-                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                    </svg>
+                    <p class="writing-card-excerpt">A short excerpt or description of what this essay explores and why it matters.</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials" aria-labelledby="testimonials-label testimonials-heading">
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="testimonials section-light" style="border-top: 1px solid rgba(0, 0, 0, 0.10);" aria-labelledby="testimonials-label testimonials-heading">
         <div class="container">
             <div class="fade-in">
                 <p class="section-label" id="testimonials-label">Kind Words</p>
@@ -1111,96 +588,78 @@
         </div>
 
         <div class="testimonial-track" tabindex="0" role="region" aria-label="Testimonials, scrollable">
-            <div class="testimonial has-full-quote fade-in delay-1" data-full-quote="I had the opportunity to work closely with Jeff Stevenson while leading the Merchandising Product Management and Design organization at Kroger. Jeff led design for our Item and Assortment capabilities and consistently brought a thoughtful, curious approach to every challenge. He is highly effective at aligning teams around a clear vision and ensuring solutions are grounded in customer-focused design. I particularly appreciate Jeff's strategic thinking, calm leadership style, and pragmatic approach to problem solving. He is a strong design leader who elevates both the work and the teams around him." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
+            <div class="testimonial has-full-quote" data-full-quote="Placeholder for the full, longer testimonial from Chris. This is where the complete quote would go — it could be several sentences or even a couple of paragraphs." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
-                    He is highly effective at aligning teams around a clear vision and ensuring solutions are grounded in customer-focused design. I particularly appreciate Jeff's strategic thinking, calm leadership style, and pragmatic approach to problem solving.
+                    Placeholder testimonial from a colleague about your design leadership and collaboration style.
                 </p>
                 <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Chris Fladung</p>
                 <p class="testimonial-role">VP Merchandise Experience @ Kroger</p>
             </div>
-
-            <div class="testimonial has-full-quote fade-in delay-2" data-full-quote="I've had the opportunity to work with Jeff Stevenson twice over the years-first as a peer UX Architect at Nielsen, and later reporting to him as a Senior Manager of Product Design at Kroger. In both contexts, Jeff stood out as someone I genuinely enjoyed collaborating with and learning from.
-
-As a leader, Jeff is clear in his direction, strategic in his thinking, and deeply empathetic in his management approach. He creates an environment of trust and openness, welcomes feedback, and consistently provides thoughtful guidance. I learned a great deal from him about managing across all levels of an organization and navigating complex HR situations with professionalism and care.
-
-Jeff is a well-rounded design and product management leader, and I have no doubt he's capable of taking on responsibilities far beyond his previous roles as Group Manager and Director. I would gladly work with or for him again." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
+            <div class="testimonial has-full-quote" data-full-quote="Placeholder for the full, longer testimonial from Tom. This extended version gives the reader the complete context of the recommendation." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
-                    As a leader, Jeff is clear in his direction, strategic in his thinking, and deeply empathetic in his management approach. He creates an environment of trust and openness, welcomes feedback, and consistently provides thoughtful guidance.
+                    Placeholder testimonial about how you approach complex problems and drive meaningful outcomes through design.
                 </p>
                 <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Tom Rose</p>
                 <p class="testimonial-role">Sr. Manager, Product Design @ Kroger</p>
             </div>
-
-            <div class="testimonial has-full-quote fade-in delay-3" data-full-quote="Jeff Stevenson is one of the smartest and most versatile individuals I've had the pleasure of working with in my career. I worked closely with Jeff as a colleague at Bridge Worldwide: we collaborated on many digital marketing projects for CPG clients, notably ConAgra Foods and P&G. Jeff is not only one of the most talented user experience professionals I've worked with, but also embodies leadership qualities that make someone a truly special addition to any group. His business-first approach paired with unbelievable patience let him confidently understand complex business problems and provide expert solutions that meet the exact needs of his clients. He is skilled at flexing beyond his job title to fill gaps in projects; from content strategy, to design, even to account and project management. Jeff's 'listen-first' communication style and ability to learn quickly allow him to gain respect from colleagues and clients across many disciplines. Jeff will undoubtedly make an immediate impact in any role, and I highly recommend him to any organization lucky enough to have him join their team." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
+            <div class="testimonial">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
-                    His business-first approach paired with unbelievable patience let him confidently understand complex business problems and provide expert solutions that meet the exact needs of his clients.
+                    Placeholder testimonial about your mentorship, team culture, and the impact you have on the people around you.
                 </p>
-                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Megan West</p>
                 <p class="testimonial-role">Sr. Strategy Manager @ Kroger</p>
             </div>
-        
-            <div class="testimonial has-full-quote fade-in delay-4" data-full-quote="Jeff Stevenson is one of the most kind, intelligent and adaptable professionals I've had the opportunity to work with at Kroger.<br><br>
-
-He brings a rare blend of deep user experience expertise, natural leadership, and a consistently positive energy that uplifts every team he's part of. Jeff approaches complex business challenges with a strategic mindset, impressive patience, critical conversations and a clear focus on delivering solutions that truly meet customer needs.<br><br>
-
-He's also the kind of person who's always willing to roll up his sleeves, step outside his role, and serve as a trusted advisor - whether it's for a teammate, a customer, or executive leadership. Jeff regularly engages with senior stakeholders to identify roadblocks, ask the right questions, and co-create solutions that not only solve the problem but often exceed expectations.<br><br>
-
-His versatility is unmatched - contributing across UX, content strategy, design, project management, and more. His 'listen-first' communication style and ability to earn trust across disciplines make him an invaluable asset in any organization.<br><br>
-
-I would jump at the chance to work with Jeff again and recommend him without hesitation." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
+            <div class="testimonial">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
-                    Jeff approaches complex business challenges with a strategic mindset, impressive patience, critical conversations and a clear focus on delivering solutions that truly meet customer needs.
+                    Placeholder testimonial about your strategic mindset and focus on delivering solutions that meet customer needs.
                 </p>
-                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Tina McClelland</p>
                 <p class="testimonial-role">Lead Strategic Product Coach @ Kroger</p>
             </div>
-        
-            <div class="testimonial fade-in delay-5">
-                <div class="testimonial-accent"></div>
-                <p class="testimonial-text">
-                    Placeholder testimonial about your mentorship, team culture, 
-                    and the impact you have on the people around you.
-                </p>
-                <p class="testimonial-author">Colleague Name</p>
-                <p class="testimonial-role">Title, Company</p>
-            </div>
         </div>
-    </div>
-
-        <p class="testimonial-hint fade-in">Swipe to see more →</p>
+        <p class="testimonial-hint">Drag or swipe to see more →</p>
     </section>
 
-    <!-- CTA -->
-    <section class="cta-strip">
+    <!-- ===== CTA ===== -->
+    <section class="cta-section">
         <div class="container fade-in">
-            <h2 class="section-heading">Let's work together</h2>
+            <h2 class="cta-heading">Let's work<br>together</h2>
             <p class="cta-description">
-                Interested in collaborating or learning more about my work? 
-                I'd love to connect.
+                Interested in collaborating or learning more about my work? I'd love to connect.
             </p>
             <div class="cta-actions">
-                <a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer" class="btn btn--primary">
-                    <span>Get in Touch</span> <span class="sr-only">(opens in new tab)</span>
-                    <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/>
-                    </svg>
-                </a>
-                <a href="resume.html" class="btn">
-                    <span>View Resume</span>
-                </a>
+                <a href="contact.html" class="btn btn--primary">Get in Touch</a>
+                <a href="resume.html" class="btn">View Resume</a>
             </div>
         </div>
     </section>
 
     </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <p class="footer-name">Jeff Stevenson</p>
+                <p class="footer-tagline">UX Design Leader</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#">Work</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">LinkedIn</a></li>
+                <li><a href="#">Substack</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2026 Jeff Stevenson. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Quote Modal -->
     <div class="quote-modal-overlay" id="quoteModal" onclick="closeQuoteModal(event)">
@@ -1217,558 +676,261 @@ I would jump at the chance to work with Jeff again and recommend him without hes
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-left">
-                <p class="footer-name">Jeff Stevenson</p>
-                <p class="footer-tagline">UX Design Leader</p>
-            </div>
-            <ul class="footer-links">
-                <li><a href="work.html">Work</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="https://www.linkedin.com/in/jeffstevenson/" target="_blank" rel="noopener noreferrer">LinkedIn <span class="sr-only">(opens in new tab)</span></a></li>
-                <li><a href="#">Substack</a></li>
-            </ul>
-        </div>
-        <div class="footer-bottom">
-            <p class="footer-copyright">© 2026 Jeff Stevenson. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="scripts.js"></script>
     <script>
-        // --- Quote modal with focus trap ---
-        let quoteModalTrigger = null;
-
-        function openQuoteModal(card) {
-            quoteModalTrigger = card;
-            const overlay = document.getElementById('quoteModal');
-            const fullQuote = card.dataset.fullQuote;
-            const author = card.querySelector('.testimonial-author').textContent;
-            const role = card.querySelector('.testimonial-role').textContent;
-
-            document.getElementById('quoteModalText').innerHTML = fullQuote;
-            document.getElementById('quoteModalAuthor').textContent = author;
-            document.getElementById('quoteModalRole').textContent = role;
-
-            overlay.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    overlay.classList.add('is-visible');
-                    // Move focus to close button
-                    overlay.querySelector('.quote-modal-close').focus();
-                });
-            });
-        }
-
-        function closeQuoteModal(e, forceClose) {
-            const overlay = document.getElementById('quoteModal');
-            if (forceClose || e.target === overlay) {
-                overlay.classList.remove('is-visible');
-                document.body.style.overflow = '';
-                overlay.addEventListener('transitionend', function handler() {
-                    overlay.removeEventListener('transitionend', handler);
-                    if (!overlay.classList.contains('is-visible')) {
-                        overlay.classList.remove('is-open');
-                        // Return focus to trigger
-                        if (quoteModalTrigger) {
-                            quoteModalTrigger.focus();
-                            quoteModalTrigger = null;
-                        }
-                    }
-                });
-            }
-        }
-
-        // Focus trap + Escape for quote modal
-        document.addEventListener('keydown', function(e) {
-            const overlay = document.getElementById('quoteModal');
-            if (!overlay.classList.contains('is-open')) return;
-
-            if (e.key === 'Escape') {
-                closeQuoteModal(e, true);
-                return;
-            }
-
-            if (e.key === 'Tab') {
-                const modal = overlay.querySelector('.quote-modal');
-                const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
-                const first = focusable[0];
-                const last = focusable[focusable.length - 1];
-                if (e.shiftKey && document.activeElement === first) {
-                    e.preventDefault();
-                    last.focus();
-                } else if (!e.shiftKey && document.activeElement === last) {
-                    e.preventDefault();
-                    first.focus();
-                }
-            }
-        });
-    </script>
-    <script>
-        // --- Hero "Clarity" blur resolve ---
-        (function() {
-            const clarityWord = document.getElementById('clarityWord');
-            if (clarityWord) {
-                setTimeout(() => clarityWord.classList.add('resolved'), 1450);
-            }
-        })();
-
-        // --- Floating hero cards with clarity hover ---
-        (function() {
-            const area = document.getElementById('heroFloatArea');
-            if (!area) return;
-
-            const cards = area.querySelectorAll('.hero-stat');
-            const state = [];
-            let animId;
-            let startTime = null;
-            let clarified = false;
-
-            cards.forEach((card, i) => {
-                const homeX = parseFloat(card.dataset.homeX);
-                const homeY = parseFloat(card.dataset.homeY);
-                const gridX = parseFloat(card.dataset.gridX);
-                const gridY = parseFloat(card.dataset.gridY);
-
-                state.push({
-                    el: card,
-                    homeX, homeY,
-                    gridX, gridY,
-                    freqX: 0.15 + i * 0.07,
-                    freqY: 0.12 + i * 0.09,
-                    ampX: 12 + (i % 2) * 6,
-                    ampY: 10 + ((i + 1) % 2) * 8,
-                    phaseX: i * 1.8,
-                    phaseY: i * 2.3 + 1.0,
-                    cardHovered: false
-                });
-
-                card.style.left = homeX + '%';
-                card.style.top = homeY + '%';
-
-                card.addEventListener('mouseenter', () => {
-                    state[i].cardHovered = true;
-                    card.classList.add('hovered');
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    state[i].cardHovered = false;
-                    card.classList.remove('hovered');
-                });
-            });
-
-            function animate(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const elapsed = (timestamp - startTime) / 1000;
-
-                if (!clarified) {
-                    state.forEach(s => {
-                        if (s.cardHovered) return;
-                        const dx = Math.sin(elapsed * s.freqX + s.phaseX) * s.ampX;
-                        const dy = Math.cos(elapsed * s.freqY + s.phaseY) * s.ampY;
-                        s.el.style.transform = `translate(${dx}px, ${dy}px)`;
-                    });
-                }
-
-                animId = requestAnimationFrame(animate);
-            }
-
-            setTimeout(() => {
-                animId = requestAnimationFrame(animate);
-            }, 1600);
-
-            // Area hover: snap to grid
-            area.addEventListener('mouseenter', () => {
-                clarified = true;
-                area.classList.add('clarified');
-
-                // Calculate grid positions from actual measurements
-                const areaW = area.offsetWidth;
-                const areaH = area.offsetHeight;
-                const centerX = areaW / 2;
-                const centerY = areaH / 2;
-                const gap = 12; // px gap between card edge and grid line
-
-                // Grid quadrant assignments: [col, row] where 0=left/top, 1=right/bottom
-                const quadrants = [
-                    [0, 0], // Card 1: top-left
-                    [1, 0], // Card 2: top-right
-                    [0, 1], // Card 3: bottom-left
-                    [1, 1], // Card 4: bottom-right
-                ];
-
-                state.forEach((s, i) => {
-                    const cardW = s.el.offsetWidth;
-                    const cardH = s.el.offsetHeight;
-                    const [col, row] = quadrants[i];
-
-                    let x, y;
-                    if (col === 0) {
-                        // Left column: card's right edge = centerX - gap
-                        x = centerX - gap - cardW;
-                    } else {
-                        // Right column: card's left edge = centerX + gap
-                        x = centerX + gap;
-                    }
-                    if (row === 0) {
-                        // Top row: card's bottom edge = centerY - gap
-                        y = centerY - gap - cardH;
-                    } else {
-                        // Bottom row: card's top edge = centerY + gap
-                        y = centerY + gap;
-                    }
-
-                    s.el.style.left = x + 'px';
-                    s.el.style.top = y + 'px';
-                    s.el.style.transform = 'translate(0, 0)';
-                });
-            });
-
-            // Area leave: return to drift
-            area.addEventListener('mouseleave', () => {
-                clarified = false;
-                area.classList.remove('clarified');
-
-                state.forEach(s => {
-                    s.el.style.left = s.homeX + '%';
-                    s.el.style.top = s.homeY + '%';
-                });
-
-                startTime = null;
-            });
-
-            const observer = new IntersectionObserver(entries => {
+    // --- Scroll-triggered fade-in ---
+    (function() {
+        const fadeEls = document.querySelectorAll('.fade-in');
+        if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        startTime = null;
-                        animId = requestAnimationFrame(animate);
-                    } else {
-                        cancelAnimationFrame(animId);
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            fadeEls.forEach(el => observer.observe(el));
+        } else {
+            fadeEls.forEach(el => el.classList.add('visible'));
+        }
+    })();
 
-            observer.observe(area);
-        })();
+    // --- Mobile nav toggle ---
+    (function() {
+        const toggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (toggle && navLinks) {
+            toggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                toggle.classList.toggle('active');
+                toggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                    toggle.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    })();
 
-        // --- Drag-to-scroll for testimonials ---
-        (function() {
-            const track = document.querySelector('.testimonial-track');
-            if (!track) return;
+    // --- Quote modal with focus trap ---
+    let quoteModalTrigger = null;
 
-            let isDown = false;
-            let isDragging = false;
-            let startX, scrollLeft;
-            let velX = 0;
-            let lastX, lastTime;
-            let momentumId = null;
+    function openQuoteModal(card) {
+        quoteModalTrigger = card;
+        const overlay = document.getElementById('quoteModal');
+        document.getElementById('quoteModalText').innerHTML = card.dataset.fullQuote;
+        document.getElementById('quoteModalAuthor').textContent = card.querySelector('.testimonial-author').textContent;
+        document.getElementById('quoteModalRole').textContent = card.querySelector('.testimonial-role').textContent;
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                overlay.classList.add('is-visible');
+                overlay.querySelector('.quote-modal-close').focus();
+            });
+        });
+    }
 
-            function stopMomentum() {
-                if (momentumId) {
-                    cancelAnimationFrame(momentumId);
-                    momentumId = null;
+    function closeQuoteModal(e, forceClose) {
+        const overlay = document.getElementById('quoteModal');
+        if (forceClose || e.target === overlay) {
+            overlay.classList.remove('is-visible');
+            document.body.style.overflow = '';
+            overlay.addEventListener('transitionend', function handler() {
+                overlay.removeEventListener('transitionend', handler);
+                if (!overlay.classList.contains('is-visible')) {
+                    overlay.classList.remove('is-open');
+                    if (quoteModalTrigger) { quoteModalTrigger.focus(); quoteModalTrigger = null; }
                 }
-            }
+            });
+        }
+    }
 
-            function coastMomentum() {
-                if (Math.abs(velX) < 0.5) {
-                    return;
-                }
-                track.scrollLeft -= velX;
-                velX *= 0.92; // friction
-                momentumId = requestAnimationFrame(coastMomentum);
-            }
+    document.addEventListener('keydown', function(e) {
+        const overlay = document.getElementById('quoteModal');
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { closeQuoteModal(e, true); return; }
+        if (e.key === 'Tab') {
+            const modal = overlay.querySelector('.quote-modal');
+            const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+            const first = focusable[0], last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    });
 
-            track.addEventListener('mousedown', e => {
-                stopMomentum();
-                isDown = true;
+    // --- Drag-to-scroll with momentum for testimonials ---
+    (function() {
+        const track = document.querySelector('.testimonial-track');
+        if (!track) return;
+        let isDown = false, isDragging = false, startX, scrollLeft, velX = 0, lastX, lastTime, momentumId = null;
+
+        function stopMomentum() { if (momentumId) { cancelAnimationFrame(momentumId); momentumId = null; } }
+        function coast() {
+            if (Math.abs(velX) < 0.5) return;
+            track.scrollLeft -= velX; velX *= 0.92;
+            momentumId = requestAnimationFrame(coast);
+        }
+
+        track.addEventListener('mousedown', e => {
+            stopMomentum(); isDown = true; isDragging = false;
+            startX = e.pageX; scrollLeft = track.scrollLeft;
+            lastX = e.pageX; lastTime = Date.now(); velX = 0;
+        });
+        track.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            const dx = e.pageX - startX;
+            if (!isDragging && Math.abs(dx) > 4) {
+                isDragging = true;
+                track.style.userSelect = 'none'; track.style.webkitUserSelect = 'none';
+            }
+            if (!isDragging) return;
+            e.preventDefault();
+            const now = Date.now(), dt = now - lastTime;
+            if (dt > 0) { velX = (e.pageX - lastX) / dt * 16; lastX = e.pageX; lastTime = now; }
+            track.scrollLeft = scrollLeft - dx;
+        });
+        function endDrag() {
+            if (!isDown) return; isDown = false;
+            track.style.userSelect = ''; track.style.webkitUserSelect = '';
+            if (isDragging) {
                 isDragging = false;
-                startX = e.pageX;
-                scrollLeft = track.scrollLeft;
-                lastX = e.pageX;
-                lastTime = Date.now();
-                velX = 0;
-            });
-
-            track.addEventListener('mousemove', e => {
-                if (!isDown) return;
-                const dx = e.pageX - startX;
-
-                // Only begin drag after a small threshold to allow clicks
-                if (!isDragging && Math.abs(dx) > 4) {
-                    isDragging = true;
-                    // Disable text selection during drag
-                    track.style.userSelect = 'none';
-                    track.style.webkitUserSelect = 'none';
-                }
-
-                if (!isDragging) return;
-                e.preventDefault();
-
-                // Track velocity for momentum
-                const now = Date.now();
-                const dt = now - lastTime;
-                if (dt > 0) {
-                    velX = (e.pageX - lastX) / dt * 16; // normalize to ~frame time
-                    lastX = e.pageX;
-                    lastTime = now;
-                }
-
-                track.scrollLeft = scrollLeft - dx;
-            });
-
-            function endDrag(e) {
-                if (!isDown) return;
-                isDown = false;
-
-                // Restore text selection
-                track.style.userSelect = '';
-                track.style.webkitUserSelect = '';
-
-                if (isDragging) {
-                    isDragging = false;
-
-                    // Prevent the click event from firing on cards after a drag
-                    track.addEventListener('click', function suppress(ev) {
-                        ev.stopPropagation();
-                        ev.preventDefault();
-                        track.removeEventListener('click', suppress, true);
-                    }, true);
-
-                    // Coast with momentum
-                    if (Math.abs(velX) > 1) {
-                        momentumId = requestAnimationFrame(coastMomentum);
-                    }
-                }
+                track.addEventListener('click', function suppress(ev) {
+                    ev.stopPropagation(); ev.preventDefault();
+                    track.removeEventListener('click', suppress, true);
+                }, true);
+                if (Math.abs(velX) > 1) momentumId = requestAnimationFrame(coast);
             }
-
-            track.addEventListener('mouseup', endDrag);
-            track.addEventListener('mouseleave', endDrag);
-        })();
-
-        // --- Topo relief divider (Teton Range) ---
-        (function() {
-            const canvas = document.getElementById('topoCanvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const section = document.getElementById('topoSection');
-            const topoText = document.getElementById('topoText');
-            const topoLabel = document.getElementById('topoLabel');
-
-            // --- Noise ---
-            const SEED = 42;
-            function hash(x, y) {
-                let h = SEED + x * 374761393 + y * 668265263;
-                h = (h ^ (h >> 13)) * 1274126177;
-                return ((h ^ (h >> 16)) & 0x7fffffff) / 0x7fffffff;
-            }
-            function smoothNoise(x, y) {
-                const ix = Math.floor(x), iy = Math.floor(y);
-                const fx = x - ix, fy = y - iy;
-                const sx = fx*fx*(3-2*fx), sy = fy*fy*(3-2*fy);
-                const v00 = hash(ix,iy), v10 = hash(ix+1,iy);
-                const v01 = hash(ix,iy+1), v11 = hash(ix+1,iy+1);
-                return (v00+sx*(v10-v00))+sy*((v01+sx*(v11-v01))-(v00+sx*(v10-v00)));
-            }
-            function fbm(x, y, octaves) {
-                let v = 0, a = 1, t = 0;
-                for (let i = 0; i < octaves; i++) {
-                    v += smoothNoise(x, y) * a;
-                    t += a; x *= 2.1; y *= 2.1; a *= 0.45;
-                }
-                return v / t;
-            }
-            function ridgedNoise(x, y) {
-                let v = 0, a = 1, t = 0;
-                for (let i = 0; i < 4; i++) {
-                    const n = 1 - Math.abs(smoothNoise(x, y) * 2 - 1);
-                    v += n * n * a;
-                    t += a; x *= 2.2; y *= 2.2; a *= 0.45;
-                }
-                return v / t;
-            }
-
-            const RIDGE_NY = 0.32;
-
-            function peak2D(nx, ny, cx, cy, wx, wy, sharpness) {
-                const dx = (nx - cx) / wx, dy = (ny - cy) / wy;
-                return Math.exp(-Math.pow(dx*dx + dy*dy, sharpness || 0.85));
-            }
-
-            const peaks = [
-                { nx: 0.28, h: 0.55, wx: 0.04, wy: 0.04, s: 0.80 },
-                { nx: 0.34, h: 0.72, wx: 0.03, wy: 0.035, s: 0.75 },
-                { nx: 0.40, h: 0.82, wx: 0.028, wy: 0.032, s: 0.75 },
-                { nx: 0.48, h: 0.92, wx: 0.030, wy: 0.035, s: 0.70 },
-                { nx: 0.53, h: 0.85, wx: 0.025, wy: 0.030, s: 0.75 },
-                { nx: 0.58, h: 0.70, wx: 0.030, wy: 0.035, s: 0.80 },
-                { nx: 0.76, h: 0.78, wx: 0.035, wy: 0.040, s: 0.75 },
-            ];
-
-            const ridge = [
-                { nx: 0.20, h: 0.25, wx: 0.05, wy: 0.05 },
-                { nx: 0.31, h: 0.42, wx: 0.04, wy: 0.04 },
-                { nx: 0.36, h: 0.50, wx: 0.03, wy: 0.035 },
-                { nx: 0.44, h: 0.55, wx: 0.035, wy: 0.035 },
-                { nx: 0.555, h: 0.40, wx: 0.025, wy: 0.03 },
-                { nx: 0.64, h: 0.25, wx: 0.03, wy: 0.035 },
-                { nx: 0.70, h: 0.30, wx: 0.03, wy: 0.035 },
-                { nx: 0.83, h: 0.22, wx: 0.04, wy: 0.04 },
-                { nx: 0.90, h: 0.12, wx: 0.04, wy: 0.04 },
-            ];
-
-            const westSlope = [
-                { nx: 0.35, ny: 0.15, h: 0.22, wx: 0.08, wy: 0.10 },
-                { nx: 0.50, ny: 0.14, h: 0.28, wx: 0.09, wy: 0.12 },
-                { nx: 0.75, ny: 0.16, h: 0.20, wx: 0.07, wy: 0.10 },
-            ];
-
-            function terrain(nx, ny) {
-                let featureMax = 0;
-                for (const p of peaks) {
-                    featureMax = Math.max(featureMax, p.h * peak2D(nx, ny, p.nx, RIDGE_NY, p.wx, p.wy, p.s));
-                }
-                for (const r of ridge) {
-                    const dx = (nx - r.nx) / r.wx, dy = (ny - RIDGE_NY) / r.wy;
-                    featureMax = Math.max(featureMax, r.h * Math.exp(-(dx*dx + dy*dy)));
-                }
-                let h = featureMax;
-                for (const w of westSlope) {
-                    const dx = (nx - w.nx) / w.wx, dy = (ny - w.ny) / w.wy;
-                    h += w.h * Math.exp(-(dx*dx + dy*dy)) * 0.5;
-                }
-                const eastDist = ny - RIDGE_NY;
-                if (eastDist > 0 && eastDist < 0.12) h *= 1 - Math.pow(eastDist / 0.12, 0.5) * 0.25;
-                const baseH = Math.min(h, 1.0);
-                h += ridgedNoise(nx * 24 + 3.7, ny * 20 + 1.2) * 0.055 * baseH;
-                h += (fbm(nx * 22, ny * 18, 5) - 0.5) * 0.045 * (0.15 + baseH * 0.85);
-                const cascadeDist = Math.abs(nx - 0.64);
-                if (cascadeDist < 0.025 && ny > RIDGE_NY - 0.03) {
-                    h -= (1 - cascadeDist / 0.025) * 0.30 * Math.max(0, Math.min(1, (ny - RIDGE_NY + 0.03) / 0.20)) * baseH;
-                }
-                h *= Math.min(nx / 0.10, (1 - nx) / 0.10, ny / 0.06, (1 - ny) / 0.06, 1);
-                return Math.max(0, Math.min(1.2, h));
-            }
-
-            let heightMap, mapW, mapH;
-            function generateHeightMap(w, h) {
-                mapW = w; mapH = h;
-                heightMap = new Float32Array(w * h);
-                for (let y = 0; y < h; y++)
-                    for (let x = 0; x < w; x++)
-                        heightMap[y * w + x] = terrain(x / w, y / h);
-            }
-            function getHeightAt(x, y) {
-                const ix = Math.floor(x), iy = Math.floor(y), fx = x - ix, fy = y - iy;
-                if (ix < 0 || iy < 0 || ix >= mapW-1 || iy >= mapH-1) return 0;
-                return (heightMap[iy*mapW+ix]+fx*(heightMap[iy*mapW+ix+1]-heightMap[iy*mapW+ix]))*(1-fy)
-                    + (heightMap[(iy+1)*mapW+ix]+fx*(heightMap[(iy+1)*mapW+ix+1]-heightMap[(iy+1)*mapW+ix]))*fy;
-            }
-
-            function extractContours(numLevels) {
-                const all = [];
-                for (let level = 1; level < numLevels; level++) {
-                    const threshold = (level / numLevels) * 1.0;
-                    const segMap = new Map();
-                    for (let y = 0; y < mapH-1; y++) {
-                        for (let x = 0; x < mapW-1; x++) {
-                            const v00=heightMap[y*mapW+x],v10=heightMap[y*mapW+x+1],v01=heightMap[(y+1)*mapW+x],v11=heightMap[(y+1)*mapW+x+1];
-                            let code=0;
-                            if(v00>=threshold)code|=1;if(v10>=threshold)code|=2;if(v11>=threshold)code|=4;if(v01>=threshold)code|=8;
-                            if(code===0||code===15)continue;
-                            const lerp=(a,b,va,vb)=>a+(threshold-va)/(vb-va)*(b-a);
-                            const top={x:lerp(x,x+1,v00,v10),y:y},right={x:x+1,y:lerp(y,y+1,v10,v11)},bottom={x:lerp(x,x+1,v01,v11),y:y+1},left={x:x,y:lerp(y,y+1,v00,v01)};
-                            const segs=[];
-                            switch(code){case 1:segs.push([top,left]);break;case 2:segs.push([top,right]);break;case 3:segs.push([left,right]);break;case 4:segs.push([right,bottom]);break;case 5:segs.push([top,right],[bottom,left]);break;case 6:segs.push([top,bottom]);break;case 7:segs.push([left,bottom]);break;case 8:segs.push([left,bottom]);break;case 9:segs.push([top,bottom]);break;case 10:segs.push([top,left],[right,bottom]);break;case 11:segs.push([right,bottom]);break;case 12:segs.push([left,right]);break;case 13:segs.push([top,right]);break;case 14:segs.push([top,left]);break;}
-                            for(const[a,b]of segs){const kA=`${a.x.toFixed(3)},${a.y.toFixed(3)}`,kB=`${b.x.toFixed(3)},${b.y.toFixed(3)}`;if(!segMap.has(kA))segMap.set(kA,[]);if(!segMap.has(kB))segMap.set(kB,[]);segMap.get(kA).push({key:kB});segMap.get(kB).push({key:kA});}
-                        }
-                    }
-                    const visited=new Set(),chains=[];
-                    for(const[startKey]of segMap){if(visited.has(startKey))continue;const chain=[];let cur=startKey;while(cur&&!visited.has(cur)){visited.add(cur);const[cx,cy]=cur.split(',').map(Number);chain.push({x:cx,y:cy});const next=segMap.get(cur);let found=false;for(const n of next){if(!visited.has(n.key)){cur=n.key;found=true;break;}}if(!found)break;}if(chain.length>4)chains.push(chain);}
-                    all.push({threshold,chains});
-                }
-                return all;
-            }
-
-            let contourData, canvasW, canvasH, currentProgress = -1;
-            function init() {
-                const rect = section.getBoundingClientRect();
-                const dpr = window.devicePixelRatio || 1;
-                canvasW = rect.width; canvasH = rect.height;
-                canvas.width = canvasW * dpr; canvas.height = canvasH * dpr;
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                const res = Math.min(450, Math.floor(canvasW / 2.8));
-                generateHeightMap(res, Math.floor(res * (canvasH / canvasW)));
-                contourData = extractContours(28);
-                currentProgress = -1;
-            }
-
-            function draw(progress) {
-                const p = Math.max(0, Math.min(1, progress));
-                if (Math.abs(p - currentProgress) < 0.002) return;
-                currentProgress = p;
-                ctx.clearRect(0, 0, canvasW, canvasH);
-                const maxDisplace = canvasH * 0.22;
-                const ep = Math.min(p, 0.65);
-                const ridgeCenterNorm = RIDGE_NY;
-
-                for (const { threshold, chains } of contourData) {
-                    const baseAlpha = 0.18 + threshold * 0.22;
-                    const lineW = 0.4 + threshold * 0.7;
-                    for (const chain of chains) {
-                        ctx.beginPath();
-                        let minAlpha = 1;
-                        for (let i = 0; i < chain.length; i++) {
-                            const pt = chain[i], nx = pt.x/mapW, ny = pt.y/mapH;
-                            const h = getHeightAt(pt.x, pt.y);
-                            const distFromRidge = ny - ridgeCenterNorm;
-                            let perspNY;
-                            if (distFromRidge < 0) {
-                                const ba = Math.min(1, Math.abs(distFromRidge)/ridgeCenterNorm);
-                                const eP = Math.min(1, ep*(1+ba*2.5));
-                                perspNY = ridgeCenterNorm + distFromRidge*(1-eP*0.95);
-                            } else {
-                                perspNY = ridgeCenterNorm + distFromRidge*(1+ep*0.4);
-                            }
-                            let hs = 1;
-                            if (distFromRidge < 0) {
-                                const ba = Math.min(1, Math.abs(distFromRidge)/ridgeCenterNorm);
-                                hs = 1 - ba * Math.min(1, ep*(1+ba*2.5));
-                            }
-                            const py = perspNY*canvasH - h*maxDisplace*ep*Math.max(0,hs);
-                            if (distFromRidge < 0) {
-                                const bh = Math.min(1, Math.abs(distFromRidge)/ridgeCenterNorm);
-                                const a = 1-bh*Math.min(1,ep*(1+bh*2.5))*0.95;
-                                if (a < minAlpha) minAlpha = a;
-                            }
-                            if (i===0) ctx.moveTo(nx*canvasW, py); else ctx.lineTo(nx*canvasW, py);
-                        }
-                        ctx.strokeStyle = `rgba(43,95,63,${baseAlpha*Math.max(0.03,minAlpha)})`;
-                        ctx.lineWidth = lineW; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-                        ctx.stroke();
-                    }
-                }
-                const labelDrift = ep * 25;
-                topoLabel.style.transform = `translate(-50%, calc(-50% + ${labelDrift}%))`;
-                topoLabel.classList.toggle('hidden', p > 0.45);
-                topoText.classList.toggle('revealed', p > 0.4);
-            }
-
-            function onScroll() {
-                const rect = section.getBoundingClientRect();
-                const viewH = window.innerHeight;
-                requestAnimationFrame(() => draw(Math.max(0, Math.min(1, (1 - (rect.top + rect.height/2)/viewH) * 1.2))));
-            }
-
-            init(); draw(0);
-            window.addEventListener('scroll', onScroll, { passive: true });
-            window.addEventListener('resize', () => { init(); onScroll(); });
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) draw(0.6);
-            else onScroll();
-        })();
+        }
+        track.addEventListener('mouseup', endDrag);
+        track.addEventListener('mouseleave', endDrag);
+    })();
     </script>
+
+    <script>
+    // --- Topo relief divider (Teton Range, dark theme) ---
+    (function() {
+        const canvas = document.getElementById('topoCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const section = document.getElementById('topoSection');
+        const topoText = document.getElementById('topoText');
+        const topoLabel = document.getElementById('topoLabel');
+
+        const SEED = 42;
+        function hash(x, y) { let h = SEED+x*374761393+y*668265263; h=(h^(h>>13))*1274126177; return((h^(h>>16))&0x7fffffff)/0x7fffffff; }
+        function smoothNoise(x, y) { const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy); const v00=hash(ix,iy),v10=hash(ix+1,iy),v01=hash(ix,iy+1),v11=hash(ix+1,iy+1); return(v00+sx*(v10-v00))+sy*((v01+sx*(v11-v01))-(v00+sx*(v10-v00))); }
+        function fbm(x, y, oct) { let v=0,a=1,t=0; for(let i=0;i<oct;i++){v+=smoothNoise(x,y)*a;t+=a;x*=2.1;y*=2.1;a*=0.45;} return v/t; }
+        function ridgedNoise(x, y) { let v=0,a=1,t=0; for(let i=0;i<4;i++){const n=1-Math.abs(smoothNoise(x,y)*2-1);v+=n*n*a;t+=a;x*=2.2;y*=2.2;a*=0.45;} return v/t; }
+
+        const RIDGE_NY = 0.42;
+        function peak2D(nx,ny,cx,cy,wx,wy,s) { const dx=(nx-cx)/wx,dy=(ny-cy)/wy; return Math.exp(-Math.pow(dx*dx+dy*dy,s||0.85)); }
+
+        const peaks = [
+            {nx:0.28,h:0.55,wx:0.04,wy:0.04,s:0.80},{nx:0.34,h:0.72,wx:0.03,wy:0.035,s:0.75},
+            {nx:0.40,h:0.82,wx:0.028,wy:0.032,s:0.75},{nx:0.48,h:0.92,wx:0.030,wy:0.035,s:0.70},
+            {nx:0.53,h:0.85,wx:0.025,wy:0.030,s:0.75},{nx:0.58,h:0.70,wx:0.030,wy:0.035,s:0.80},
+            {nx:0.76,h:0.78,wx:0.035,wy:0.040,s:0.75},
+        ];
+        const ridge = [
+            {nx:0.20,h:0.25,wx:0.05,wy:0.05},{nx:0.31,h:0.42,wx:0.04,wy:0.04},
+            {nx:0.36,h:0.50,wx:0.03,wy:0.035},{nx:0.44,h:0.55,wx:0.035,wy:0.035},
+            {nx:0.555,h:0.40,wx:0.025,wy:0.03},{nx:0.64,h:0.25,wx:0.03,wy:0.035},
+            {nx:0.70,h:0.30,wx:0.03,wy:0.035},{nx:0.83,h:0.22,wx:0.04,wy:0.04},
+            {nx:0.90,h:0.12,wx:0.04,wy:0.04},
+        ];
+        const westSlope = [
+            {nx:0.35,ny:0.22,h:0.22,wx:0.08,wy:0.10},
+            {nx:0.50,ny:0.20,h:0.28,wx:0.09,wy:0.12},
+            {nx:0.75,ny:0.23,h:0.20,wx:0.07,wy:0.10},
+        ];
+
+        function terrain(nx, ny) {
+            let fm = 0;
+            for (const p of peaks) fm = Math.max(fm, p.h*peak2D(nx,ny,p.nx,RIDGE_NY,p.wx,p.wy,p.s));
+            for (const r of ridge) { const dx=(nx-r.nx)/r.wx,dy=(ny-RIDGE_NY)/r.wy; fm=Math.max(fm,r.h*Math.exp(-(dx*dx+dy*dy))); }
+            let h = fm;
+            for (const w of westSlope) { const dx=(nx-w.nx)/w.wx,dy=(ny-w.ny)/w.wy; h+=w.h*Math.exp(-(dx*dx+dy*dy))*0.5; }
+            const ed = ny-RIDGE_NY;
+            if (ed>0&&ed<0.12) h*=1-Math.pow(ed/0.12,0.5)*0.25;
+            const bH = Math.min(h,1.0);
+            h += ridgedNoise(nx*24+3.7,ny*20+1.2)*0.055*bH;
+            h += (fbm(nx*22,ny*18,5)-0.5)*0.045*(0.15+bH*0.85);
+            const cd = Math.abs(nx-0.64);
+            if (cd<0.025&&ny>RIDGE_NY-0.03) h-=(1-cd/0.025)*0.30*Math.max(0,Math.min(1,(ny-RIDGE_NY+0.03)/0.20))*bH;
+            h *= Math.min(nx/0.10,(1-nx)/0.10,ny/0.06,(1-ny)/0.06,1);
+            return Math.max(0,Math.min(1.2,h));
+        }
+
+        let heightMap,mapW,mapH;
+        function genHM(w,h) { mapW=w;mapH=h;heightMap=new Float32Array(w*h); for(let y=0;y<h;y++) for(let x=0;x<w;x++) heightMap[y*w+x]=terrain(x/w,y/h); }
+        function getH(x,y) { const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy; if(ix<0||iy<0||ix>=mapW-1||iy>=mapH-1)return 0; return(heightMap[iy*mapW+ix]+fx*(heightMap[iy*mapW+ix+1]-heightMap[iy*mapW+ix]))*(1-fy)+(heightMap[(iy+1)*mapW+ix]+fx*(heightMap[(iy+1)*mapW+ix+1]-heightMap[(iy+1)*mapW+ix]))*fy; }
+
+        function extractContours(n) {
+            const all=[];
+            for(let l=1;l<n;l++){const th=(l/n)*1.0;const sm=new Map();
+            for(let y=0;y<mapH-1;y++){for(let x=0;x<mapW-1;x++){const v00=heightMap[y*mapW+x],v10=heightMap[y*mapW+x+1],v01=heightMap[(y+1)*mapW+x],v11=heightMap[(y+1)*mapW+x+1];let c=0;if(v00>=th)c|=1;if(v10>=th)c|=2;if(v11>=th)c|=4;if(v01>=th)c|=8;if(c===0||c===15)continue;const lr=(a,b,va,vb)=>a+(th-va)/(vb-va)*(b-a);const t={x:lr(x,x+1,v00,v10),y:y},r={x:x+1,y:lr(y,y+1,v10,v11)},bo={x:lr(x,x+1,v01,v11),y:y+1},le={x:x,y:lr(y,y+1,v00,v01)};const sg=[];switch(c){case 1:sg.push([t,le]);break;case 2:sg.push([t,r]);break;case 3:sg.push([le,r]);break;case 4:sg.push([r,bo]);break;case 5:sg.push([t,r],[bo,le]);break;case 6:sg.push([t,bo]);break;case 7:sg.push([le,bo]);break;case 8:sg.push([le,bo]);break;case 9:sg.push([t,bo]);break;case 10:sg.push([t,le],[r,bo]);break;case 11:sg.push([r,bo]);break;case 12:sg.push([le,r]);break;case 13:sg.push([t,r]);break;case 14:sg.push([t,le]);break;}
+            for(const[a,b]of sg){const kA=`${a.x.toFixed(3)},${a.y.toFixed(3)}`,kB=`${b.x.toFixed(3)},${b.y.toFixed(3)}`;if(!sm.has(kA))sm.set(kA,[]);if(!sm.has(kB))sm.set(kB,[]);sm.get(kA).push({key:kB});sm.get(kB).push({key:kA});}}}
+            const vi=new Set(),ch=[];for(const[sk]of sm){if(vi.has(sk))continue;const c=[];let cu=sk;while(cu&&!vi.has(cu)){vi.add(cu);const[cx,cy]=cu.split(',').map(Number);c.push({x:cx,y:cy});const nx=sm.get(cu);let f=false;for(const n of nx){if(!vi.has(n.key)){cu=n.key;f=true;break;}}if(!f)break;}if(c.length>4)ch.push(c);}
+            all.push({threshold:th,chains:ch});}return all;
+        }
+
+        let contourData,canvasW,canvasH,currentProgress=-1;
+        function init() {
+            const rect=section.getBoundingClientRect();const dpr=window.devicePixelRatio||1;
+            canvasW=rect.width;canvasH=rect.height;canvas.width=canvasW*dpr;canvas.height=canvasH*dpr;
+            ctx.setTransform(dpr,0,0,dpr,0,0);
+            const res=Math.min(450,Math.floor(canvasW/2.8));
+            genHM(res,Math.floor(res*(canvasH/canvasW)));
+            contourData=extractContours(28);currentProgress=-1;
+        }
+
+        // Dark theme: brighter green contour lines
+        const LINE_R = 90, LINE_G = 184, LINE_B = 122;
+
+        function draw(progress) {
+            const p=Math.max(0,Math.min(1,progress));
+            if(Math.abs(p-currentProgress)<0.002)return;
+            currentProgress=p;ctx.clearRect(0,0,canvasW,canvasH);
+            const maxD=canvasH*0.22,ep=Math.min(p,0.65),rcn=RIDGE_NY;
+
+            for(const{threshold,chains}of contourData){
+                const baseAlpha=0.22+threshold*0.25;
+                const lineW=0.4+threshold*0.7;
+                for(const chain of chains){
+                    ctx.beginPath();let minA=1;
+                    for(let i=0;i<chain.length;i++){
+                        const pt=chain[i],nx=pt.x/mapW,ny=pt.y/mapH;
+                        const h=getH(pt.x,pt.y),dfr=ny-rcn;
+                        let pny;
+                        if(dfr<0){const ba=Math.min(1,Math.abs(dfr)/rcn),eP=Math.min(1,ep*(1+ba*2.5));pny=rcn+dfr*(1-eP*0.95);}
+                        else{pny=rcn+dfr*(1+ep*0.4);}
+                        let hs=1;
+                        if(dfr<0){const ba=Math.min(1,Math.abs(dfr)/rcn);hs=1-ba*Math.min(1,ep*(1+ba*2.5));}
+                        const py=pny*canvasH-h*maxD*ep*Math.max(0,hs);
+                        if(dfr<0){const bh=Math.min(1,Math.abs(dfr)/rcn),a=1-bh*Math.min(1,ep*(1+bh*2.5))*0.95;if(a<minA)minA=a;}
+                        if(i===0)ctx.moveTo(nx*canvasW,py);else ctx.lineTo(nx*canvasW,py);
+                    }
+                    ctx.strokeStyle=`rgba(${LINE_R},${LINE_G},${LINE_B},${baseAlpha*Math.max(0.03,minA)})`;
+                    ctx.lineWidth=lineW;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
+                }
+            }
+            const labelDrift=ep*25;
+            topoLabel.style.transform=`translate(-50%, calc(-50% + ${labelDrift}%))`;
+            topoLabel.classList.toggle('hidden',p>0.45);
+            topoText.classList.toggle('revealed',p>0.4);
+        }
+
+        function onScroll(){const rect=section.getBoundingClientRect();const vh=window.innerHeight;const center=rect.top+rect.height/2;const raw=(1-center/vh);const delayed=Math.max(0,(raw-0.3)/0.7);requestAnimationFrame(()=>draw(Math.max(0,Math.min(1,delayed))));}
+        init();draw(0);
+        window.addEventListener('scroll',onScroll,{passive:true});
+        window.addEventListener('resize',()=>{init();onScroll();});
+        if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)draw(0.6);else onScroll();
+    })();
+    </script>
+
 </body>
 </html>

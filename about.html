@@ -5,8 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About — Jeff Stevenson</title>
     <meta name="description" content="About Jeff Stevenson — UX Design Leader.">
-    <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+    
     <style>
+
+        /* === DARK ALPINE DESIGN SYSTEM === */
+        :root {
+            --color-bg: #0e1210; --color-surface: #171c19; --color-surface-raised: #1e2622;
+            --color-text: #e8e6e1; --color-text-secondary: #9a9891; --color-text-muted: #5e5d58;
+            --color-accent: #5ab87a; --color-accent-dim: rgba(90,184,122,0.08);
+            --color-accent-medium: rgba(90,184,122,0.3);
+            --color-accent-warm: #c9a96e; --color-accent-light: #7dcea0;
+            --color-rule: rgba(255,255,255,0.08); --color-rule-dark: rgba(255,255,255,0.12);
+            --color-bg-alt: var(--color-surface);
+            --font-display: 'Bebas Neue', Impact, sans-serif;
+            --font-serif: 'Source Serif 4', Georgia, serif;
+            --font-body: 'DM Sans', sans-serif;
+            --nav-height: 64px;
+            --space-md: 2rem; --space-lg: 4rem; --space-xl: 6rem; --space-2xl: 8rem;
+            --max-width: 1200px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--color-bg); font-family: var(--font-body); color: var(--color-text); -webkit-font-smoothing: antialiased; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 3rem); }
+        
+        /* Accessibility */
+        .skip-link { position: absolute; top: -100%; left: 1rem; z-index: 10000; padding: 0.75rem 1.25rem; background: var(--color-accent); color: #fff; font-family: var(--font-body); font-size: 0.875rem; font-weight: 500; border-radius: 0 0 8px 8px; text-decoration: none; transition: top 0.2s ease; }
+        .skip-link:focus { top: 0; }
+        :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        /* Nav */
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem clamp(1.5rem, 4vw, 3rem); position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(14,18,16,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--color-rule); }
+        .nav-name { font-family: var(--font-display); font-size: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .nav-name a { color: var(--color-text); text-decoration: none; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; }
+        .nav-links a { color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .nav-links a:hover, .nav-links a.active { color: var(--color-accent); }
+        .nav-toggle { display: none; background: none; border: none; cursor: pointer; width: 28px; height: 20px; position: relative; padding: 0; }
+        .nav-toggle span { display: block; width: 100%; height: 1.5px; background: var(--color-text); position: absolute; left: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .nav-toggle span:nth-child(1) { top: 0; } .nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); } .nav-toggle span:nth-child(3) { bottom: 0; }
+        .nav-toggle.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); } .nav-toggle.active span:nth-child(2) { opacity: 0; } .nav-toggle.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        /* Buttons */
+        .btn { display: inline-flex; align-items: center; gap: 0.75rem; font-family: var(--font-body); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 1rem 2rem; border: 1px solid var(--color-text-muted); color: var(--color-text); transition: all 0.3s ease; }
+        .btn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+        .btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+        .btn--primary:hover { background: var(--color-accent-warm); border-color: var(--color-accent-warm); color: var(--color-bg); }
+        .btn-arrow { width: 14px; height: 14px; }
+        .btn svg { width: 14px; height: 14px; }
+
+        /* Section styles */
+        .section-label { font-family: var(--font-body); font-size: 0.6875rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-accent-warm); margin-bottom: 0.75rem; }
+        .section-heading { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 400; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.0; }
+        
+        /* Footer */
+        .footer { padding: 3rem clamp(1.5rem, 4vw, 3rem); border-top: 1px solid var(--color-rule); }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .footer-name { font-family: var(--font-display); font-size: 1.125rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .footer-tagline { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 0.25rem; }
+        .footer-links { display: flex; gap: 2rem; list-style: none; }
+        .footer-links a { font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-secondary); text-decoration: none; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--color-accent); }
+        .footer-bottom { max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--color-rule); }
+        .footer-copyright { font-size: 0.6875rem; color: var(--color-text-muted); }
+
+        /* Fade-in */
+        .fade-in { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .fade-in.delay-1 { transition-delay: 0.1s; } .fade-in.delay-2 { transition-delay: 0.2s; } .fade-in.delay-3 { transition-delay: 0.3s; } .fade-in.delay-4 { transition-delay: 0.4s; } .fade-in.delay-5 { transition-delay: 0.5s; }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0.01ms !important; transition-duration: 0.01ms !important; }
+            .fade-in { opacity: 1 !important; transform: none !important; }
+        }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(14,18,16,0.95); backdrop-filter: blur(16px); padding: 1.5rem clamp(1.5rem,4vw,3rem) 2rem; gap: 1.25rem; border-bottom: 1px solid var(--color-rule); }
+            .nav-links.open { display: flex; }
+            .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+
         /* --- Accessibility --- */
         .skip-link {
             position: absolute;
@@ -43,6 +124,27 @@
             white-space: nowrap;
             border: 0;
         }
+
+        /* Light section palette */
+        .section-light {
+            --sl-bg: #f2f0eb; --sl-text: #1a1a18;
+            --sl-text-secondary: #5a5a56; --sl-text-muted: #8a8a84;
+            --sl-rule: rgba(0, 0, 0, 0.08); --sl-surface: #ffffff;
+            background: var(--sl-bg); color: var(--sl-text);
+        }
+        .section-light .section-label { color: #8a6d3a; }
+        .section-light .section-heading { color: var(--sl-text); }
+        .section-light .skill-card { border-top-color: #2B5F3F; }
+        .section-light .skill-card-title { color: var(--sl-text); }
+        .section-light .skill-card-description { color: var(--sl-text-secondary); }
+        .section-light .speaking-item { border-bottom-color: var(--sl-rule); }
+        .section-light .speaking-year { color: var(--sl-text-muted); }
+        .section-light .speaking-title { color: var(--sl-text); }
+        .section-light .speaking-title-btn { color: var(--sl-text); }
+        .section-light .speaking-title-btn:hover { color: #2B5F3F; }
+        .section-light .speaking-venue { color: var(--sl-text-muted); }
+        .section-light.about-skills { border-top-color: var(--sl-rule); }
+        .section-light.speaking-section { border-top-color: var(--sl-rule); }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -379,7 +481,7 @@
 
     <!-- Navigation -->
     <nav class="nav" aria-label="Main navigation">
-        <div class="nav-name"><a href="index.html">Jeff Stevenson</a></div>
+        <div class="nav-name"><a href="index2.html">Jeff Stevenson</a></div>
         <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
@@ -447,7 +549,7 @@
     </section>
 
     <!-- What I Bring -->
-    <section class="about-skills" aria-labelledby="skills-label skills-heading">
+    <section class="about-skills section-light" aria-labelledby="skills-label skills-heading">
         <div class="container">
             <div class="fade-in">
                 <p class="section-label" id="skills-label">How I Lead</p>
@@ -488,7 +590,7 @@
     </section>
 
     <!-- Speaking & Engagements -->
-    <section class="speaking-section" aria-labelledby="speaking-label speaking-heading">
+    <section class="speaking-section section-light" aria-labelledby="speaking-label speaking-heading">
         <div class="container">
             <div class="fade-in">
                 <p class="section-label" id="speaking-label">Speaking & Engagements</p>
@@ -496,6 +598,11 @@
             </div>
 
             <ul class="speaking-list">
+                <li class="speaking-item fade-in delay-1">
+                    <span class="speaking-year">2025</span>
+                    <span class="speaking-title">Placeholder Talk Title</span>
+                    <span class="speaking-venue">Conference / Event Name</span>
+                </li>
                 <li class="speaking-item fade-in delay-2">
                     <span class="speaking-year">2024</span>
                     <span class="speaking-title">Placeholder Talk Title</span>
@@ -503,13 +610,13 @@
                 </li>
                 <li class="speaking-item fade-in delay-3">
                     <span class="speaking-year">2019</span>
-                    <span class="speaking-title">The Hidden Power of Metaphor</span>
+                    <span class="speaking-title">Placeholder Talk Title</span>
                     <span class="speaking-venue">Midwest UX</span>
                 </li>
                 <li class="speaking-item fade-in delay-4">
                     <span class="speaking-year">2018</span>
                     <button class="speaking-title-link" onclick="openVideoModal()" aria-label="Watch talk">
-                        Assimilate & Adapt: Lessons From the Spread of the English Language
+                        Placeholder Talk Title
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.25"/><path d="M6.5 4.5L11.5 8L6.5 11.5V4.5Z" fill="currentColor"/></svg>
                     </button>
                     <span class="speaking-venue">Midwest UX</span>
@@ -662,5 +769,10 @@
         });
     </script>
     <script src="scripts.js"></script>
+
+    <script>
+    (function(){var t=document.querySelector('.nav-toggle'),n=document.querySelector('.nav-links');if(t&&n){t.addEventListener('click',function(){n.classList.toggle('open');t.classList.toggle('active');t.setAttribute('aria-expanded',n.classList.contains('open'));});n.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');t.classList.remove('active');t.setAttribute('aria-expanded','false');});});}
+    var els=document.querySelectorAll('.fade-in');if('IntersectionObserver'in window&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.12,rootMargin:'0px 0px -40px 0px'});els.forEach(function(el){obs.observe(el);});}else{els.forEach(function(el){el.classList.add('visible');});}})();
+    </script>
 </body>
 </html>
