@@ -234,9 +234,9 @@
             flex: 0 0 min(420px, 80vw); padding: 2.5rem;
             background: var(--color-surface); border: 1px solid var(--color-rule);
             border-radius: 4px; position: relative;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease;
         }
-        .testimonial:hover { border-color: rgba(255,255,255,0.15); }
+        .testimonial:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
         .testimonial-accent { width: 32px; height: 2px; background: var(--color-accent); margin-bottom: 1.5rem; }
         .testimonial-text {
             font-family: var(--font-serif); font-size: 1.0625rem; font-weight: 300;
@@ -262,7 +262,7 @@
             background: var(--sl-bg);
             color: var(--sl-text);
         }
-        .section-light .section-label { color: var(--color-accent-warm); }
+        .section-light .section-label { color: #8a6d3a; }
         .section-light .section-heading { color: var(--sl-text); }
         .section-light .section-link { color: var(--sl-text-secondary); }
         .section-light .section-link:hover { color: var(--color-accent); }
@@ -280,7 +280,7 @@
             background: var(--sl-surface);
             border-color: var(--sl-rule);
         }
-        .section-light .testimonial:hover { border-color: rgba(0, 0, 0, 0.15); }
+        .section-light .testimonial:hover { border-color: rgba(0,0,0,0.12); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
         .section-light .testimonial-accent { background: #2B5F3F; }
         .section-light .testimonial-text { color: var(--sl-text-secondary); }
         .section-light .testimonial-author { color: var(--sl-text); }
@@ -337,6 +337,68 @@
         .footer-bottom { max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid var(--color-rule); }
         .footer-copyright { font-size: 0.6875rem; color: var(--color-text-muted); }
 
+        /* --- Mobile nav --- */
+        .nav-toggle {
+            display: none;
+            background: none; border: none; cursor: pointer;
+            width: 28px; height: 20px; position: relative;
+            padding: 0;
+        }
+        .nav-toggle span {
+            display: block; width: 100%; height: 1.5px;
+            background: var(--color-text); position: absolute; left: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .nav-toggle span:nth-child(1) { top: 0; }
+        .nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .nav-toggle span:nth-child(3) { bottom: 0; }
+        .nav-toggle.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); }
+
+        /* --- Quote modal --- */
+        .quote-modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0); backdrop-filter: blur(0px); opacity: 0;
+            transition: opacity 0.35s ease, background 0.35s ease, backdrop-filter 0.35s ease;
+        }
+        .quote-modal-overlay.is-open { display: flex; }
+        .quote-modal-overlay.is-visible {
+            opacity: 1; background: rgba(0,0,0,0.75); backdrop-filter: blur(12px);
+        }
+        .quote-modal {
+            position: relative; width: 90vw; max-width: 600px; max-height: 80vh;
+            overflow-y: auto; background: var(--color-surface);
+            border: 1px solid var(--color-rule); border-radius: 4px; padding: 3rem;
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .quote-modal-overlay.is-visible .quote-modal { transform: scale(1) translateY(0); }
+        .quote-modal-close {
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            background: none; border: none; color: var(--color-text-muted);
+            cursor: pointer; padding: 0.25rem; transition: color 0.2s;
+        }
+        .quote-modal-close:hover { color: var(--color-text); }
+        .quote-modal .testimonial-accent { margin-bottom: 1.5rem; }
+        .quote-modal-text {
+            font-family: var(--font-serif); font-size: 1.125rem; font-weight: 300;
+            font-style: italic; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 1.75rem;
+        }
+        .quote-modal-author { font-size: 0.9375rem; font-weight: 500; color: var(--color-text); }
+        .quote-modal-role { font-size: 0.8125rem; color: var(--color-text-muted); margin-top: 0.2rem; }
+
+        /* Expandable testimonial cards */
+        .testimonial.has-full-quote { cursor: pointer; }
+        .testimonial-read-more {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: #2B5F3F; margin-top: 0.75rem; transition: gap 0.2s;
+        }
+        .testimonial.has-full-quote:hover .testimonial-read-more { gap: 0.5rem; }
+
         /* --- Concept label --- */
         .concept-badge {
             position: fixed; bottom: 1.5rem; right: 1.5rem;
@@ -348,6 +410,15 @@
 
         /* --- Responsive --- */
         @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none; flex-direction: column; position: absolute;
+                top: 100%; left: 0; right: 0;
+                background: rgba(14, 18, 16, 0.95); backdrop-filter: blur(16px);
+                padding: 1.5rem clamp(1.5rem, 4vw, 3rem) 2rem;
+                gap: 1.25rem; border-bottom: 1px solid var(--color-rule);
+            }
+            .nav-links.open { display: flex; }
             .hero-title { font-size: clamp(3rem, 12vw, 5rem); }
             .work-grid { grid-template-columns: 1fr; }
             .writing-grid { grid-template-columns: 1fr; }
@@ -359,8 +430,11 @@
 </head>
 <body>
 
-    <nav class="nav">
+    <nav class="nav" aria-label="Main navigation">
         <div class="nav-name"><a href="#">Jeff Stevenson</a></div>
+        <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
         <ul class="nav-links">
             <li><a href="#">Work</a></li>
             <li><a href="#">About</a></li>
@@ -468,20 +542,22 @@
             <h2 class="section-heading">What colleagues say</h2>
         </div>
 
-        <div class="testimonial-track">
-            <div class="testimonial">
+        <div class="testimonial-track" tabindex="0" role="region" aria-label="Testimonials, scrollable">
+            <div class="testimonial has-full-quote" data-full-quote="Placeholder for the full, longer testimonial from Chris. This is where the complete quote would go — it could be several sentences or even a couple of paragraphs." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
                     Placeholder testimonial from a colleague about your design leadership and collaboration style.
                 </p>
+                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Chris Fladung</p>
                 <p class="testimonial-role">VP Merchandise Experience @ Kroger</p>
             </div>
-            <div class="testimonial">
+            <div class="testimonial has-full-quote" data-full-quote="Placeholder for the full, longer testimonial from Tom. This extended version gives the reader the complete context of the recommendation." onclick="openQuoteModal(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQuoteModal(this)}" role="button" tabindex="0">
                 <div class="testimonial-accent"></div>
                 <p class="testimonial-text">
                     Placeholder testimonial about how you approach complex problems and drive meaningful outcomes through design.
                 </p>
+                <span class="testimonial-read-more">Read full quote <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="8" x2="13" y2="8"/><polyline points="9,4 13,8 9,12"/></svg></span>
                 <p class="testimonial-author">Tom Rose</p>
                 <p class="testimonial-role">Sr. Manager, Product Design @ Kroger</p>
             </div>
@@ -538,7 +614,138 @@
         </div>
     </footer>
 
+    <!-- Quote Modal -->
+    <div class="quote-modal-overlay" id="quoteModal" onclick="closeQuoteModal(event)">
+        <div class="quote-modal">
+            <button class="quote-modal-close" onclick="closeQuoteModal(event, true)" aria-label="Close">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                    <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
+                </svg>
+            </button>
+            <div class="testimonial-accent"></div>
+            <p class="quote-modal-text" id="quoteModalText"></p>
+            <p class="quote-modal-author" id="quoteModalAuthor"></p>
+            <p class="quote-modal-role" id="quoteModalRole"></p>
+        </div>
+    </div>
+
     <div class="concept-badge">Concept B — Dark Alpine (Full Page)</div>
+
+    <script>
+    // --- Mobile nav toggle ---
+    (function() {
+        const toggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        if (toggle && navLinks) {
+            toggle.addEventListener('click', () => {
+                navLinks.classList.toggle('open');
+                toggle.classList.toggle('active');
+                toggle.setAttribute('aria-expanded', navLinks.classList.contains('open'));
+            });
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('open');
+                    toggle.classList.remove('active');
+                    toggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+        }
+    })();
+
+    // --- Quote modal with focus trap ---
+    let quoteModalTrigger = null;
+
+    function openQuoteModal(card) {
+        quoteModalTrigger = card;
+        const overlay = document.getElementById('quoteModal');
+        document.getElementById('quoteModalText').innerHTML = card.dataset.fullQuote;
+        document.getElementById('quoteModalAuthor').textContent = card.querySelector('.testimonial-author').textContent;
+        document.getElementById('quoteModalRole').textContent = card.querySelector('.testimonial-role').textContent;
+        overlay.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                overlay.classList.add('is-visible');
+                overlay.querySelector('.quote-modal-close').focus();
+            });
+        });
+    }
+
+    function closeQuoteModal(e, forceClose) {
+        const overlay = document.getElementById('quoteModal');
+        if (forceClose || e.target === overlay) {
+            overlay.classList.remove('is-visible');
+            document.body.style.overflow = '';
+            overlay.addEventListener('transitionend', function handler() {
+                overlay.removeEventListener('transitionend', handler);
+                if (!overlay.classList.contains('is-visible')) {
+                    overlay.classList.remove('is-open');
+                    if (quoteModalTrigger) { quoteModalTrigger.focus(); quoteModalTrigger = null; }
+                }
+            });
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        const overlay = document.getElementById('quoteModal');
+        if (!overlay.classList.contains('is-open')) return;
+        if (e.key === 'Escape') { closeQuoteModal(e, true); return; }
+        if (e.key === 'Tab') {
+            const modal = overlay.querySelector('.quote-modal');
+            const focusable = modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+            const first = focusable[0], last = focusable[focusable.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+    });
+
+    // --- Drag-to-scroll with momentum for testimonials ---
+    (function() {
+        const track = document.querySelector('.testimonial-track');
+        if (!track) return;
+        let isDown = false, isDragging = false, startX, scrollLeft, velX = 0, lastX, lastTime, momentumId = null;
+
+        function stopMomentum() { if (momentumId) { cancelAnimationFrame(momentumId); momentumId = null; } }
+        function coast() {
+            if (Math.abs(velX) < 0.5) return;
+            track.scrollLeft -= velX; velX *= 0.92;
+            momentumId = requestAnimationFrame(coast);
+        }
+
+        track.addEventListener('mousedown', e => {
+            stopMomentum(); isDown = true; isDragging = false;
+            startX = e.pageX; scrollLeft = track.scrollLeft;
+            lastX = e.pageX; lastTime = Date.now(); velX = 0;
+        });
+        track.addEventListener('mousemove', e => {
+            if (!isDown) return;
+            const dx = e.pageX - startX;
+            if (!isDragging && Math.abs(dx) > 4) {
+                isDragging = true;
+                track.style.userSelect = 'none'; track.style.webkitUserSelect = 'none';
+            }
+            if (!isDragging) return;
+            e.preventDefault();
+            const now = Date.now(), dt = now - lastTime;
+            if (dt > 0) { velX = (e.pageX - lastX) / dt * 16; lastX = e.pageX; lastTime = now; }
+            track.scrollLeft = scrollLeft - dx;
+        });
+        function endDrag() {
+            if (!isDown) return; isDown = false;
+            track.style.userSelect = ''; track.style.webkitUserSelect = '';
+            if (isDragging) {
+                isDragging = false;
+                track.addEventListener('click', function suppress(ev) {
+                    ev.stopPropagation(); ev.preventDefault();
+                    track.removeEventListener('click', suppress, true);
+                }, true);
+                if (Math.abs(velX) > 1) momentumId = requestAnimationFrame(coast);
+            }
+        }
+        track.addEventListener('mouseup', endDrag);
+        track.addEventListener('mouseleave', endDrag);
+    })();
+    </script>
 
     <script>
     // --- Topo relief divider (Teton Range, dark theme) ---
