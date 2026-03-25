@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Doors of Stone — A Choose Your Own Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0d0b;
+    --bg-card: #1a1714;
+    --bg-card-hover: #242019;
+    --border: #3a332b;
+    --border-active: #b8860b;
+    --gold: #daa520;
+    --gold-light: #f0c75e;
+    --gold-dim: #8b7425;
+    --text: #e0d6c8;
+    --text-mid: #c4b8a6;
+    --text-dim: #a09484;
+    --text-bright: #f5f0e8;
+    --red: #c04040;
+    --red-light: #e07070;
+  }
+
+  ::selection { background: var(--gold-dim); color: var(--text-bright); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Garamond, Georgia, serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-texture {
+    position: fixed; inset: 0; opacity: 0.025; z-index: 0; pointer-events: none;
+    background-image:
+      radial-gradient(circle at 20% 50%, var(--gold) 1px, transparent 1px),
+      radial-gradient(circle at 80% 20%, var(--gold) 1px, transparent 1px);
+    background-size: 60px 60px, 90px 90px;
+  }
+
+  .container {
+    max-width: 680px; margin: 0 auto; padding: 40px 24px 80px;
+    position: relative; z-index: 1;
+  }
+
+  /* Typography */
+  .label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--text-dim); }
+  .label-sm { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--text-dim); }
+  .label-gold { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--gold-dim); }
+
+  h1 {
+    font-family: 'Cinzel', serif; font-size: clamp(28px, 5vw, 42px);
+    font-weight: 400; color: var(--gold); margin: 0 0 8px; line-height: 1.2;
+    animation: flickerGlow 4s ease-in-out infinite;
+  }
+  h2 {
+    font-family: 'Cinzel', serif; font-size: clamp(20px, 4vw, 28px);
+    font-weight: 400; color: var(--gold-light); margin: 0 0 20px; line-height: 1.3;
+  }
+  h2.final {
+    font-size: clamp(22px, 4vw, 32px); color: var(--gold); margin-bottom: 24px;
+  }
+
+  .subtitle { font-size: 15px; color: var(--text-mid); font-style: italic; letter-spacing: 1px; }
+  .body-text { font-size: 19px; line-height: 1.9; font-weight: 400; color: var(--text-bright); }
+  .body-text p { margin-bottom: 20px; }
+  .context-text { font-size: 17px; line-height: 1.85; font-weight: 400; color: var(--text-bright); margin-bottom: 12px; }
+  .question-text { font-size: 16px; color: var(--text-mid); font-style: italic; margin-bottom: 28px; }
+  .italic-mid { color: var(--text-mid); font-style: italic; }
+
+  /* Progress bar */
+  .progress { display: flex; gap: 4px; margin-bottom: 40px; animation: fadeIn 0.6s ease-out; }
+  .progress-pip { flex: 1; height: 3px; border-radius: 2px; background: var(--border); transition: background 0.5s ease; }
+  .progress-pip.done { background: var(--gold); }
+  .progress-pip.active { background: var(--gold-dim); }
+  .progress-pip.active-bright { background: var(--gold-light); }
+
+  /* Buttons */
+  .btn {
+    display: inline-block; padding: 14px 40px; background: transparent;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .btn:hover { background: var(--gold); color: var(--bg); }
+  .btn-center { display: block; margin: 40px auto 0; }
+  .btn-dim { border-color: var(--border); color: var(--text-dim); }
+  .btn-dim:hover { border-color: var(--text-dim); background: var(--border); color: var(--text-bright); }
+
+  /* Choice cards */
+  .choice-stack { display: flex; flex-direction: column; gap: 12px; }
+  .choice-card {
+    text-align: left; padding: 20px 24px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 3px; cursor: pointer; transition: all 0.25s ease;
+  }
+  .choice-card:hover { background: var(--bg-card-hover); border-color: var(--border-active); }
+  .choice-card .choice-label {
+    font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 2px;
+    color: var(--text-mid); margin-bottom: 8px; transition: color 0.25s ease;
+  }
+  .choice-card:hover .choice-label { color: var(--gold-light); }
+  .choice-card .choice-desc {
+    font-size: 16px; line-height: 1.75; color: var(--text); font-weight: 400; transition: color 0.25s ease;
+  }
+  .choice-card:hover .choice-desc { color: var(--text-bright); }
+
+  /* Narrative block */
+  .narrative {
+    font-size: 18px; line-height: 2; font-weight: 400; color: var(--text-bright);
+    border-left: 2px solid var(--gold-dim); padding-left: 24px; margin-bottom: 44px;
+  }
+  .narrative p { margin-bottom: 28px; }
+  .narrative p:last-child { margin-bottom: 0; }
+
+  /* Loading dots */
+  .dots { display: flex; justify-content: center; gap: 8px; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: dotPulse 1.4s ease-in-out infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  /* Error */
+  .error-box {
+    padding: 20px 28px; background: rgba(192,64,64,0.08);
+    border: 1px solid var(--red); border-radius: 3px;
+    color: var(--red-light); font-size: 16px; line-height: 1.7;
+    max-width: 480px; margin: 0 auto 32px;
+  }
+
+  /* Summary */
+  .summary-card {
+    text-align: left; max-width: 540px; margin: 0 auto 44px;
+    padding: 24px 28px; background: var(--bg-card);
+    border: 1px solid var(--border); border-radius: 3px;
+  }
+  .summary-row {
+    padding: 10px 0; border-bottom: 1px solid var(--border);
+    font-size: 13px; color: var(--text-mid);
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-arrow { color: var(--gold-dim); margin: 0 10px; }
+  .summary-choice { font-size: 14px; color: var(--text-bright); font-weight: 500; }
+
+  /* API key modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+  }
+  .modal {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 4px; padding: 36px 40px; max-width: 480px; width: 90%;
+    text-align: center;
+  }
+  .modal h3 {
+    font-family: 'Cinzel', serif; font-size: 18px; color: var(--gold);
+    margin-bottom: 16px; font-weight: 400;
+  }
+  .modal p { font-size: 15px; color: var(--text-mid); line-height: 1.7; margin-bottom: 20px; }
+  .modal input {
+    width: 100%; padding: 12px 16px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: 3px;
+    color: var(--text-bright); font-family: monospace; font-size: 14px;
+    margin-bottom: 20px; outline: none;
+  }
+  .modal input:focus { border-color: var(--gold-dim); }
+  .modal .note { font-size: 12px; color: var(--text-dim); margin-top: 12px; line-height: 1.6; }
+
+  /* Footer */
+  footer { margin-top: 80px; text-align: center; font-size: 12px; color: var(--text-dim); letter-spacing: 1px; opacity: 0.6; }
+
+  /* Utilities */
+  .text-center { text-align: center; }
+  .mb-6 { margin-bottom: 6px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-16 { margin-bottom: 16px; }
+  .mb-20 { margin-bottom: 20px; }
+  .mb-28 { margin-bottom: 28px; }
+  .mb-32 { margin-bottom: 32px; }
+  .mb-48 { margin-bottom: 48px; }
+  .hidden { display: none !important; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes flickerGlow {
+    0%, 100% { text-shadow: 0 0 8px rgba(218,165,32,0.3); }
+    50% { text-shadow: 0 0 16px rgba(218,165,32,0.5), 0 0 32px rgba(218,165,32,0.15); }
+  }
+  @keyframes dotPulse {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+  .fade-in { animation: fadeIn 0.8s ease-out; }
+  .fade-in-slow { animation: fadeIn 1s ease-out; }
+</style>
+</head>
+<body>
+
+<div class="bg-texture"></div>
+
+<!-- API Key Modal -->
+<div id="apiModal" class="modal-overlay">
+  <div class="modal">
+    <h3>Before We Begin</h3>
+    <p>This experience uses the Anthropic API to generate narrative passages in Rothfuss's style. You'll need an API key.</p>
+    <input type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
+    <button class="btn btn-center" onclick="saveApiKey()" style="margin-top:0">Enter the Inn</button>
+    <div class="note">Your key is stored only in this browser session and is sent only to api.anthropic.com. It is never logged or stored elsewhere.</div>
+  </div>
+</div>
+
+<div class="container" id="top">
+
+  <!-- Header (always visible) -->
+  <header class="text-center mb-48 fade-in-slow">
+    <div class="label mb-16">The Kingkiller Chronicle</div>
+    <h1>The Doors of Stone</h1>
+    <div class="subtitle">A story that could not wait any longer</div>
+  </header>
+
+  <!-- Progress bar -->
+  <div id="progressBar" class="progress hidden"></div>
+
+  <!-- Phase: Intro -->
+  <section id="phaseIntro" class="fade-in">
+    <div class="body-text">
+      <p>It was the patient, cut-flower sound of a man who is waiting to die.</p>
+      <p>But tonight, the Waystone Inn holds a different kind of silence — the silence of a story
+        not yet told. You know how it begins. You know the boy, the lute, the fire, the name.
+        You know the University and the road and the woman whose hair was impossibly dark.</p>
+      <p>What you don't know is how it ends.</p>
+      <p class="italic-mid">At each turning of the hero's path, you will choose which way the story bends.
+        The classic telling. The inversion. Or something stranger still.</p>
+    </div>
+    <button class="btn btn-center" onclick="startStory()">Begin the Third Day</button>
+  </section>
+
+  <!-- Phase: Choose -->
+  <section id="phaseChoose" class="hidden fade-in"></section>
+
+  <!-- Phase: Loading -->
+  <section id="phaseLoading" class="hidden fade-in text-center" style="padding:80px 0">
+    <div id="loadingStage" class="label-sm mb-20"></div>
+    <div id="loadingChoice" style="font-size:18px;color:var(--text-mid);font-style:italic" class="mb-28"></div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div style="font-size:15px;color:var(--text-mid);margin-top:20px;font-style:italic">The story takes shape...</div>
+    <div id="loadingStatus" style="font-size:12px;color:var(--text-dim);margin-top:12px;font-family:monospace"></div>
+    <button class="btn btn-dim" style="margin-top:32px;padding:10px 28px;font-size:12px" onclick="cancelLoading()">Cancel</button>
+  </section>
+
+  <!-- Phase: Error -->
+  <section id="phaseError" class="hidden fade-in text-center" style="padding:60px 0">
+    <div id="errorStage" class="label-sm mb-20"></div>
+    <div id="errorMessage" class="error-box"></div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+      <button class="btn" onclick="retryGeneration()">Try Again</button>
+      <button class="btn" onclick="goBackToChoose()">Choose Differently</button>
+    </div>
+  </section>
+
+  <!-- Phase: Narrate -->
+  <section id="phaseNarrate" class="hidden fade-in"></section>
+
+  <!-- Phase: Complete -->
+  <section id="phaseComplete" class="hidden fade-in-slow text-center" style="padding:20px 0"></section>
+
+  <footer>A fan creation. All credit to Patrick Rothfuss for the world and its wonders.</footer>
+</div>
+
+<script>
+// ===== DATA =====
+const STAGES = [
+  {
+    id: 1, stage: "The Threshold Guardian",
+    context: "Kvothe has returned to the University after his time in Vintas and among the Adem. He carries the weight of new names, new scars, and the growing certainty that the Chandrian are closer than anyone suspects. But the Masters have learned of his unauthorized use of the sleeping mind during his travels. He faces expulsion — or worse, the Arcanum's deeper judgment.",
+    question: "How does Kvothe face the judgment of the University?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe uses his wit and growing mastery to defend himself brilliantly, turning the trial into a triumph that cements his legend.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "Kvothe wins the trial but loses something more important — the trust of someone who matters, or access to knowledge he desperately needs.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe deliberately lets himself be expelled, having realized the University itself is built on a lie about the Chandrian.", code: "wild" }
+    ]
+  },
+  {
+    id: 2, stage: "The Revelation of the Mentor",
+    context: "The truth about Kvothe's mentors — Elodin, Kilvin, perhaps even the Cthaeh — begins to crystallize. Every teacher he's trusted has been shaping him toward something, and the pattern is finally becoming visible.",
+    question: "What does Kvothe discover about those who've guided him?",
+    choices: [
+      { label: "The Classic Beat", description: "A mentor reveals they've been secretly protecting Kvothe all along, preparing him for a final confrontation with the Chandrian.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "Kvothe realizes his mentors have been using him — not maliciously, but as a tool in a larger game he was never meant to understand.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe discovers that one of his mentors IS one of the Chandrian, hidden in plain sight for centuries.", code: "wild" }
+    ]
+  },
+  {
+    id: 3, stage: "The Descent into the Underworld",
+    context: "Every hero must descend. For Kvothe, this means finally entering the place he's been circling since childhood — the heart of the mystery. The Doors of Stone stand before him, literal or metaphorical.",
+    question: "How does Kvothe cross the threshold into the unknown?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe opens the Doors of Stone through an act of supreme naming, entering the Fae realm or wherever the Chandrian's power originates.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "The Doors of Stone are not a place but a state of mind — Kvothe breaks through into a deeper layer of naming that costs him part of himself.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe doesn't open the doors. Someone opens them from the other side, and what comes through changes everything.", code: "wild" }
+    ]
+  },
+  {
+    id: 4, stage: "The Sacred Marriage / Meeting with the Goddess",
+    context: "Denna. Always Denna. Their story has been an orbit that never quite resolves — drawn together, pulled apart, each keeping secrets the other would die to know. In the hero's journey, this is the moment of union or ultimate understanding.",
+    question: "How does Kvothe and Denna's story reach its crisis?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe and Denna finally share their secrets. The truth binds them together, and their combined knowledge unlocks the path forward.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "They share their secrets and it destroys them. Denna's patron is connected to the Chandrian, and knowing this makes them enemies.", code: "inversion" },
+      { label: "The Wild Path", description: "Denna has known the truth about Kvothe's family all along. She's been writing a song not to hide the Chandrian — but to protect Kvothe from what he'd do if he understood.", code: "wild" }
+    ]
+  },
+  {
+    id: 5, stage: "Atonement with the Father",
+    context: "Kvothe's father was murdered by the Chandrian. His entire quest has been shaped by that wound. But the hero's journey demands not revenge but understanding — reconciliation with the power of the father, whatever form that takes.",
+    question: "How does Kvothe reckon with his father's legacy?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe learns his father discovered the true name of the Chandrian's leader, and that knowledge — the song — is Kvothe's inheritance and weapon.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "Kvothe learns his father knew the risks and chose to sing anyway, not out of ignorance but defiance. The atonement is accepting that his father chose art over safety — over family.", code: "inversion" },
+      { label: "The Wild Path", description: "Arliden wasn't killed for what he discovered. He was killed for what he was about to become. The Chandrian recognized in him the same power now growing in Kvothe.", code: "wild" }
+    ]
+  },
+  {
+    id: 6, stage: "Apotheosis — The Death of the Hero",
+    context: "The hero must die to be reborn. Every version of Kvothe's legend points toward a moment of transformation so complete that the person who emerges is fundamentally different from the one who entered. This is the pivot the entire trilogy has been building toward.",
+    question: "What is Kvothe's symbolic death?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe confronts the Chandrian directly and is broken — physically, mentally, magically — only to discover a deeper power within the wreckage.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "Kvothe achieves his goal. He defeats his enemy. And the victory itself is what destroys him — because the legend of Kvothe Kingkiller is born from an act he can never undo.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe doesn't die. He kills a part of someone else — Denna, Sim, Wil, Auri — and the guilt becomes the death of who he was.", code: "wild" }
+    ]
+  },
+  {
+    id: 7, stage: "The Ultimate Boon",
+    context: "After the death comes the gift — the thing the hero wins from the underworld, the treasure carried back. For a namer, for a musician, for a legend, what is the thing Kvothe brings back from the edge?",
+    question: "What does Kvothe gain from his transformation?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe learns the name of the wind fully and completely — not as a student but as a master. He gains the power to reshape the world.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "The boon is knowledge he wishes he didn't have. He understands now why the Chandrian exist, and the answer makes simple heroism impossible.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe gains silence. He learns the name of silence — the third silence, the one that belongs to him — and it is both his greatest power and his prison.", code: "wild" }
+    ]
+  },
+  {
+    id: 8, stage: "The King Must Die",
+    context: "He is called Kvothe the Kingkiller. We know it happens. We know it shatters the world and starts a war. But we don't know why, or which king, or whether the killing was murder, mercy, justice, or something worse.",
+    question: "Why does Kvothe kill the king?",
+    choices: [
+      { label: "The Classic Beat", description: "The king is corrupted or controlled by the Chandrian, and Kvothe kills him to save the kingdom — a tragic but necessary act of heroism.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "The king is good. Kvothe kills him because of a catastrophic misunderstanding — his cleverness, for once, leads him to exactly the wrong conclusion.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe kills the king to fulfill a promise. The king asked him to — because the alternative, what the king was becoming, was worse than death.", code: "wild" }
+    ]
+  },
+  {
+    id: 9, stage: "The Refusal of the Return",
+    context: "The hero is supposed to return home bearing wisdom. But Kvothe doesn't return. He hides. He takes a new name, opens an inn in the middle of nowhere, and waits. The man who was Kvothe refuses to go back to the world.",
+    question: "Why does Kvothe refuse to return?",
+    choices: [
+      { label: "The Classic Beat", description: "Kvothe is in hiding because powerful enemies are hunting him. The inn is a fortress disguised as a surrender.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "Kvothe isn't hiding from enemies. He's hiding from the people who would follow him. He knows his legend causes more harm than his absence.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe locked something away — something dangerous, maybe himself — and the inn is the lock. Kote isn't a disguise. Kote is a cage.", code: "wild" }
+    ]
+  },
+  {
+    id: 10, stage: "The Resurrection — The Story Ends, or Begins Again",
+    context: "Chronicler has come. Bast is scheming. The story is being told. Three days at the Waystone Inn, and on the third day, the story catches up to the present. The hero's journey demands a resurrection — but what form does it take for a man who has already buried himself?",
+    question: "How does Kvothe's story end — or begin again?",
+    choices: [
+      { label: "The Classic Beat", description: "Telling his story reawakens Kvothe. By the end of the third day, he takes up his old name and walks back into the world, ready to face what he left behind.", code: "classic" },
+      { label: "The Rothfuss Inversion", description: "The story doesn't save him. Telling it was the final letting go. But something else happens — the scrael, the war, a knock at the door — that forces Kote to become Kvothe one last time, not by choice but by necessity.", code: "inversion" },
+      { label: "The Wild Path", description: "Kvothe finishes his story and Chronicler leaves. Nothing changes. Bast's plan fails. The inn is quiet. And then, in the last silence, Kvothe opens the chest.", code: "wild" }
+    ]
+  }
+];
+
+const SYSTEM_PROMPT = `You are a narrator channeling Patrick Rothfuss's prose style from The Kingkiller Chronicle. Write in Kvothe's first-person voice as he tells his story to Chronicler at the Waystone Inn.
+
+Your prose should:
+- Use Rothfuss's lyrical, rhythmic sentence structure
+- Include sensory details and poetic metaphors
+- Capture Kvothe's characteristic blend of arrogance and vulnerability
+- Reference established lore naturally (sympathy, naming, the Arcanum, the Chandrian, etc.)
+- Occasionally break the fourth wall with the frame narrative ("I need you to understand something before I continue...")
+- Maintain the melancholic, reflective tone of a man looking back on his own legend
+
+Write exactly 3-4 paragraphs. No headers, no bullets, no meta-commentary. Just story.
+
+You are continuing the narrative of Book 3. The reader has made choices at each stage of the hero's journey. Honor those choices faithfully. Make the narrative feel inevitable, like this was always how the story was meant to go.`;
+
+// ===== STATE =====
+let apiKey = "";
+let currentStage = 0;
+let choices = [];
+let lastNarrative = "";
+let lastChoiceObj = null;
+
+// ===== DOM HELPERS =====
+const $ = id => document.getElementById(id);
+const hide = id => $(id).classList.add("hidden");
+const show = id => $(id).classList.remove("hidden");
+
+function showPhase(phase) {
+  ["phaseIntro","phaseChoose","phaseLoading","phaseError","phaseNarrate","phaseComplete"].forEach(hide);
+  show("phase" + phase.charAt(0).toUpperCase() + phase.slice(1));
+  $("top").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderProgress() {
+  const bar = $("progressBar");
+  bar.classList.remove("hidden");
+  bar.innerHTML = STAGES.map((s, i) => {
+    let cls = "progress-pip";
+    if (i < currentStage) cls += " done";
+    else if (i === currentStage) cls += " active-bright";
+    return `<div class="${cls}"></div>`;
+  }).join("");
+}
+
+// ===== API KEY =====
+function saveApiKey() {
+  const val = $("apiKeyInput").value.trim();
+  if (!val) return;
+  apiKey = val;
+  hide("apiModal");
+}
+
+// ===== PHASE: INTRO → CHOOSE =====
+function startStory() {
+  currentStage = 0;
+  choices = [];
+  renderProgress();
+  renderChoose();
+}
+
+// ===== PHASE: CHOOSE =====
+function renderChoose() {
+  const stage = STAGES[currentStage];
+  const el = $("phaseChoose");
+  el.innerHTML = `
+    <div class="label-sm mb-8">Chapter ${stage.id} of 10</div>
+    <h2>${stage.stage}</h2>
+    <p class="context-text">${stage.context}</p>
+    <p class="question-text">${stage.question}</p>
+    <div class="choice-stack">
+      ${stage.choices.map((c, i) => `
+        <div class="choice-card" onclick="makeChoice(${i})" style="animation:fadeIn 0.5s ease-out ${i*0.12}s both">
+          <div class="choice-label">${c.label}</div>
+          <div class="choice-desc">${c.description}</div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+  showPhase("choose");
+}
+
+// ===== MAKE CHOICE → LOADING → API =====
+function makeChoice(index) {
+  const stage = STAGES[currentStage];
+  const choice = stage.choices[index];
+  lastChoiceObj = choice;
+  choices.push({ stage: stage.stage, choice });
+
+  // Show loading
+  $("loadingStage").textContent = stage.stage;
+  $("loadingChoice").textContent = choice.label;
+  $("loadingStatus").textContent = "Sending request...";
+  showPhase("loading");
+
+  generateNarrative(stage, choice);
+}
+
+async function generateNarrative(stage, choice) {
+  const prevSummary = choices.length > 1
+    ? "\n\nPrevious choices in the story so far:\n" + choices.slice(0, -1).map(p => `- ${p.stage}: ${p.choice.description}`).join("\n")
+    : "";
+
+  const prompt = `${SYSTEM_PROMPT}
+
+Current stage of the hero's journey: "${stage.stage}"
+Context: ${stage.context}
+The reader chose: "${choice.label}" — ${choice.description}
+${prevSummary}
+
+Write this moment of the story.`;
+
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error("TIMEOUT")), 45000);
+  });
+
+  const fetchPromise = (async () => {
+    $("loadingStatus").textContent = "Waiting for response...";
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    $("loadingStatus").textContent = "Reading response...";
+    const data = await resp.json();
+    if (!resp.ok || data.error) {
+      throw new Error(data.error?.message || `API returned ${resp.status}`);
+    }
+    return data;
+  })();
+
+  try {
+    const data = await Promise.race([fetchPromise, timeoutPromise]);
+    const text = data.content?.map(b => b.text || "").join("");
+    if (!text) throw new Error("Empty response");
+    lastNarrative = text;
+    renderNarrate(text);
+  } catch (err) {
+    const msg = err.message === "TIMEOUT"
+      ? "The story took too long to tell. Chronicler's pen ran dry."
+      : "The story stumbled: " + err.message;
+    showError(msg);
+  }
+}
+
+// ===== LOADING CANCEL =====
+function cancelLoading() {
+  choices.pop();
+  renderChoose();
+}
+
+// ===== ERROR =====
+function showError(msg) {
+  $("errorStage").textContent = STAGES[currentStage].stage;
+  $("errorMessage").textContent = msg;
+  showPhase("error");
+}
+
+function retryGeneration() {
+  const stage = STAGES[currentStage];
+  const choice = choices[choices.length - 1].choice;
+  $("loadingStage").textContent = stage.stage;
+  $("loadingChoice").textContent = choice.label;
+  $("loadingStatus").textContent = "Sending request...";
+  showPhase("loading");
+  generateNarrative(stage, choice);
+}
+
+function goBackToChoose() {
+  choices.pop();
+  renderChoose();
+}
+
+// ===== NARRATE =====
+function renderNarrate(text) {
+  const stage = STAGES[currentStage];
+  const lastChoice = choices[choices.length - 1];
+  const paragraphs = text.split("\n\n").map((p, i) =>
+    `<p style="animation:fadeIn 0.6s ease-out ${i*0.2}s both">${p}</p>`
+  ).join("");
+
+  const btnLabel = currentStage + 1 >= STAGES.length ? "Finish the Tale" : "Continue";
+
+  $("phaseNarrate").innerHTML = `
+    <div class="label-sm mb-6">${stage.stage}</div>
+    <div style="font-size:14px;color:var(--text-mid);margin-bottom:28px;font-style:italic">${lastChoice.choice.label}</div>
+    <div class="narrative">${paragraphs}</div>
+    <button class="btn btn-center" onclick="advanceStory()">${btnLabel}</button>
+  `;
+  showPhase("narrate");
+}
+
+function advanceStory() {
+  if (currentStage + 1 >= STAGES.length) {
+    renderComplete();
+  } else {
+    currentStage++;
+    renderProgress();
+    renderChoose();
+  }
+}
+
+// ===== COMPLETE =====
+function renderComplete() {
+  renderProgress();
+  const rows = choices.map(c =>
+    `<div class="summary-row">${c.stage}<span class="summary-arrow">→</span><span class="summary-choice">${c.choice.label}</span></div>`
+  ).join("");
+
+  $("phaseComplete").innerHTML = `
+    <div class="label mb-20" style="letter-spacing:6px">The Third Day Ends</div>
+    <h2 class="final">The Silence of Three Parts</h2>
+    <p style="font-size:18px;line-height:1.85;color:var(--text-mid);max-width:520px;margin:0 auto 36px">
+      You have told one version of the story. But there are others — there are always others.
+      The Waystone Inn will be here when you return.
+    </p>
+    <div class="summary-card">
+      <div class="label-sm mb-16" style="letter-spacing:3px">Your Path Through the Story</div>
+      ${rows}
+    </div>
+    <button class="btn btn-center" onclick="restartStory()">Tell It Differently</button>
+  `;
+  showPhase("complete");
+}
+
+function restartStory() {
+  currentStage = 0;
+  choices = [];
+  hide("progressBar");
+  showPhase("intro");
+}
+
+// ===== INIT =====
+// Enter key on API input
+$("apiKeyInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") saveApiKey();
+});
+</script>
+</body>
+</html>
