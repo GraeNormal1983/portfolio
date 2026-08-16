@@ -280,7 +280,7 @@ function saveMode(){ try{ localStorage.setItem(KEY_MODE,String(mode)); }catch(e)
 let enabled = loadState() || {};
 let mode = loadMode();
 const KEY_FUN="unmatchable-morefun-v1";
-function loadFun(){ try{ return localStorage.getItem(KEY_FUN)==="1"; }catch(e){ return false; } }
+function loadFun(){ try{ const v=localStorage.getItem(KEY_FUN); return v===null ? true : v==="1"; }catch(e){ return true; } }
 function saveFun(){ try{ localStorage.setItem(KEY_FUN, moreFun?"1":"0"); }catch(e){} }
 let moreFun = loadFun();
 function isOn(s,c){ return enabled[s+":"+c] !== false; }
