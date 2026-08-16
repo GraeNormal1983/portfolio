@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Unmatchable — random fighters &amp; boards for Unmatched</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14110F; --panel:#1E1A17; --panel-2:#262019;
+    --line:rgba(237,230,218,0.10); --line-strong:rgba(237,230,218,0.20);
+    --cream:#EDE6DA; --muted:#9A8F81; --brass:#C8A24A; --flame:#C33D2E; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(120% 90% at 50% -10%, #23201C 0%, var(--ink) 55%) fixed, var(--ink);
+    color:var(--cream);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    line-height:1.5;min-height:100vh;padding:clamp(16px,4vw,40px) clamp(14px,4vw,24px) 64px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px;}
+  .topbar .brand{margin-bottom:0;}
+  .fun-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--panel);
+    border:1px solid var(--line-strong);border-radius:999px;color:var(--muted);font-family:inherit;
+    font-size:13px;font-weight:600;letter-spacing:.03em;padding:8px 14px;
+    transition:color .15s,border-color .15s,background .15s;}
+  .fun-toggle:hover{color:var(--cream);border-color:var(--brass);}
+  .fun-toggle .fun-ico{font-size:14px;line-height:1;}
+  .fun-toggle .fun-state{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--line);padding-left:8px;}
+  .fun-toggle.on{background:var(--brass);color:var(--ink);border-color:var(--brass);}
+  .fun-toggle.on .fun-ico,.fun-toggle.on .fun-state{color:var(--ink);}
+  .fun-toggle.on .fun-state{border-left-color:rgba(20,17,15,.25);}
+  .fun-toggle:focus-visible{outline:2px solid var(--brass);outline-offset:3px;}
+  .reveal.spinning{opacity:.9;}
+  .brand h1{font-size:clamp(20px,4vw,26px);font-weight:700;letter-spacing:.28em;text-transform:uppercase;margin:0;}
+  .brand .sub{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+  .brand .sub b{color:var(--brass);font-weight:600;}
+
+  .stage{
+    background:linear-gradient(180deg,var(--panel-2),var(--panel));
+    border:1px solid var(--line-strong);border-radius:var(--radius);
+    padding:clamp(20px,5vw,32px) clamp(16px,5vw,32px);
+    text-align:center;position:relative;overflow:hidden;margin-bottom:26px;
+  }
+  .stage::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--brass),transparent);opacity:.5;}
+
+  /* Mode toggle */
+  .mode-toggle{display:inline-flex;border:1px solid var(--line-strong);border-radius:10px;padding:3px;gap:3px;margin-bottom:22px;background:rgba(0,0,0,.15);}
+  .mode-btn{
+    background:transparent;color:var(--muted);border:none;border-radius:7px;cursor:pointer;
+    font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.05em;padding:8px 18px;
+    transition:background .15s,color .15s;
+  }
+  .mode-btn:hover:not(.active):not(:disabled){color:var(--cream);}
+  .mode-btn.active{background:var(--brass);color:var(--ink);}
+  .mode-btn:disabled{opacity:.5;cursor:not-allowed;}
+  .mode-btn:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+
+  .panel{padding:6px 0;}
+  .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+
+  .reveal{margin:0;text-transform:uppercase;line-height:.98;color:var(--cream);word-break:break-word;font-family:"Anton",Impact,sans-serif;}
+  .reveal.placeholder{color:var(--muted);opacity:.5;}
+  .reveal.settling{animation:slam .32s cubic-bezier(.2,.9,.25,1);}
+  @keyframes slam{0%{transform:scale(1.16);filter:blur(6px);opacity:.2;}100%{transform:scale(1);filter:blur(0);opacity:1;}}
+  .reveal-set{margin-top:8px;min-height:1.1em;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);}
+  .reveal-set .unv{color:var(--muted);}
+  .reveal-set .unv::before{content:"·";margin:0 6px;color:var(--line-strong);}
+
+  /* Fighter slots */
+  .fighters{margin:0 auto;}
+  .fighters.p2{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;}
+  .fighters.p4{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px;max-width:600px;}
+  .fighter-slot{min-width:0;text-align:center;}
+  .slot-label{display:inline-flex;align-items:center;gap:6px;justify-content:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .eyebrow-row{display:inline-flex;align-items:center;gap:8px;justify-content:center;}
+  .mini-reroll{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border-radius:6px;background:transparent;color:var(--muted);border:1px solid var(--line);font-size:13px;line-height:1;letter-spacing:normal;cursor:pointer;transition:color .15s,border-color .15s,background .15s,transform .08s;}
+  .mini-reroll:hover:not(:disabled){color:var(--cream);border-color:var(--line-strong);}
+  .mini-reroll:active:not(:disabled){transform:scale(.9);}
+  .mini-reroll:disabled{opacity:.35;cursor:not-allowed;}
+  .mini-reroll:focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+  .fighter-name{display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.02;min-height:2.05em;}
+  .fighters.p2 .fighter-name{font-size:clamp(28px,7.5vw,52px);letter-spacing:.01em;}
+  .fighters.p4 .fighter-name{font-size:clamp(21px,5vw,34px);letter-spacing:.01em;}
+  .fighters.p4 .reveal-set{font-size:10px;}
+  .vs{font-family:"Anton",Impact,sans-serif;text-transform:uppercase;color:var(--muted);opacity:.55;
+    font-size:clamp(15px,3.5vw,22px);padding:0 4px;align-self:center;}
+
+  .board .fighter-name{}
+  .reveal-md{display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(24px,6.5vw,44px);letter-spacing:.02em;line-height:1.02;min-height:2.05em;}
+
+  .divider{height:1px;background:var(--line);margin:20px auto;max-width:200px;}
+
+  .reroll{margin-top:14px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;
+    font-family:inherit;font-size:12px;letter-spacing:.05em;padding:6px 14px;cursor:pointer;transition:color .15s,border-color .15s;}
+  .reroll:hover:not(:disabled){color:var(--cream);border-color:var(--line-strong);}
+  .reroll:disabled{opacity:.4;cursor:not-allowed;}
+
+  .choose{margin-top:24px;display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    background:var(--flame);color:#fff;border:none;border-radius:10px;
+    font-family:"Inter",sans-serif;font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:15px 34px;cursor:pointer;transition:transform .08s ease, box-shadow .2s ease, background .2s ease;
+    box-shadow:0 8px 22px -10px rgba(195,61,46,.8);}
+  .choose:hover:not(:disabled){background:#d1442f;}
+  .choose:active:not(:disabled){transform:translateY(1px) scale(.99);}
+  .choose:disabled{background:var(--panel-2);color:var(--muted);box-shadow:none;cursor:not-allowed;border:1px solid var(--line);}
+
+  .pool{margin-top:14px;font-size:13px;color:var(--muted);}
+  .pool b{color:var(--cream);font-weight:600;}
+  .hint{margin-top:6px;font-size:12px;color:var(--flame);min-height:1em;opacity:.9;}
+
+  .col-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 4px 12px;}
+  .col-head h2{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0;}
+  .bulk{display:flex;gap:8px;}
+  .bulk button{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;
+    font-size:12px;font-family:inherit;letter-spacing:.04em;padding:6px 12px;cursor:pointer;transition:color .15s,border-color .15s;}
+  .bulk button:hover{color:var(--cream);border-color:var(--line-strong);}
+
+  .set{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+  .set-row{display:flex;align-items:center;gap:12px;padding:12px 14px;}
+  .set-toggle{position:relative;display:inline-flex;flex:0 0 auto;}
+  .set-name{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:2px;cursor:pointer;user-select:none;}
+  .set-name .line{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+  .set-name .title{font-size:15px;font-weight:600;color:var(--cream);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .set-meta{display:flex;align-items:center;gap:12px;flex:0 0 auto;}
+  .seats{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 6px;}
+  .count{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:30px;text-align:right;}
+  .caret{color:var(--muted);border:none;background:none;cursor:pointer;padding:4px;display:inline-flex;transition:transform .2s ease,color .15s;}
+  .caret:hover{color:var(--cream);}
+  .set.open .caret{transform:rotate(180deg);}
+
+  .set-body{display:none;padding:2px 14px 14px 46px;}
+  .set.open .set-body{display:block;}
+  .chars{display:flex;gap:8px 18px;flex-wrap:wrap;}
+  .char{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--cream);cursor:pointer;user-select:none;padding:3px 0;}
+  .char.off{color:var(--muted);}
+  .maps-line{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.5;}
+  .maps-line .lbl{letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.8;margin-right:8px;}
+  .maps-line .m{color:var(--cream);}
+  .maps-line .m.unv{color:var(--muted);font-style:italic;}
+
+  input[type=checkbox]{appearance:none;-webkit-appearance:none;width:20px;height:20px;flex:0 0 auto;margin:0;
+    border:1.5px solid var(--line-strong);border-radius:6px;background:transparent;cursor:pointer;position:relative;transition:background .12s,border-color .12s;}
+  .char input[type=checkbox]{width:17px;height:17px;border-radius:5px;}
+  input[type=checkbox]:hover{border-color:var(--brass);}
+  input[type=checkbox]:checked{background:var(--brass);border-color:var(--brass);}
+  input[type=checkbox]:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid var(--ink);border-width:0 2.5px 2.5px 0;transform:rotate(43deg);}
+  .char input[type=checkbox]:checked::after{left:5px;top:2px;height:9px;}
+  input[type=checkbox]:indeterminate{background:var(--brass);border-color:var(--brass);}
+  input[type=checkbox]:indeterminate::after{content:"";position:absolute;left:3px;top:8px;width:11px;height:2.5px;background:var(--ink);border:none;transform:none;border-radius:1px;}
+  input[type=checkbox]:focus-visible{outline:2px solid var(--brass);outline-offset:3px;}
+  .choose:focus-visible,.bulk button:focus-visible,.caret:focus-visible,.reroll:focus-visible,.set-name:focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:6px;}
+
+  .foot{margin:26px 4px 0;font-size:12px;color:var(--muted);line-height:1.6;}
+  .disclaimer{margin:14px 4px 0;font-size:11px;color:var(--muted);opacity:.65;line-height:1.5;}
+
+  @media (prefers-reduced-motion: reduce){.reveal.settling{animation:none;}.caret,.choose{transition:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <div class="brand">
+      <h1>Unmatchable</h1>
+      <span class="sub">random fighters &amp; boards for <b>Unmatched</b></span>
+    </div>
+    <button id="funToggle" class="fun-toggle" type="button" role="switch" aria-checked="false" aria-label="More Fun: voice announcements">
+      <span class="fun-ico" aria-hidden="true">&#9835;</span>
+      <span class="fun-label">More&nbsp;Fun</span>
+      <span class="fun-state" id="funState">Off</span>
+    </button>
+  </header>
+
+  <div class="stage">
+    <div class="mode-toggle" role="group" aria-label="Number of players">
+      <button class="mode-btn" data-mode="2" type="button" aria-pressed="true">2 players</button>
+      <button class="mode-btn" data-mode="4" type="button" aria-pressed="false">4 players</button>
+    </div>
+
+    <div class="panel">
+      <div class="eyebrow">Your fighters</div>
+      <div id="fighters" class="fighters p2"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="panel board">
+      <div class="eyebrow eyebrow-row">
+        <span>Your board</span>
+        <button id="rerollBoard" class="mini-reroll" type="button" aria-label="Reroll board" title="Reroll board">&#8635;</button>
+      </div>
+      <div id="board" class="reveal reveal-md placeholder">Ready</div>
+      <div id="boardSet" class="reveal-set"></div>
+    </div>
+
+    <button id="drawBtn" class="choose">Draw match</button>
+    <div class="pool" id="pool"></div>
+    <div class="hint" id="hint"></div>
+  </div>
+
+  <div class="col-head">
+    <h2>Your collection</h2>
+    <div class="bulk">
+      <button id="allBtn" type="button">Select all</button>
+      <button id="noneBtn" type="button">Clear all</button>
+    </div>
+  </div>
+
+  <div id="sets"></div>
+
+  <p class="foot">
+    Toggle a whole set with its checkbox, or open a set to include or exclude individual fighters.
+    A set's boards join the draw when at least one of its fighters is on. Boxes with three or four
+    fighters have four-player boards (tagged <b>4P</b>); two-fighter boxes are two-player only.
+    Four-player draws use only four-player boards; two-player draws can use any board.
+    Your choices are saved in this browser.
+  </p>
+
+  <p class="disclaimer">
+    Unmatchable is a fan-made tool, not affiliated with or endorsed by Restoration Games.
+    Unmatched and all fighter and board names are trademarks of their respective owners.
+    Anonymous, cookie-free usage counts are collected via GoatCounter.
+  </p>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA — released Unmatched sets (Adventures co-op sets excluded).
+   Board seating is derived from fighter count: a box with 3+ fighters
+   ships four-player boards; a 2-fighter box is two-player only.
+   (See setMax below — override there if a future set breaks the pattern.)
+   ============================================================ */
+const DATA = [
+  { line:"Battle of Legends", name:"Volume One",   chars:["Medusa","Sinbad","Alice","King Arthur"],            maps:["Marmoreal","Sarpedon"] },
+  { line:"Battle of Legends", name:"Volume Two",   chars:["Sun Wukong","Yennenga","Bloody Mary","Achilles"],   maps:["Hanging Gardens"] },
+  { line:"Battle of Legends", name:"Volume Three", chars:["Blackbeard","Chupacabra","Pandora","Loki"],         maps:["Santa's Workshop","Venice"] },
+  { line:"Standalone", name:"Buffy the Vampire Slayer", chars:["Buffy","Willow","Angel","Spike"],              maps:["Sunnydale High","The Bronze"] },
+  { line:"Standalone", name:"Cobble & Fog",       chars:["Sherlock Holmes","Jekyll & Hyde","The Invisible Man","Dracula"], maps:["Baskerville Manor","Soho"] },
+  { line:"Standalone", name:"Slings & Arrows",    chars:["Shakespeare","Titania","Hamlet","The Wayward Sisters"], maps:["Globe Theatre"] },
+  { line:"Standalone", name:"Stars and Stripes",  chars:["George Washington","Rosie the Riveter","John Henry","Wyatt Earp"], maps:["White House","Alamo"] },
+  { line:"Two-hero", name:"Robin Hood vs. Bigfoot", chars:["Robin Hood","Bigfoot"],                           maps:["Sherwood Forest","Yukon"] },
+  { line:"Two-hero", name:"Little Red Riding Hood vs. Beowulf", chars:["Little Red Riding Hood","Beowulf"],    maps:["Heorot"] },
+  { line:"Two-hero", name:"Houdini vs. the Genie", chars:["Houdini","The Genie"],                             maps:["King Solomon's Mines"] },
+  { line:"Two-hero", name:"Sun's Origin",         chars:["Oda Nobunaga","Tomoe Gozen"],                        maps:["Azuchi Castle"] },
+  { line:"Two-hero", name:"Muhammad Ali vs. Bruce Lee", chars:["Muhammad Ali","Bruce Lee"],                   maps:["Thrilla in Manila","Tsing Shang Monastery"] },
+  { line:"Jurassic Park", name:"InGen vs. Raptors", chars:["Robert Muldoon","Raptors"],                       maps:["Raptor's Paddock"] },
+  { line:"Jurassic Park", name:"Dr. Sattler vs. T. Rex", chars:["Dr. Sattler","T. Rex"],                      maps:["T. Rex Paddock"] },
+  { line:"Marvel", name:"Redemption Row",         chars:["Luke Cage","Moon Knight","Ghost Rider"],             maps:["The Raft"] },
+  { line:"Marvel", name:"Hell's Kitchen",         chars:["Daredevil","Elektra","Bullseye"],                    maps:["Hell's Kitchen"] },
+  { line:"Marvel", name:"Teen Spirit",            chars:["Squirrel Girl","Ms. Marvel","Cloak & Dagger"],       maps:["Navy Pier"] },
+  { line:"Marvel", name:"For King and Country",   chars:["Black Widow","Black Panther","Winter Soldier"],      maps:["Helicarrier"] },
+  { line:"Marvel", name:"Brains and Brawn",       chars:["Spider-Man","Doctor Strange","She-Hulk"],            maps:["Sanctum Sanctorum"] },
+  { line:"Marvel", name:"Deadpool",               chars:["Deadpool"],                                          maps:[] },
+  { line:"The Witcher", name:"Steel and Silver",  chars:["Geralt","Ciri","The Ancient Leshen"],                maps:["Kaer Morhen","Fayrlund Forest"] },
+  { line:"The Witcher", name:"Realms Fall",       chars:["Yennefer & Triss","Philippa","Eredin"],              maps:["Naglfar","Streets of Novigrad"] },
+  { line:"Adventures", name:"Tales to Amaze",     chars:["Annie Christmas","Jill Trent","The Golden Bat","Nikola Tesla"], maps:["McMinnville","Point Pleasant"] },
+  { line:"Adventures", name:"Teenage Mutant Ninja Turtles", chars:["Leonardo","Donatello","Michelangelo","Raphael","Shredder","Krang"], maps:["New York City","Technodrome"] },
+];
+
+/* Max players a set's boards seat. Rule: 3+ fighters -> 4-player boards; else 2. */
+function setMax(set){ return set.chars.length >= 3 ? 4 : 2; }
+function parseMap(s){ return s.charAt(0)==="?" ? {name:s.slice(1).trim(), verified:false} : {name:s, verified:true}; }
+
+/* ---- Persistence (degrades to in-memory if storage is unavailable) ---- */
+const KEY="unmatched-match-select-v1", KEY_MODE="unmatched-match-mode-v1";
+function loadState(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
+function saveState(){ try{ localStorage.setItem(KEY, JSON.stringify(enabled)); }catch(e){} }
+function loadMode(){ try{ return parseInt(localStorage.getItem(KEY_MODE),10)===4?4:2; }catch(e){ return 2; } }
+function saveMode(){ try{ localStorage.setItem(KEY_MODE,String(mode)); }catch(e){} }
+
+let enabled = loadState() || {};
+let mode = loadMode();
+const KEY_FUN="unmatchable-morefun-v1";
+function loadFun(){ try{ return localStorage.getItem(KEY_FUN)==="1"; }catch(e){ return false; } }
+function saveFun(){ try{ localStorage.setItem(KEY_FUN, moreFun?"1":"0"); }catch(e){} }
+let moreFun = loadFun();
+function isOn(s,c){ return enabled[s+":"+c] !== false; }
+function setOn(s,c,v){ enabled[s+":"+c] = v; }
+function setActive(si){ return DATA[si].chars.some((_,ci)=>isOn(si,ci)); }
+function setLabel(set){ return (set.line==="Standalone"||set.line==="Two-hero") ? set.name : set.line+" · "+set.name; }
+
+/* ---- Render collection ---- */
+const setsEl = document.getElementById("sets");
+DATA.forEach((set, si)=>{
+  const card=document.createElement("div"); card.className="set"; card.dataset.si=si;
+  const row=document.createElement("div"); row.className="set-row";
+
+  const setBox=document.createElement("input"); setBox.type="checkbox"; setBox.className="set-toggle";
+  setBox.setAttribute("aria-label","Include set "+set.name);
+  setBox.addEventListener("change", ()=>{ set.chars.forEach((_,ci)=>setOn(si,ci,setBox.checked)); syncCard(si); updatePool(); saveState(); });
+
+  const nameWrap=document.createElement("div"); nameWrap.className="set-name"; nameWrap.tabIndex=0; nameWrap.setAttribute("role","button");
+  nameWrap.innerHTML='<span class="line">'+set.line+'</span><span class="title">'+set.name+'</span>';
+  const toggleOpen=()=>card.classList.toggle("open");
+  nameWrap.addEventListener("click", toggleOpen);
+  nameWrap.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleOpen();} });
+
+  const meta=document.createElement("div"); meta.className="set-meta";
+  if(set.maps.length){ const seats=document.createElement("span"); seats.className="seats"; seats.textContent=setMax(set)+"P"; seats.title=setMax(set)+"-player boards"; meta.append(seats); }
+  const count=document.createElement("span"); count.className="count";
+  const caret=document.createElement("button"); caret.className="caret"; caret.type="button"; caret.setAttribute("aria-label","Show contents of "+set.name);
+  caret.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  caret.addEventListener("click", toggleOpen);
+  meta.append(count, caret);
+  row.append(setBox, nameWrap, meta);
+
+  const body=document.createElement("div"); body.className="set-body";
+  const chars=document.createElement("div"); chars.className="chars";
+  set.chars.forEach((name, ci)=>{
+    const label=document.createElement("label"); label.className="char"; label.dataset.ci=ci;
+    const cb=document.createElement("input"); cb.type="checkbox"; cb.setAttribute("aria-label",name);
+    cb.addEventListener("change", ()=>{ setOn(si,ci,cb.checked); syncCard(si); updatePool(); saveState(); });
+    const span=document.createElement("span"); span.textContent=name;
+    label.append(cb, span); chars.append(label);
+  });
+  body.append(chars);
+
+  if(set.maps.length){
+    const ml=document.createElement("div"); ml.className="maps-line";
+    const parsed=set.maps.map(parseMap);
+    ml.innerHTML='<span class="lbl">Boards ('+setMax(set)+'P)</span>' +
+      parsed.map(m=>'<span class="m'+(m.verified?'':' unv')+'">'+m.name+'</span>').join('<span style="opacity:.4">&nbsp;·&nbsp;</span>');
+    body.append(ml);
+  }
+  card.append(row, body); setsEl.append(card);
+});
+
+function syncCard(si){
+  const set=DATA[si];
+  const card=setsEl.querySelector('.set[data-si="'+si+'"]');
+  const on=set.chars.reduce((n,_,ci)=>n+(isOn(si,ci)?1:0),0), total=set.chars.length;
+  card.querySelector(".count").textContent=on+"/"+total;
+  const box=card.querySelector(".set-toggle");
+  box.checked=on===total; box.indeterminate=on>0&&on<total;
+  card.querySelectorAll(".char").forEach(l=>{ const ci=+l.dataset.ci,o=isOn(si,ci); l.querySelector("input").checked=o; l.classList.toggle("off",!o); });
+}
+
+/* ---- Pools ---- */
+function fighterPool(){ const out=[]; DATA.forEach((set,si)=>set.chars.forEach((name,ci)=>{ if(isOn(si,ci)) out.push({name, set:setLabel(set)}); })); return out; }
+function boardPool(){ const out=[]; DATA.forEach((set,si)=>{ if(setActive(si) && setMax(set)>=mode) set.maps.forEach(m=>{ const p=parseMap(m); out.push({name:p.name, verified:p.verified, set:setLabel(set)}); }); }); return out; }
+
+/* ---- Reveal / draw ---- */
+const fightersEl=document.getElementById("fighters");
+const boardEl=document.getElementById("board"), boardSetEl=document.getElementById("boardSet");
+const poolEl=document.getElementById("pool"), hintEl=document.getElementById("hint"), drawBtn=document.getElementById("drawBtn");
+const rerollBoard=document.getElementById("rerollBoard");
+const modeBtns=[...document.querySelectorAll(".mode-btn")];
+const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let slotEls=[], lastBoard=null, currentFighters=[];
+
+/* ===== More Fun: audio-announced sequential cascade ===================
+   Tune the feel here. Cadence is gated on each clip's length; when a clip
+   is missing the selector still locks and holds NO_AUDIO_BEAT before the
+   next one, so this works today and gets richer as clips are added.       */
+const SPIN_TICK=55, FIRST_SPIN=400, LEAD_IN=1400, GAP=100, NO_AUDIO_BEAT=700, MAX_CLIP_MS=4000, DECEL_TICKS=6;
+const AUDIO_BASE="audio/";  /* production: host one mp3 per slug in this folder */
+const EMBEDDED={};  /* production build: audio loads on demand from the AUDIO_BASE folder */
+/* Slug rule: lowercase, & -> "and", drop ' and ., other runs -> "-". */
+function slug(name){ return name.replace(/&/g,"and").replace(/['\u2019.]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
+function audioSrc(name){ return EMBEDDED[name] || (AUDIO_BASE+slug(name)+".mp3"); }
+
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+let drawToken=0, activeSpins=[];
+let actx=null, currentSource=null; const bufferCache=new Map();
+function ensureCtx(){ if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ actx=null; } } return actx; }
+function unlockAudio(){ const c=ensureCtx(); if(c && c.state==="suspended"){ c.resume().catch(()=>{}); } }
+function stopAudio(){ if(currentSource){ try{currentSource.stop();}catch(e){} currentSource=null; } }
+function abortSequence(){ drawToken++; stopAudio(); activeSpins.forEach(s=>s.stop()); activeSpins=[]; }
+function startSpin(el,pool){
+  const base = el.classList.contains("fighter-name") ? "reveal fighter-name spinning" : "reveal reveal-md spinning";
+  el.className=base;
+  if(reduceMotion){ el.textContent="\u2026"; return { stop(){ el.classList.remove("spinning"); } }; }
+  const id=setInterval(()=>{ el.textContent=pool[Math.floor(Math.random()*pool.length)].name; }, SPIN_TICK);
+  return { stop(){ clearInterval(id); el.classList.remove("spinning"); } };
+}
+/* Ease-out slowdown before a selector locks (mirrors the off-mode feel). */
+function decelerate(el, pool, land){
+  if(reduceMotion || pool.length<2){ land(); return Promise.resolve(); }
+  return new Promise(res=>{
+    let t=0;
+    (function step(){
+      el.textContent = pool[Math.floor(Math.random()*pool.length)].name;
+      t++;
+      if(t<DECEL_TICKS) setTimeout(step, 55 + t*t*7);
+      else { land(); res(); }
+    })();
+  });
+}
+function base64ToArrayBuffer(dataURI){
+  const bin=atob(dataURI.split(",")[1]); const len=bin.length; const bytes=new Uint8Array(len);
+  for(let i=0;i<len;i++) bytes[i]=bin.charCodeAt(i);
+  return bytes.buffer;
+}
+async function getBuffer(name){
+  if(bufferCache.has(name)) return bufferCache.get(name);
+  const c=ensureCtx(); if(!c){ bufferCache.set(name,null); return null; }
+  try{
+    const src=audioSrc(name);
+    const arr = src.startsWith("data:") ? base64ToArrayBuffer(src) : await (await fetch(src)).arrayBuffer();
+    const buf = await c.decodeAudioData(arr);
+    bufferCache.set(name,buf); return buf;
+  }catch(e){ bufferCache.set(name,null); return null; }
+}
+/* Play a clip and resolve when it ends; missing/blocked -> silent beat. */
+async function announce(name, token){
+  if(token!==drawToken) return;
+  const c=ensureCtx();
+  let buf=null; try{ buf=await getBuffer(name); }catch(e){ buf=null; }
+  if(token!==drawToken) return;
+  if(!c || !buf){ await wait(NO_AUDIO_BEAT); return; }
+  if(c.state==="suspended"){ try{ await c.resume(); }catch(e){} }
+  await new Promise(res=>{
+    let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
+    let node; try{ node=c.createBufferSource(); }catch(e){ return setTimeout(fin,NO_AUDIO_BEAT); }
+    node.buffer=buf; node.connect(c.destination); currentSource=node; node.onended=fin;
+    try{ node.start(); }catch(e){ return setTimeout(fin,NO_AUDIO_BEAT); }
+    setTimeout(fin, Math.min(MAX_CLIP_MS, buf.duration*1000+400));
+  });
+}
+function pickBoard(pool){
+  let p=pool[Math.floor(Math.random()*pool.length)];
+  if(pool.length>1 && lastBoard){ let g=0; while(p.name===lastBoard && g++<20) p=pool[Math.floor(Math.random()*pool.length)]; }
+  lastBoard=p.name; return p;
+}
+async function drawMoreFun(){
+  const fpool=fighterPool(); if(fpool.length<mode) return;
+  const bpool=boardPool();
+  abortSequence(); const token=drawToken;
+  const fighters=sampleDistinct(fpool,mode);
+  const board=bpool.length?pickBoard(bpool):null;
+  lock(true);
+  slotEls.forEach(s=>{ s.set.textContent=""; });
+  boardSetEl.textContent="";
+  const spins=slotEls.map(s=>startSpin(s.name,fpool));
+  const bspin=bpool.length?startSpin(boardEl,bpool):null;
+  activeSpins=bspin?[...spins,bspin]:[...spins];
+  if(!bpool.length){ boardEl.className="reveal reveal-md placeholder"; boardEl.textContent="No boards"; boardSetEl.textContent=(mode===4?"No four-player boards in active sets":"Active sets include no board"); }
+  await wait(LEAD_IN);
+  for(let i=0;i<mode;i++){
+    if(token!==drawToken) return;
+    spins[i].stop();
+    await decelerate(slotEls[i].name, fpool, ()=>{ if(token===drawToken){ setFighterSlot(slotEls[i],fighters[i]); currentFighters[i]=fighters[i]; } });
+    if(token!==drawToken) return;
+    await announce(fighters[i].name, token);
+    if(token!==drawToken) return;
+    await wait(GAP);
+  }
+  if(board){
+    if(token!==drawToken) return;
+    bspin.stop();
+    await decelerate(boardEl, bpool, ()=>{ if(token===drawToken) setBoard(board); });
+    if(token!==drawToken) return;
+    await announce(board.name, token);
+  }
+  if(token===drawToken){ stopAudio(); activeSpins=[]; lock(false); }
+}
+
+function renderSlots(m){
+  fightersEl.className="fighters p"+m; fightersEl.innerHTML=""; slotEls=[]; currentFighters=new Array(m).fill(null);
+  for(let i=0;i<m;i++){
+    const slot=document.createElement("div"); slot.className="fighter-slot";
+    const lbl=document.createElement("div"); lbl.className="slot-label";
+    const tag=document.createElement("span"); tag.textContent="P"+(i+1);
+    const rr=document.createElement("button"); rr.className="mini-reroll"; rr.type="button";
+    rr.setAttribute("aria-label","Reroll player "+(i+1)); rr.title="Reroll this fighter"; rr.innerHTML="&#8635;";
+    rr.addEventListener("click", ()=>rerollSlot(i));
+    lbl.append(tag, rr);
+    const name=document.createElement("div"); name.className="reveal fighter-name placeholder"; name.textContent="Ready";
+    const setl=document.createElement("div"); setl.className="reveal-set";
+    slot.append(lbl,name,setl); fightersEl.append(slot); slotEls.push({name,set:setl,reroll:rr});
+    if(m===2 && i===0){ const vs=document.createElement("div"); vs.className="vs"; vs.textContent="vs"; fightersEl.append(vs); }
+  }
+}
+function resetReveals(){
+  slotEls.forEach(s=>{ s.name.textContent="Ready"; s.name.className="reveal fighter-name placeholder"; s.set.textContent=""; });
+  currentFighters.fill(null);
+  boardEl.textContent="Ready"; boardEl.className="reveal reveal-md placeholder"; boardSetEl.textContent=""; lastBoard=null;
+}
+
+function shuffle(el, pool, done){ let t=0; const total=11; (function spin(){ el.textContent=pool[Math.floor(Math.random()*pool.length)].name; t++; if(t<total) setTimeout(spin,40+t*14); else done(); })(); }
+function sampleDistinct(pool,n){ const a=pool.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a.slice(0,n); }
+
+function setFighterSlot(slot,item){ slot.name.textContent=item.name; slot.name.className="reveal fighter-name"+(reduceMotion?"":" settling"); slot.set.textContent=item.set; }
+function setBoard(item){ boardEl.textContent=item.name; boardEl.className="reveal reveal-md"+(reduceMotion?"":" settling"); boardSetEl.innerHTML=item.set+(item.verified===false?'<span class="unv">unverified</span>':""); }
+
+function drawFighters(animate){
+  const pool=fighterPool(); if(pool.length<mode) return Promise.resolve();
+  const chosen=sampleDistinct(pool,mode);
+  const proms=slotEls.map((slot,i)=>{
+    const item=chosen[i]; currentFighters[i]=item;
+    if(reduceMotion||!animate||pool.length<2){ setFighterSlot(slot,item); return Promise.resolve(); }
+    slot.set.textContent=""; slot.name.className="reveal fighter-name";
+    return new Promise(res=>shuffle(slot.name,pool,()=>{ setFighterSlot(slot,item); res(); }));
+  });
+  return Promise.all(proms);
+}
+/* Reroll a single slot: new fighter distinct from the others currently shown. */
+async function rerollSlot(i){
+  const pool=fighterPool(); if(pool.length<mode) return;
+  const taken=currentFighters.filter((c,idx)=>c&&idx!==i).map(c=>c.name);
+  const candidates=pool.filter(p=>!taken.includes(p.name));
+  const cur=currentFighters[i]?currentFighters[i].name:null;
+  let choice=candidates.filter(c=>c.name!==cur);
+  if(!choice.length) choice=candidates;
+  if(!choice.length) return;
+  const chosen=choice[Math.floor(Math.random()*choice.length)];
+  const slot=slotEls[i];
+  gcEvent("reroll-fighter");
+  if(moreFun){
+    unlockAudio();
+    abortSequence(); const token=drawToken;
+    lock(true); slot.set.textContent="";
+    const sp=startSpin(slot.name,pool); activeSpins=[sp];
+    await wait(FIRST_SPIN);
+    if(token!==drawToken) return;
+    sp.stop();
+    await decelerate(slot.name, pool, ()=>{ if(token===drawToken){ setFighterSlot(slot,chosen); currentFighters[i]=chosen; } });
+    if(token!==drawToken) return;
+    await announce(chosen.name, token);
+    if(token===drawToken){ stopAudio(); activeSpins=[]; lock(false); }
+    return;
+  }
+  lock(true);
+  if(reduceMotion||pool.length<2){ setFighterSlot(slot,chosen); }
+  else { slot.set.textContent=""; slot.name.className="reveal fighter-name";
+    await new Promise(res=>shuffle(slot.name,pool,()=>{ setFighterSlot(slot,chosen); res(); })); }
+  currentFighters[i]=chosen; lock(false);
+}
+function drawBoard(animate){
+  const pool=boardPool();
+  if(!pool.length){ boardEl.textContent="No boards"; boardEl.className="reveal reveal-md placeholder"; boardSetEl.textContent=(mode===4?"No four-player boards in active sets":"Active sets include no board"); return Promise.resolve(); }
+  let p=pool[Math.floor(Math.random()*pool.length)];
+  if(pool.length>1 && lastBoard){ let g=0; while(p.name===lastBoard && g++<20) p=pool[Math.floor(Math.random()*pool.length)]; }
+  lastBoard=p.name;
+  if(reduceMotion||!animate||pool.length<2){ setBoard(p); return Promise.resolve(); }
+  boardSetEl.textContent=""; boardEl.className="reveal reveal-md";
+  return new Promise(res=>shuffle(boardEl,pool,()=>{ setBoard(p); res(); }));
+}
+
+function lock(v){
+  const f=fighterPool().length, b=boardPool().length;
+  drawBtn.disabled=v||f<mode; rerollBoard.disabled=v||b===0;
+  slotEls.forEach(s=>{ if(s.reroll) s.reroll.disabled=v||f<mode; });
+  modeBtns.forEach(btn=>btn.disabled=v);
+}
+
+drawBtn.addEventListener("click", async ()=>{
+  if(fighterPool().length<mode) return;
+  unlockAudio(); gcEvent("draw");
+  if(moreFun){ drawMoreFun(); return; }
+  abortSequence(); lock(true); await Promise.all([drawFighters(true), drawBoard(true)]); lock(false);
+});
+rerollBoard.addEventListener("click", async ()=>{
+  const bpool=boardPool(); if(bpool.length===0) return;
+  unlockAudio(); gcEvent("reroll-board");
+  if(moreFun){
+    abortSequence(); const token=drawToken;
+    lock(true); boardSetEl.textContent="";
+    const sp=startSpin(boardEl,bpool); activeSpins=[sp];
+    await wait(FIRST_SPIN);
+    if(token!==drawToken) return;
+    sp.stop(); const b=pickBoard(bpool);
+    await decelerate(boardEl, bpool, ()=>{ if(token===drawToken) setBoard(b); });
+    if(token!==drawToken) return;
+    await announce(b.name, token);
+    if(token===drawToken){ stopAudio(); activeSpins=[]; lock(false); }
+    return;
+  }
+  lock(true); await drawBoard(true); lock(false);
+});
+
+const funToggle=document.getElementById("funToggle"), funState=document.getElementById("funState");
+function updateFunUI(){ funToggle.classList.toggle("on",moreFun); funToggle.setAttribute("aria-checked",String(moreFun)); funState.textContent=moreFun?"On":"Off"; }
+funToggle.addEventListener("click", ()=>{ moreFun=!moreFun; saveFun(); if(moreFun){ unlockAudio(); gcEvent("more-fun-on"); } else { abortSequence(); lock(false); } updateFunUI(); });
+
+/* GoatCounter custom event, guarded so it's silent until the script is live (i.e. when hosted). */
+function gcEvent(name){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path:name, title:name, event:true}); }catch(e){} }
+
+function updatePool(){
+  const f=fighterPool().length, b=boardPool().length;
+  const bWord=mode===4?"four-player board":"board";
+  poolEl.innerHTML="<b>"+f+"</b> fighter"+(f===1?"":"s")+" &middot; <b>"+b+"</b> "+bWord+(b===1?"":"s")+" available";
+  const canDraw=f>=mode;
+  drawBtn.disabled=!canDraw; rerollBoard.disabled=b===0;
+  slotEls.forEach(s=>{ if(s.reroll) s.reroll.disabled=!canDraw; });
+  hintEl.textContent = canDraw ? "" : "Turn on at least "+mode+" fighters for a "+mode+"-player match.";
+}
+
+function setMode(m){
+  mode=m; saveMode();
+  modeBtns.forEach(btn=>{ const on=+btn.dataset.mode===m; btn.classList.toggle("active",on); btn.setAttribute("aria-pressed",String(on)); });
+  renderSlots(m); resetReveals(); updatePool();
+}
+modeBtns.forEach(btn=>btn.addEventListener("click", ()=>{ if(+btn.dataset.mode!==mode) setMode(+btn.dataset.mode); }));
+
+document.getElementById("allBtn").addEventListener("click", ()=>{ DATA.forEach((set,si)=>set.chars.forEach((_,ci)=>setOn(si,ci,true))); DATA.forEach((_,si)=>syncCard(si)); updatePool(); saveState(); });
+document.getElementById("noneBtn").addEventListener("click", ()=>{ DATA.forEach((set,si)=>set.chars.forEach((_,ci)=>setOn(si,ci,false))); DATA.forEach((_,si)=>syncCard(si)); updatePool(); saveState(); });
+
+/* init */
+DATA.forEach((_,si)=>syncCard(si));
+updateFunUI();
+setMode(mode);
+</script>
+
+<!-- Analytics: GoatCounter — privacy-friendly, no cookies, no personal data.
+     Self-hosting? Point both URLs at your instance. -->
+<script data-goatcounter="https://unmatchable.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
