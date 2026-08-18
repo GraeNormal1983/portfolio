@@ -380,9 +380,23 @@ function audioSrc(name){ return EMBEDDED[name] || (AUDIO_BASE+slug(name)+".mp3")
 
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 let drawToken=0, activeSpins=[];
-let actx=null, currentSource=null; const bufferCache=new Map();
-function ensureCtx(){ if(!actx){ try{ actx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ actx=null; } } return actx; }
-function unlockAudio(){ const c=ensureCtx(); if(c && c.state!=="running"){ c.resume().catch(()=>{}); } }
+let actx=null, currentSource=null, lastPlay=0; const bufferCache=new Map();
+const CTX_STALE_MS=15000;  /* rebuild the audio context if it sat idle this long (Safari long-tab fix) */
+function newCtx(){ try{ return new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+function ensureCtx(){ if(!actx){ actx=newCtx(); } return actx; }
+/* Runs inside a user gesture. Resumes the context; if it went stale from a long idle
+   (the "tab open too long" wedge), rebuilds a fresh one here in the gesture so it starts
+   activated — the automatic equivalent of closing the tab and reopening in a new one. */
+function unlockAudio(){
+  const stale = actx && lastPlay>0 && (Date.now()-lastPlay)>CTX_STALE_MS;
+  if(!actx || actx.state==="closed" || stale){
+    if(actx){ try{ actx.close(); }catch(e){} }
+    actx=newCtx(); bufferCache.clear();
+  }
+  if(actx && actx.state!=="running"){ actx.resume().catch(()=>{}); }
+}
+/* Release the audio session when leaving/backgrounding so a stale one can't linger across reloads. */
+window.addEventListener("pagehide", ()=>{ if(actx){ try{ actx.close(); }catch(e){} actx=null; bufferCache.clear(); } });
 function stopAudio(){ if(currentSource){ try{currentSource.stop();}catch(e){} currentSource=null; } }
 function abortSequence(){ drawToken++; stopAudio(); activeSpins.forEach(s=>s.stop()); activeSpins=[]; }
 function startSpin(el,pool){
@@ -432,7 +446,7 @@ async function announce(name, token){
     let done=false; const fin=()=>{ if(!done){ done=true; res(); } };
     let node; try{ node=c.createBufferSource(); }catch(e){ return setTimeout(fin,NO_AUDIO_BEAT); }
     node.buffer=buf; node.connect(c.destination); currentSource=node; node.onended=fin;
-    try{ node.start(); }catch(e){ return setTimeout(fin,NO_AUDIO_BEAT); }
+    try{ node.start(); lastPlay=Date.now(); }catch(e){ return setTimeout(fin,NO_AUDIO_BEAT); }
     setTimeout(fin, Math.min(MAX_CLIP_MS, buf.duration*1000+400));
   });
 }
