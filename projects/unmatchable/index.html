@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Unmatchable — random fighters &amp; boards for Unmatched</title>
+<meta name="description" content="A random fighter-and-board picker for the game Unmatched: draw a matchup for 2 or 4 players, with optional spoken announcements.">
+<!-- Open Graph / Twitter share card -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Unmatchable">
+<meta property="og:description" content="Random fighters & boards for Unmatched — for 2 or 4 players.">
+<meta property="og:image" content="https://jeffstevenson.pro/projects/unmatchable/unmatchable-og.png">
+<meta property="og:url" content="https://jeffstevenson.pro/projects/unmatchable/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,7 +31,7 @@
   }
   .wrap{max-width:760px;margin:0 auto;}
 
-  .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .brand{display:flex;flex-direction:column;align-items:flex-start;gap:7px;margin-bottom:22px;}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px;}
   .topbar .brand{margin-bottom:0;}
   .fun-toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer;background:var(--panel);
@@ -38,7 +46,9 @@
   .fun-toggle.on .fun-state{border-left-color:rgba(20,17,15,.25);}
   .fun-toggle:focus-visible{outline:2px solid var(--brass);outline-offset:3px;}
   .reveal.spinning{opacity:.9;}
-  .brand h1{font-size:clamp(20px,4vw,26px);font-weight:700;letter-spacing:.28em;text-transform:uppercase;margin:0;}
+  .brand h1{margin:0;line-height:0;}
+  .logo{display:block;height:clamp(22px,5.2vw,34px);width:auto;max-width:100%;color:var(--cream);transition:color .2s ease;}
+  .logo:hover{color:var(--brass);}
   .brand .sub{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
   .brand .sub b{color:var(--brass);font-weight:600;}
 
@@ -66,7 +76,7 @@
   .panel{padding:6px 0;}
   .eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
 
-  .reveal{margin:0;text-transform:uppercase;line-height:.98;color:var(--cream);word-break:break-word;font-family:"Anton",Impact,sans-serif;}
+  .reveal{margin:0;text-transform:uppercase;line-height:.98;color:var(--cream);overflow-wrap:break-word;-webkit-hyphens:auto;hyphens:auto;hyphenate-limit-chars:6 3 2;font-family:"Anton",Impact,sans-serif;}
   .reveal.placeholder{color:var(--muted);opacity:.5;}
   .reveal.settling{animation:slam .32s cubic-bezier(.2,.9,.25,1);}
   @keyframes slam{0%{transform:scale(1.16);filter:blur(6px);opacity:.2;}100%{transform:scale(1);filter:blur(0);opacity:1;}}
@@ -169,7 +179,7 @@
 
   <header class="topbar">
     <div class="brand">
-      <h1>Unmatchable</h1>
+      <h1 class="wordmark"><svg class="logo" role="img" aria-label="Unmatchable" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2" viewBox="0 0 683 103"><path d="M407.297 609.812v96.094c0 5.156.428 10.43 1.284 15.821.857 5.39 3.426 10.273 7.707 14.648 4.282 4.375 11.047 7.93 20.296 10.664 9.248 2.734 22.265 4.102 39.049 4.102s29.715-1.368 38.792-4.102 15.843-6.289 20.296-10.664 7.107-9.258 7.964-14.648c.856-5.391 1.284-10.665 1.284-15.821v-96.094h100.192v102.422c0 27.5-13.787 47.578-41.361 60.235q-41.361 18.984-127.167 18.984c-57.204 0-99.679-6.328-127.424-18.984-27.746-12.657-41.618-32.735-41.618-60.235V609.812zM725.343 786.531V609.812h100.706l185.997 108.047V609.812h100.192v176.719h-100.192L826.049 678.484v108.047z" style="fill-rule:nonzero" transform="matrix(.186841 0 0 .4096 -55.61969504 -248.16944992)"/><path d="m378.791 785.348-17.3-146.256h-.261l-35.221 152.092-35.09-152.092h-.261l-17.3 146.256h-6.148l21.682-182.591 37.117 160.79 37.248-160.79 21.682 182.591zM451.26 727.212h-44.345l-13.539 58.136h-6.573l42.35-182.591 42.186 182.591h-6.573zm-2.42-10.529-19.687-85.315-19.818 85.315zM505.382 619.18v166.168h-6.442V619.18h-26.097v-10.529h58.669v10.529zM623.373 629.251V644.7c-3.881-8.316-8.939-15.039-15.174-20.17s-12.471-7.696-18.706-7.696c-6.192 0-12.073 2.165-17.643 6.494-5.57 4.33-10.487 10.3-14.749 17.91-4.262 7.611-7.587 16.346-9.974 26.207s-3.581 20.094-3.581 30.699c0 10.185 1.199 20.018 3.597 29.497 2.399 9.48 5.712 17.862 9.942 25.148 4.404 7.287 9.462 13.171 15.174 17.653s11.457 6.723 17.234 6.723c3.903 0 8.012-1.154 12.329-3.461q6.4755-3.462 12.198-9.642c3.815-4.12 6.933-8.736 9.353-13.847v15.449c-10.094 14.687-21.3 22.03-33.618 22.03-9.201 0-17.856-4.091-25.966-12.274q-12.165-12.273-19.425-33.159t-7.26-45.033c0-16.365 2.392-31.528 7.178-45.49 4.785-13.962 11.233-25.024 19.343-33.188 8.111-8.163 16.864-12.245 26.261-12.245 4.055 0 8.072.887 12.05 2.661 3.979 1.774 7.794 4.377 11.446 7.81 3.652 3.434 6.982 7.592 9.991 12.475M648.554 683.61h61.35v-74.959h6.442v176.697h-6.442v-91.152h-61.35v91.152h-6.41V608.651h6.41zM792.314 727.212h-44.345l-13.538 58.136h-6.574l42.35-182.591 42.186 182.591h-6.573zm-2.42-10.529-19.687-85.315-19.818 85.315zM830.347 699.346v75.473h15.403c4.796 0 8.748-.381 11.854-1.144 3.107-.763 6.034-2.651 8.781-5.665 6.606-7.782 9.909-18.253 9.909-31.414 0-6.714-.916-12.97-2.747-18.768-1.831-5.799-4.393-10.09-7.685-12.875-4.295-3.738-11.392-5.607-21.289-5.607zm19.425 86.002h-25.835V608.651h20.21c4.644 0 8.607.658 11.888 1.974s6.284 4.092 9.009 8.326c5.625 8.545 8.438 20.733 8.438 36.564 0 16.327-3.881 28.362-11.643 36.106 4.077 1.449 7.707 4.263 10.89 8.44s5.647 9.374 7.391 15.592 2.616 13.047 2.616 20.485c0 15.068-3.128 27.256-9.385 36.564-3.271 4.845-6.759 8.164-10.465 9.957-3.706 1.792-8.078 2.689-13.114 2.689M830.347 619.18v69.58h14.356c3.227 0 5.979-.41 8.258-1.23 2.278-.821 4.475-2.585 6.589-5.293 2.813-3.586 4.769-7.592 5.87-12.017s1.652-9.88 1.652-16.365c0-6.103-.687-11.711-2.06-16.822-1.374-5.112-3.456-9.194-6.247-12.246-2.289-2.517-4.741-4.081-7.358-4.692-2.616-.61-5.93-.915-9.941-.915zM906.021 608.651v166.168h25.736v10.529h-32.146V608.651zM991.603 619.18h-41.794v64.201h40.747v10.586h-40.747v80.852h41.794v10.529h-48.204V608.651h48.204z" style="fill-rule:nonzero" transform="matrix(.716688 0 0 .4096 -28.55912864 -246.88944992)"/><path d="M.16005664 84.23378624h153.28007072v18.24000128H.16005664z"/></svg></h1>
       <span class="sub">random fighters &amp; boards for <b>Unmatched</b></span>
     </div>
     <button id="funToggle" class="fun-toggle" type="button" role="switch" aria-checked="false" aria-label="More Fun: voice announcements">
