@@ -481,6 +481,9 @@ async function drawMoreFun(){
   }
   if(board){
     if(token!==drawToken) return;
+    await announce("At", token);
+    if(token!==drawToken) return;
+    await wait(GAP);
     bspin.stop();
     await decelerate(boardEl, bpool, ()=>{ if(token===drawToken) setBoard(board); });
     if(token!==drawToken) return;
