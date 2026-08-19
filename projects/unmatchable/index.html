@@ -476,6 +476,7 @@ async function drawMoreFun(){
     if(token!==drawToken) return;
     await announce(fighters[i].name, token);
     if(token!==drawToken) return;
+    if(mode===2 && i===0){ await wait(GAP); await announce("Versus", token); if(token!==drawToken) return; }
     await wait(GAP);
   }
   if(board){
