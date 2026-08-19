@@ -420,15 +420,31 @@ function base64ToArrayBuffer(dataURI){
   for(let i=0;i<len;i++) bytes[i]=bin.charCodeAt(i);
   return bytes.buffer;
 }
-async function getBuffer(name){
-  if(bufferCache.has(name)) return bufferCache.get(name);
-  const c=ensureCtx(); if(!c){ bufferCache.set(name,null); return null; }
+const AUDIO_FETCH_TIMEOUT=6000;  /* give up on a stuck clip fetch after this; fall back to a silent beat */
+async function fetchArrayBuffer(url){
+  const ctrl = (typeof AbortController!=="undefined") ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(()=>ctrl.abort(), AUDIO_FETCH_TIMEOUT) : null;
   try{
-    const src=audioSrc(name);
-    const arr = src.startsWith("data:") ? base64ToArrayBuffer(src) : await (await fetch(src)).arrayBuffer();
-    const buf = await c.decodeAudioData(arr);
-    bufferCache.set(name,buf); return buf;
-  }catch(e){ bufferCache.set(name,null); return null; }
+    const r = await fetch(url, ctrl ? {signal:ctrl.signal} : undefined);
+    if(!r.ok) throw new Error("http "+r.status);
+    return await r.arrayBuffer();
+  } finally { if(timer) clearTimeout(timer); }
+}
+/* Returns a cached promise for the decoded clip, so preloading and playback share one fetch.
+   Failed/timed-out loads are dropped from the cache so a later draw can retry. */
+function getBuffer(name){
+  if(bufferCache.has(name)) return bufferCache.get(name);
+  const p=(async()=>{
+    const c=ensureCtx(); if(!c) return null;
+    try{
+      const src=audioSrc(name);
+      const arr = src.startsWith("data:") ? base64ToArrayBuffer(src) : await fetchArrayBuffer(src);
+      return await c.decodeAudioData(arr);
+    }catch(e){ return null; }
+  })();
+  bufferCache.set(name,p);
+  p.then(buf=>{ if(!buf) bufferCache.delete(name); }, ()=>bufferCache.delete(name));
+  return p;
 }
 /* Play a clip and resolve when it ends; missing/blocked -> silent beat. */
 async function announce(name, token){
@@ -457,6 +473,10 @@ async function drawMoreFun(){
   abortSequence(); const token=drawToken;
   const fighters=sampleDistinct(fpool,mode);
   const board=bpool.length?pickBoard(bpool):null;
+  /* Preload this draw's clips in parallel so they're ready before each selector locks. */
+  fighters.forEach(fr=>getBuffer(fr.name));
+  if(mode===2) getBuffer("Versus");
+  if(board){ getBuffer("At"); getBuffer(board.name); }
   lock(true);
   slotEls.forEach(s=>{ s.set.textContent=""; });
   boardSetEl.textContent="";
@@ -542,6 +562,7 @@ async function rerollSlot(i){
   if(moreFun){
     unlockAudio();
     abortSequence(); const token=drawToken;
+    getBuffer(chosen.name);
     lock(true); slot.set.textContent="";
     const sp=startSpin(slot.name,pool); activeSpins=[sp];
     await wait(FIRST_SPIN);
@@ -588,11 +609,12 @@ rerollBoard.addEventListener("click", async ()=>{
   unlockAudio(); gcEvent("reroll-board");
   if(moreFun){
     abortSequence(); const token=drawToken;
+    const b=pickBoard(bpool); getBuffer(b.name);
     lock(true); boardSetEl.textContent="";
     const sp=startSpin(boardEl,bpool); activeSpins=[sp];
     await wait(FIRST_SPIN);
     if(token!==drawToken) return;
-    sp.stop(); const b=pickBoard(bpool);
+    sp.stop();
     await decelerate(boardEl, bpool, ()=>{ if(token===drawToken) setBoard(b); });
     if(token!==drawToken) return;
     await announce(b.name, token);
